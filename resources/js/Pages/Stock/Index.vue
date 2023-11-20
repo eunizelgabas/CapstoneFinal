@@ -172,7 +172,7 @@
                                     </td>
                                     <td class="py-3 px-6 text-center">
                                         <div class="flex items-center justify-center">
-                                            <p class="font-medium">{{ sto.qty }}</p>
+                                            <p class="font-medium">{{ sto.qty }} pc/s</p>
                                         </div>
                                     </td>
 
@@ -223,10 +223,15 @@
                         </table>
 
                     </div>
+                    <div v-show="stocks.data.length < 1" class="flex flex-col w-full mt-9">
+                        <h1 class="text-center text-xl text-gray-400 mb-6">No medicine purchase found</h1>
+                        <!-- <img src="../../Components/images/no-result.png" alt="no result" class="w-[250px] opacity-25 mx-auto"> -->
+                    </div>
+
+                    <!-- Paginator -->
                     <div class="flex justify-between">
                         <div class="mt-2" v-if="stocks.data.length > 0">Showing page {{ stocks.current_page }} of {{ stocks.last_page }}</div>
-                        <Pagination v-if="stocks.data.length > 0" :links="stocks.links" class="mt-6 text-center"/>
-                        <!-- <Pagination v-if="medtypes.data.length > 0" :links="medtypes.links" class="mt-6"/> -->
+                        <Pagination v-if="stocks.data.length > 0" :links="stocks.links" class="mt-6"/>
                     </div>
                     <!-- <PrimaryButton class="mt-5 items-right" >Save</PrimaryButton> -->
                 </div>

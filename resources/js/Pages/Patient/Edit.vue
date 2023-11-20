@@ -70,7 +70,7 @@ import { onMounted } from 'vue';
     <Head title="Create Patient"/>
     <Sidebar>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Create Patient</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Patient</h2>
         </template>
         <div>
             <div class="w-full mt-10 mx-auto px-4 ">

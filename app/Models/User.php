@@ -32,9 +32,39 @@ class User extends Authenticatable
 
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Register the "deleting" event to delete related records
+        static::deleting(function ($user) {
+            // Check if the user type is being changed to 'admin'
+            if ($user->isDirty('user_type') && $user->user_type === 'admin') {
+                // Delete related appointments
+                $user->appointment()->delete();
+
+                // Delete related health forms
+                $user->form()->delete();
+
+                // You may need to adjust the relationships and method names
+                // based on your actual Eloquent relationships and model names.
+            }
+        });
+    }
+
     public function doctor()
     {
         return $this->hasOne(Doctor::class);
+    }
+
+    public function appointment()
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
+    public function form()
+    {
+        return $this->hasMany(Form::class);
     }
 
     /**

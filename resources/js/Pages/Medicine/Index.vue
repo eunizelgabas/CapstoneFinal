@@ -269,7 +269,7 @@ import { onMounted } from 'vue';
                                     </td>
                                     <td class="py-3 px-6 text-center">
                                         <div class="flex items-center justify-center">
-                                            <p class="font-medium"> {{ med.stock}}</p>
+                                            <p class="font-medium"> {{ med.stock}} pc/s</p>
                                         </div>
                                     </td>
                                     <td class="py-3 px-6 text-center">
@@ -329,10 +329,15 @@ import { onMounted } from 'vue';
                             </tbody>
                         </table>
                     </div>
+                    <div v-show="medicines.data.length < 1" class="flex flex-col w-full mt-9">
+                        <h1 class="text-center text-xl text-gray-400 mb-6">No medicine found</h1>
+                        <!-- <img src="../../Components/images/no-result.png" alt="no result" class="w-[250px] opacity-25 mx-auto"> -->
+                    </div>
+
+                    <!-- Paginator -->
                     <div class="flex justify-between">
                         <div class="mt-2" v-if="medicines.data.length > 0">Showing page {{ medicines.current_page }} of {{ medicines.last_page }}</div>
-                        <Pagination v-if="medicines.data.length > 0" :links="medicines.links" class="mt-6 text-center"/>
-                        <!-- <Pagination v-if="medtypes.data.length > 0" :links="medtypes.links" class="mt-6"/> -->
+                        <Pagination v-if="medicines.data.length > 0" :links="medicines.links" class="mt-6"/>
                     </div>
 
                 </div>

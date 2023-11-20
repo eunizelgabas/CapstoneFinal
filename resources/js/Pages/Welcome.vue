@@ -4,24 +4,18 @@
     import axios from 'axios';
         // import { Link , Head} from '@inertiajs/vue3';
     import { useForm } from '@inertiajs/vue3';
-// defineProps({
-//     canLogin: {
-//         type: Boolean,
-//     },
-//     canRegister: {
-//         type: Boolean,
-//     },
-//     laravelVersion: {
-//         type: String,
-//         required: true,
-//     },
-//     phpVersion: {
-//         type: String,
-//         required: true,
-//     },
-// });
+    import Modal from  '@/Components/Modal.vue';
 
+let showAbout = ref(false)
 
+function closeModal(){
+    showAbout.value = false;
+}
+
+function about() {
+
+    showAbout.value = true;
+}
 
 
     let form = useForm({
@@ -167,6 +161,27 @@
         </div>
         </div>
     </div>
+    <div class="flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10">
+                <div>
+                    <a title="About the System" @click="about()" href="#" class="block w-10 h-10 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12">
+                        <img class="object-cover object-center w-10 h-10 rounded-full" src="/images/question.png"/>
+                    </a>
+                    <Modal :show="showAbout" @close="closeModal">
+                        <div class="p-4 sm:p-10 text-center overflow-y-auto flex flex-col items-center">
+                            <button @click="closeModal" class="mt-5 ml-auto p-3 shadow-2xl rounded-xl text-black font-bold hover:text-red-800">X</button>
+                            <div class="px-10 py-10 max-w-md m-auto lg:col-span-2 shadow-xl rounded-xl lg:mt-10 md:shadow-xl md:rounded-xl lg:shadow-none lg:rounded-none lg:w-full lg:mb-10 lg:px-5 lg:pt-5 lg:pb-5 lg:max-w-lg bg-white">
+                                <div class="flex flex-col items-center">
+                                    <img class="h-full" src="/images/mdclogo.png" alt="MDC Logo">
+                                    <h1 class="mt-5 font-bold text-lg lg:mt-7">About The System</h1>
+
+                                    <h1 class="text-lg text-gray-600 text-justify pt-2">MDC CMS was developed by MDC IT students as their capstone project in 2023. This aims to enhance the efficiency of the MDC clinic by providing a faster and easier workflow.</h1>
+                                </div>
+                            </div>
+
+                        </div>
+                    </Modal>
+                </div>
+            </div>
 </section>
 
 </div>

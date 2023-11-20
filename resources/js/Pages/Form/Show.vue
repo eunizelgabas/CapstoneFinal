@@ -100,7 +100,7 @@
 })
 
 if (props.patient && props.patient.type === 'Student') {
-      form.course = props.patient.student.course;
+      forms.course = props.patient.student.course;
     }
 
 </script>
@@ -110,6 +110,13 @@ if (props.patient && props.patient.type === 'Student') {
     <Sidebar>
         <Head title="View Sample"/>
         <template #header>
+            <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
+                {{ $page.props.flash.success }}
+            </div>
+
+            <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
+                {{ $page.props.flash.error }}
+            </div>
             <div class="flex justify-between">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight"> View History and Physical Examination Form</h2>
                 <div class="flex-justify-between">

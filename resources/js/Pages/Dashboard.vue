@@ -3,10 +3,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Sidebar from '@/Layouts/Sidebar.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import moment from 'moment';
+import { ref, onMounted, computed } from 'vue';
+
 
 let props = defineProps({
-    pendingApp: Number,
-    appointment: Object
+    // pendingApp: Number,
+    // appointment: Object,
+    user: Object
 })
 
     function formattedDate(date){
@@ -20,6 +23,30 @@ let props = defineProps({
         const formattedMinutes = minutes.toString().padStart(2, '0');
         return `${formattedHours}:${formattedMinutes} ${period}`;
     };
+
+    const currentTime = ref('');
+
+    onMounted(() => {
+    // Fetch the current time from the data passed by Laravel
+    currentTime.value = props.currentTime;
+    });
+    // onMounted(() => {
+    // // Fetch the authenticated user from the data passed by Laravel
+    // user.value = props.user;
+    // });
+
+    const greeting = computed(() => {
+    const hour = currentTime.value ? parseInt(currentTime.value.split(':')[0]) : 0;
+
+  if (hour >= 5 && hour < 12) {
+    return 'Good Morning';
+  } else if (hour >= 12 && hour < 17) {
+    return 'Good Afternoon';
+  } else {
+    return 'Good Evening';
+  }
+});
+
 </script>
 
 <template>
@@ -30,9 +57,9 @@ let props = defineProps({
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
         </template> -->
 
-        <div class="py-12">
+        <!-- <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex flex-col space-y-8">
+                <div class="flex flex-col space-y-8"> -->
                     <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-4 xl:p-0 gap-4 xl:gap-6" >
                         <div class="bg-gray-100 p-6 rounded-xl border border-gray-50">
                             <div class="flex justify-center">
@@ -77,7 +104,7 @@ let props = defineProps({
                         </div>
 
                     </div> -->
-                    <div class="grid grid-cols-1 gap-4 px-4 mt-3 sm:grid-cols-4 sm:px-8">
+                    <!-- <div class="grid grid-cols-1 gap-4 px-4 mt-3 sm:grid-cols-4 sm:px-8">
     <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
         <div class="p-4 bg-green-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor">
@@ -134,10 +161,7 @@ let props = defineProps({
                         <div class="col-span-3 bg-gray-100 p-6 rounded-xl border border-gray-50 flex flex-col space-y-6">
                             <div class="flex justify-between items-center">
                                 <h2 class="text-sm text-gray-600 font-bold tracking-wide">Latest Appointments</h2>
-                                <!-- <Link :href="route('appointment.index')"
-                                    class="px-4 py-2 text-xs bg-blue-100 text-blue-500 rounded uppercase tracking-wider font-semibold hover:bg-blue-400 hover:text-white">
-                                    More
-                                </Link> -->
+
                             </div>
 
                             <table class="min-w-max w-full table-auto">
@@ -193,6 +217,125 @@ let props = defineProps({
 
                 </div>
             </div>
+        </div> -->
+        <div class="flex flex-col flex-1 w-full overflow-y-auto">
+            <!--Start Topbar -->
+            <!--End Topbar -->
+          <main class="relative z-0 flex-1 pb-8 px-6 bg-white">
+              <div class="grid pb-10  mt-4 ">
+                  <!-- Start Content-->
+
+                    <!-- <div class="grid grid-cols-1 gap-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 mt-3">
+                      <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out">
+                          <div class="absolute inset-0 bg-blue-600 bg-opacity-40 transition duration-300 ease-in-out"></div>
+                          <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center justify-center">
+                                <div>
+                                    <h3 class="text-center text-white text-lg">
+                                        Total Balance
+                                    </h3>
+                                    <h3 class="text-center text-white text-3xl mt-2 font-bold">
+                                        RM 27,580
+                                    </h3>
+                                    <div class="flex space-x-4 mt-4">
+                                        <button class="block uppercase mx-auto shadow bg-white text-indigo-600 focus:shadow-outline
+                                        focus:outline-none text-white text-xs py-3 px-4 rounded font-bold">
+                                        Transfer
+                                        </button>
+                                        <button class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline
+                                        focus:outline-none text-white text-xs py-3 px-4 rounded font-bold">
+                                        Request
+                                        </button>
+                                    </div>
+                                </div>
+                          </div>
+                      </div>
+                       <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
+                        style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
+                          <div class="absolute inset-0 bg-yellow-600 bg-opacity-75 transition duration-300 ease-in-out"></div>
+                            <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center">
+                            <div>
+                              <div class="text-white text-lg flex space-x-2 items-center">
+                                <div class="bg-white rounded-md p-2 flex items-center">
+                                  <i class="fas fa-toggle-off fa-sm text-yellow-300"></i>
+                                </div>
+                                <p>Finished Appt</p>
+                              </div>
+                              <h3 class="text-white text-3xl mt-2 font-bold">
+                                  120
+                              </h3>
+                               <h3 class="text-white text-lg mt-2 text-yellow-100 ">
+                                  4 not confirmed
+                              </h3>
+                            </div>
+                          </div>
+                      </div>
+                       <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
+                        style="background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f868ecef-4b4a-4ddf-8239-83b2568b3a6b/de7hhu3-3eae646a-9b2e-4e42-84a4-532bff43f397.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Y4NjhlY2VmLTRiNGEtNGRkZi04MjM5LTgzYjI1NjhiM2E2YlwvZGU3aGh1My0zZWFlNjQ2YS05YjJlLTRlNDItODRhNC01MzJiZmY0M2YzOTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.R0h-BS0osJSrsb1iws4-KE43bUXHMFvu5PvNfoaoi8o');">
+                          <div class="absolute inset-0 bg-blue-900 bg-opacity-75 transition duration-300 ease-in-out"></div>
+                          <div class="relative w-full h-full px-4 sm:px-6 lg:px-4 flex items-center">
+                            <div>
+                              <div class="text-white text-lg flex space-x-2 items-center">
+                                <div class="bg-white rounded-md p-2 flex items-center">
+                                  <i class="fas fa-clipboard-check fa-sm text-blue-800"></i>
+                                </div>
+                                <p>Finished Appt</p>
+                              </div>
+                              <h3 class="text-white text-3xl mt-2 font-bold">
+                                  72
+                              </h3>
+                               <h3 class="text-white text-lg mt-2 ">
+                                 3.4% <span class='font-semibold text-blue-200'>vs last month</span>
+                              </h3>
+                            </div>
+                          </div>
+                      </div>
+                    </div> -->
+                    <div class="grid grid-cols-2 gap-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 mt-3">
+                        <!-- Left Card - 50% width -->
+                        <div class="col-span-2 sm:col-span-1 md:col-span-2 lg:col-span-2 xl:col-span-2">
+                        <div class="relative w-full h-52 bg-cover bg-blue-600 bg-opacity-50 group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out">
+                            <!-- Content -->
+                            <div class="flex flex-wrap mt-2 justify-center">
+                                <img src="/images/test.png" alt="" class="h-[200px] w-full sm:w-auto">
+
+                                <div class="flex flex-col sm:flex-row ml-2 mt-10">
+                                    <h1 class="font-bold text-2xl mb-1 sm:mb-0">{{ greeting }},  <span class="text-xl font-normal">{{ user.firstname }} {{ user.lastname }}</span></h1>
+                                </div>
+
+                                <p class="text-center sm:text-left mt-4 sm:ml-2">
+                                    Whatever you do, do with determination. You have one life to live; do your work with passion and give your best.
+                                </p>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+    <!-- Center Card - 25% width -->
+    <div class="col-span-1">
+        <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
+            style="background-image: url('...');">
+            <!-- Content -->
+            <!-- ... (rest of the content) ... -->
+        </div>
+    </div>
+
+    <!-- Right Card - 25% width -->
+    <div class="col-span-1">
+        <div class="relative w-full h-52 bg-cover bg-center group rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out"
+            style="background-image: url('...');">
+            <!-- Content -->
+            <!-- ... (rest of the content) ... -->
+        </div>
+    </div>
+</div>
+
+
+                  <!-- End Content-->
+              </div>
+          </main>
         </div>
     </Sidebar>
 </template>

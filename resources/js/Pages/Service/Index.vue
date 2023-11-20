@@ -90,7 +90,7 @@
                         <div class="max-w-md mx-auto">
                           <div class="flex items-center space-x-5">
                             <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
-                              <h2 class="leading-relaxed">Service Form</h2>
+                              <h2 class="leading-relaxed">Medical Service Form</h2>
                             </div>
                           </div>
                           <hr>
@@ -210,7 +210,7 @@
                                                             Delete Service
                                                         </h3>
                                                         <p class="text-gray-500">
-                                                            Are you sure you want like to delete this service?
+                                                            Are you sure you want like to delete this medical service?
                                                         </p>
 
                                                         <div class="mt-6 flex justify-center gap-x-4">

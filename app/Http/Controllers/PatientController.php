@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Form;
 use App\Models\Patient;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -72,8 +73,8 @@ class PatientController extends Controller
     }
 
     public function edit(Patient $patient){
-        $patient->load('student', 'teacher')->find($patient->id);
-
+        // $patient = Patient::with('student', 'teacher')->find($patient->id);
+        $patient->load('student', 'teacher');
         return inertia('Patient/Edit', [
             'patient' => $patient,
         ]);
@@ -96,55 +97,44 @@ class PatientController extends Controller
 
         $type = $fields['type'];
 
-        // Update the patient details
-        $patient->update($fields);
 
-        // If the patient type is being changed, update the associated model
-        if ($type !== $patient->type) {
-            if ($type === 'Student') {
-                // Update the "student" type here.
-                $student_no = $request->input('student_no');
-                $course = $request->input('course');
 
-                // If the patient already has a student record, update it; otherwise, create a new one.
-                if ($patient->student) {
-                    $patient->student->update([
-                        'student_no' => $student_no,
-                        'course'=> $course]
-                    );
-                } else {
-                    $student = new Student([
-                        'student_no' => $student_no,
-                        'course'=> $course]);
-                    $patient->student()->save($student);
-                }
+    if ($type === 'Student') {
+        $student_no = $request->input('student_no');
+        $course = $request->input('course');
 
-                // Remove the teacher record if it exists
-                if ($patient->teacher) {
-                    $patient->teacher->delete();
-                }
-            } elseif ($type === 'Teacher') {
-                // Update the "teacher" type here.
-                $teacher_no = $request->input('teacher_no');
+        // Update the student type here.
+        $patient->student()->updateOrCreate(
+            [],
+            [
+                'student_no' => $student_no,
+                'course' => $course,
+            ]
+        );
 
-                // If the patient already has a teacher record, update it; otherwise, create a new one.
-                if ($patient->teacher) {
-                    $patient->teacher->update(['teacher_no' => $teacher_no]);
-                } else {
-                    $teacher = new Teacher(['teacher_no' => $teacher_no]);
-                    $patient->teacher()->save($teacher);
-                }
-
-                // Remove the student record if it exists
-                if ($patient->student) {
-                    $patient->student->delete();
-                }
-            }
+        // Remove the teacher record if it exists
+        if ($patient->teacher) {
+            $patient->teacher->delete();
         }
+    } elseif ($type === 'Teacher') {
+        $teacher_no = $request->input('teacher_no');
 
-        return redirect()->route('patient.index');
+        // Update the teacher type here.
+        $patient->teacher()->updateOrCreate(
+            [],
+            ['teacher_no' => $teacher_no]
+        );
+
+        // Remove the student record if it exists
+        if ($patient->student) {
+            $patient->student->delete();
+        }
     }
+    // Update the patient details
+    $patient->update($fields);
 
+    return redirect('/patient/show/' . $patient->id)->with('success', 'Patient successfully updated');
+    }
     public function search(Request $request)
     {
         try {
@@ -168,16 +158,17 @@ class PatientController extends Controller
 
     public function show(Patient $patient){
 
-        $patient = Patient::all()->find($patient->id);
+        $patient = Patient::with('student','teacher')->find($patient->id);
         $user = $patient->user;
 
         // Retrieve the appointments for the user (patient)
-        $patientAppointments = Appointment::with(['doctor.user','service'])->where('pat_id', $patient->id)->get();
-        // $form = Form::with('patient.user', 'doctor.user')->where('pat_id', $patient->id)->get();
+        $patientAppointments = Appointment::with(['doctor.user','service'])->where('pat_id', $patient->id)->orderBy('created_at', 'desc')->paginate(4);
+        $medicalHistory = Form::with(['patient.student', 'doctor.user', 'history', 'remark', 'medicalhistory', 'physicalexamination', 'radiologic'])->orderBy('created_at','desc')->paginate(4);
         return inertia ('Patient/Show',
             [
                 'patient' => $patient,
                 'patientAppointments' => $patientAppointments,
+                'medicalHistory' => $medicalHistory
                 // 'form' => $form
             ]);
     }

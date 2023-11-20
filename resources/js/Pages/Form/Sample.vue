@@ -102,16 +102,10 @@ let props = defineProps({
 
     })
 
-    const isStudent = props.patient.type === 'Student';
-//     try {
-//         const isStudent = computed(() => props.patient.type === 'Student');
-//     const course = computed(() => (isStudent.value ? props.patient.student.course : ""));
-//   } catch (error) {
-//     console.error('Error in setup function:', error);
-//   }
-if (props.patient && props.patient.type === 'Student') {
-      form.course = props.patient.student.course;
-    }
+    // const isStudent = props.patient.type === 'Student';
+    if (props.patient && props.patient.type === 'Student') {
+        form.course = props.patient.student.course;
+        }
 
 
 
@@ -158,10 +152,23 @@ if (props.patient && props.patient.type === 'Student') {
         return age;
     }
 
-    const submit = () =>{
-        form.post('/healthForm')
-        // isLoading.value = true;
-    }
+    // const submit = () =>{
+    //     form.post('/healthForm')
+
+    // }
+    const submit = async () => {
+      isLoading.value = true;
+
+      try {
+        await form.post('/healthForm');
+        // Handle success if needed
+      } catch (error) {
+        // Handle error if needed
+        console.error(error);
+      } finally {
+        isLoading.value = false;
+      }
+    };
 
 </script>
 
@@ -958,7 +965,7 @@ if (props.patient && props.patient.type === 'Student') {
                                             <label for="abdomen-abnormal" class="custom-checkbox"></label>
                                         </td>
                                         <td class="border border-gray-300 p-2">
-                                            <label for="lungs-normal">
+                                            <label for="abdomen_findings">
                                                 <input
                                                 type="text"
                                                 v-model="form.abdomen_findings"
@@ -981,7 +988,7 @@ if (props.patient && props.patient.type === 'Student') {
                                             <input type="radio" id="back-abnormal" v-model="form.back" value="0">
                                             <label for="back-abnormal" class="custom-checkbox"></label>
                                         </td>
-                                        <td class="border border-gray-300 p-2"> <label for="lungs-normal">
+                                        <td class="border border-gray-300 p-2"> <label for="back_findings">
                                             <input
                                             type="text"
                                             v-model="form.back_findings"

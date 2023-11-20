@@ -1,6 +1,7 @@
 <script setup>
     import Sidebar from '@/Layouts/Sidebar.vue';
     import Pagination from  '@/Components/Pagination.vue';
+    import Modal from  '@/Components/Modal.vue';
     import DangerButton from '@/Components/DangerButton.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
     import { ref, onMounted, watch } from 'vue';
@@ -192,7 +193,7 @@
                                     </td>
                                     <td class="py-3 px-6 text-center">
                                         <div class="flex items-center justify-center">
-                                            <p class="font-medium">{{ des.qty }}</p>
+                                            <p class="font-medium">{{ des.qty }} pc/s</p>
                                         </div>
                                     </td>
                                     <td class="py-3 px-6 text-center">
@@ -247,10 +248,15 @@
                             </tbody>
                         </table>
                     </div>
+                    <div v-show="dispenses.data.length < 1" class="flex flex-col w-full mt-9">
+                        <h1 class="text-center text-xl text-gray-400 mb-6">No medicine dispenses found</h1>
+                        <!-- <img src="../../Components/images/no-result.png" alt="no result" class="w-[250px] opacity-25 mx-auto"> -->
+                    </div>
+
+                    <!-- Paginator -->
                     <div class="flex justify-between">
                         <div class="mt-2" v-if="dispenses.data.length > 0">Showing page {{ dispenses.current_page }} of {{ dispenses.last_page }}</div>
-                        <Pagination v-if="dispenses.data.length > 0" :links="dispenses.links" class="mt-6 text-center"/>
-                        <!-- <Pagination v-if="medtypes.data.length > 0" :links="medtypes.links" class="mt-6"/> -->
+                        <Pagination v-if="dispenses.data.length > 0" :links="dispenses.links" class="mt-6"/>
                     </div>
                 </div>
             </div>

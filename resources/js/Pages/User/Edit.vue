@@ -63,7 +63,7 @@ if (props.user.type === 'Doctor' && props.user.doctor) {
 });
 
     const submit = () =>{
-        form.put('/users/'+props.user.id)
+        form.put('/users/'+  props.user.id)
     }
 
 

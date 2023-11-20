@@ -160,7 +160,7 @@ class FormController extends Controller
 }
 
     public function show(Form $form){
-        $form->load(['patient.student', 'doctor', 'history', 'remark', 'medicalhistory', 'physicalexamination'])->find($form->id);
+        $form->load(['patient.student', 'doctor', 'history', 'remark', 'medicalhistory', 'physicalexamination', 'radiologic'])->find($form->id);
         $medicalhistory = MedicalHistory::all()->find($form->id);
         // $physicalexamination = PhysicalExamination::all()->find($form->id);
         // $remark = Remarks::all()->find($form->id);

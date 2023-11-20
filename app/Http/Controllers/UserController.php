@@ -107,7 +107,7 @@ class UserController extends Controller
         $isDoctor = $user->hasRole('Doctor');
 
         if ($isDoctor && in_array($data['role'], ['Admin'])) {
-            // User was previously a doctor, but now changing to "admin" or "student."
+            // User was previously a doctor, but now changing to "admin"
             // Delete the associated "doctor" data.
             $user->doctor->delete();
         }
@@ -138,6 +138,7 @@ class UserController extends Controller
             // Handle other type and role changes (same as before).
             $user->syncRoles([$data['role']]);
         }
+        // dd($currentRole, $type);
 
         if ($data['type'] === 'Doctor') {
             $specialization = $request->input('specialization');
@@ -150,7 +151,7 @@ class UserController extends Controller
             // Update the doctor's data
             if ($doctor) {
                 $doctor->specialization = $specialization;
-                $lic_no->lic_no = $lic_no;
+                $doctor->lic_no = $lic_no;
                 $doctor->save();
             } else {
                 // If the doctor record doesn't exist, create a new one

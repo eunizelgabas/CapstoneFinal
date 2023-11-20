@@ -72,6 +72,13 @@
         <Head title="Appointment"/>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Appointment</h2>
+            <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
+                {{ $page.props.flash.success }}
+            </div>
+
+            <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
+                {{ $page.props.flash.error }}
+            </div>
         </template>
 
         <div class="flex p-3">

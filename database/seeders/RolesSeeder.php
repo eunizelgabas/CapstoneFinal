@@ -25,17 +25,27 @@ class RolesSeeder extends Seeder
         $manage_doctors = Permission::create(['name' => 'manage-doctors']);
         $manage_category = Permission::create(['name' => 'manage-category']);
         $manage_type = Permission::create(['name' => 'manage-type']);
+        $manage_dispense = Permission::create(['name' => 'manage-dispense']);
+        $manage_purchase = Permission::create(['name' => 'manage-purchase']);
+        $manage_inventory = Permission::create(['name' => 'manage-inventory']);
         $manage_appointment = Permission::create(['name' => 'manage-appointment']);
         $manage_user =  Permission::create(['name' => 'manage-user']);
+        $manage_healthForm =  Permission::create(['name' => 'manage-healthForm']);
         $add_appointment =  Permission::create(['name' => 'add-appointment']);
         $edit_appointment =  Permission::create(['name' => 'edit-appointment']);
         $show_appointment =  Permission::create(['name' => 'show-appointment']);
         $delete_appointment =  Permission::create(['name' => 'delete-appointment']);
 
-        $permission_admin =  [ $manage_medicine, $manage_patient,$manage_service,$manage_doctors,
-                                $manage_category, $manage_type, $add_appointment, $manage_user, $edit_appointment, $show_appointment, $delete_appointment ];
 
-        $permission_doctor =  [$add_appointment, $manage_patient,$edit_appointment, $show_appointment, $delete_appointment ];
+        $permission_admin =  [ $manage_medicine, $manage_patient,$manage_service,$manage_doctors,
+                                $manage_appointment, $manage_category, $manage_type, $manage_dispense,
+                                $manage_purchase, $manage_inventory, $add_appointment, $manage_user,
+                                $edit_appointment, $show_appointment, $delete_appointment,
+                                $manage_healthForm ];
+
+        $permission_doctor =  [$add_appointment,  $manage_appointment, $manage_patient,$edit_appointment,
+                                 $show_appointment, $delete_appointment,
+                                 $manage_healthForm ];
 
         $role_admin->syncPermissions($permission_admin);
         $role_doctor->syncPermissions($permission_doctor);

@@ -27,6 +27,7 @@ function closeModal(){
        'reason': '',
        'doc_id': '',
        'service_id': '',
+       'email': '',
 
 
     })
@@ -88,7 +89,8 @@ const filteredDoctors = computed(() => {
        form.lastname="",
        form.reason="" ,
        form.doc_id="" ,
-       form.service_id=""
+       form.service_id="",
+       form.email = ""
     }
 
 
@@ -112,7 +114,7 @@ const filteredDoctors = computed(() => {
 
         <div class="w-full max-w-lg mx-auto p-8 ">
             <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="text-lg font-medium mb-6">Appointment Form</h2>
+                <h2 class="text-lg font-medium mb-6 font-bold">Appointment Form</h2>
                 <form @submit.prevent="submit">
                     <div class="col-span-2 sm:col-span-1">
                             <label for="pat_id" class="block text-sm font-medium text-gray-700 mb-2">Student ID/Teacher ID</label>
@@ -121,11 +123,15 @@ const filteredDoctors = computed(() => {
                     <div class="grid grid-cols-2 gap-6">
                         <div class="col-span-2 sm:col-span-1 mt-2">
                             <label for="firstname" class="block text-sm font-medium text-gray-700 mb-2">Firstname</label>
-                            <input type="text"  v-model="form.firstname"  name="firstname" id="firstname"  class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
+                            <input type="text" required v-model="form.firstname"  name="firstname" id="firstname"  class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
                         </div>
                         <div class="col-span-2 sm:col-span-1 mt-2">
                             <label for="lastname" class="block text-sm font-medium text-gray-700 mb-2">Lastname</label>
-                            <input type="text"  v-model="form.lastname"  name="lastname" id="lastname" placeholder="" class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
+                            <input type="text" required v-model="form.lastname"  name="lastname" id="lastname" placeholder="" class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div class="col-span-2 sm:col-span-2 mt-2">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input type="email" required  v-model="form.email"  name="email" id="lastname" placeholder="" class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
                         </div>
                         <div class="col-span-2 sm:col-span-1">
                             <label for="doctor" class="block text-sm font-medium text-gray-700 mb-2">Doctor</label>

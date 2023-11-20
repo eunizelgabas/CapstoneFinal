@@ -20,12 +20,12 @@ class AppointmentController extends Controller
         $user = auth()->user();
 
         if ($user->hasRole('Admin')) {
-            $appointments = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])->get();
+            $appointments = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])->orderBy('created_at','desc')->get();
         } elseif ($user->hasRole('Doctor')) {
             $appointments = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])
                 ->whereHas('doctor', function ($query) use ($user) {
                     $query->where('user_id', $user->id);
-                })->get();
+                })->orderBy('id','desc')->get();
         }  else {
             // Handle other roles or unauthorized access as needed
             return abort(403);
@@ -85,6 +85,7 @@ class AppointmentController extends Controller
             'doc_id' => $request->input('doc_id'),
             'service_id' => $request->input('service_id'),
             'reason' => $request->input('reason'),
+            'email' => $request->input('email')
 
         ]);
 
@@ -138,27 +139,31 @@ class AppointmentController extends Controller
         $user = Auth::user();
 
         $fields = $request->validate([
-
-            'pat_id'=>'required',
+            'pat_id' => 'required',
             'doc_id' => 'required',
             'service_id' => 'required|exists:services,id',
             'date' => 'required|date|after_or_equal:today',
             'time' => 'required|after_or_equal:now',
             'reason' => 'required',
+            'email' => 'nullable|email'
         ]);
 
+        // If the user is a Doctor or Admin, automatically set the status to "Accepted" (status code 1)
+        if ($user->hasRole('Doctor') || $user->hasRole('Admin')) {
+            $fields['status'] = "Accepted";
+        }
 
-
-        if (Auth::user()->hasRole('Doctor')) {
-            $fields['doc_id'] = Auth::user()->doctor->id;
-        } elseif (Auth::user()->hasRole('Admin')) {
-            // Kung ang user kay admin, asahan ang doc_id gikan sa form
+        if ($user->hasRole('Doctor')) {
+            $fields['doc_id'] = $user->doctor->id;
+        } elseif ($user->hasRole('Admin')) {
+            // If the user is an Admin, expect the doc_id from the form
             $fields['doc_id'] = $request->input('doc_id');
         }
 
         Appointment::create($fields);
         return redirect()->route('appointment.index')->with('success', 'Appointment created successfully.');
     }
+
 
     public function edit(Request $request, Appointment $appointment)
     {
@@ -242,7 +247,7 @@ class AppointmentController extends Controller
         $doctor = $appointment->doctor;
         // Send an email notification to the patient
         Mail::send('email.confirm-email', ['patient' => $patient, 'appointment'=>$appointment, 'doctor'=> $doctor ], function ($message) use ($patient, $appointment) {
-            $message->to($patient->email);
+            $message->to($appointment->email);
             $message->subject('Appointment Confirmation');
         });
 
@@ -256,8 +261,8 @@ class AppointmentController extends Controller
         $patient = $appointment->patient;
 
         // Send an email notification to the patient
-        Mail::send('email.cancel-email', ['patient' => $patient, 'appointment'=>$appointment], function ($message) use ($patient) {
-            $message->to($patient->email);
+        Mail::send('email.cancel-email', ['patient' => $patient, 'appointment'=>$appointment], function ($message) use ($patient, $appointment) {
+            $message->to($appointment->email);
             $message->subject('Appointment Cancelation');
         });
         return redirect()->route('appointment.index')->with('success', 'Appointment canceled successfully.');

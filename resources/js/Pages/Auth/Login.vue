@@ -33,12 +33,12 @@ let showAbout = ref(false)
 
 function closeModal(){
     showAbout.value = false;
-    }
+}
 
-    function about() {
+function about() {
 
-        showAbout.value = true;
-    }
+    showAbout.value = true;
+}
 
 
 const submit = () => {
