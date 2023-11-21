@@ -162,11 +162,18 @@ import { onMounted } from 'vue';
                             </div>
 
 
-                            <div class="sm:col-span-2" v-if="form.type === 'Student'">
+                            <div class="sm:col-span-1" v-if="form.type === 'Student'">
                                 <label for="student_no" class="block text-sm font-medium leading-6 text-gray-900">Student ID</label>
                                 <div class="mt-2">
                                 <input id="student_no" v-model="form.student_no" name="student_no" type="text" autocomplete="student_no" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <div class="text-sm text-red-500 italic" v-if="form.errors.student_no">{{ form.errors.student_no }}</div>
+                                </div>
+                            </div>
+                            <div class="sm:col-span-2" v-if="form.type === 'Student'">
+                                <label for="course" class="block text-sm font-medium leading-6 text-gray-900">Course</label>
+                                <div class="mt-2">
+                                <input id="course" v-model="form.course" name="course" type="text" autocomplete="course" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <div class="text-sm text-red-500 italic" v-if="form.errors.course">{{ form.errors.course }}</div>
                                 </div>
                             </div>
                             <div class="sm:col-span-2" v-if="form.type === 'Teacher'">

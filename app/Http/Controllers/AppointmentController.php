@@ -21,8 +21,31 @@ class AppointmentController extends Controller
 
         if ($user->hasRole('Admin')) {
             $appointments = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])->orderBy('created_at','desc')->get();
+            $acceptedApp = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])
+            ->where('status', '=', 'Accepted')
+            ->orderBy('created_at', request('sort', 'desc'))
+            ->get();
+
+            $cancelApp = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])
+            ->where('status', '=', 'Cancelled')
+            ->orderBy('created_at', 'desc')
+            ->get();
         } elseif ($user->hasRole('Doctor')) {
             $appointments = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])
+                ->whereHas('doctor', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })->orderBy('created_at',request('sort', 'desc'))->get();
+
+                $acceptedApp = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])
+                ->where('status', '=', 'Accepted')
+                ->whereHas('doctor', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+                $cancelApp = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])
+                ->where('status', '=', 'Cancelled')
                 ->whereHas('doctor', function ($query) use ($user) {
                     $query->where('user_id', $user->id);
                 })->orderBy('id','desc')->get();
@@ -30,10 +53,17 @@ class AppointmentController extends Controller
             // Handle other roles or unauthorized access as needed
             return abort(403);
         }
-        return inertia('Appointment/Index', [
+
+
+        return inertia('Appointment/Sample', [
             'appointments' => $appointments,
+            'cancelApp' => $cancelApp,
+            'acceptedApp' => $acceptedApp,
+            'sort' => request('sort', 'desc'),
         ]);
     }
+
+
 
     public function create(){
         $doctors = Doctor::whereHas('user', function ($query) {

@@ -391,11 +391,7 @@
                             </div>
 
                             <div v-show="openTab === 1" class="transition-all duration-300 bg-gray-100 p-4 rounded-lg shadow-md ">
-                                <!-- <h2 class="text-2xl font-semibold mb-2 text-blue-600">Appointment History</h2> -->
-                                <!-- <div class="w-full flex justify-between border-b-2 border-gray-500 mb-2">
-                                       <h2 class="text-xl font-semibold mb-2 text-blue-600">Appointment History</h2>
-                                       <p>test</p>
-                                </div> -->
+
                                 <div class="w-full bg-gray-100 border-b-2 border-gray-500">
                                     <div class=" flex justify-between">
                                         <h2 class="text-l font-semibold mb-2 text-blue-600">Appointment History</h2>
