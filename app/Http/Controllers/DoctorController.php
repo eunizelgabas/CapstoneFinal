@@ -6,15 +6,35 @@ use App\Models\Doctor;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as HttpRequest;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class DoctorController extends Controller
 {
     public function index(){
-        $doctors = Doctor::with(['user', 'services'])->get();
+        $doctors = Doctor::with(['user', 'services'])->when(HttpRequest::input('search'), function ($query, $search) {
+            $query->where('specialization', 'like', '%' . $search . '%')
+                ->orWhere('lic_no', 'like', '%' . $search . '%')
+                ->orWhereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('firstname', 'like', '%' . $search . '%')
+                    ->orWhere('lastname', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('services', function ($serviceQuery) use ($search) {
+                    $serviceQuery->where('name', 'like', '%' . $search . '%');
+                });
+        })
+        ->orderBy('created_at','desc')
+        ->paginate(8)
+        ->withQueryString();
+        $activeDoctorsCount = User::whereHas('doctor', function ($query) {
+            $query->where('status', 1);
+        })->count();
+
         return inertia('Doctor/Index',[
-            'doctors' =>$doctors
+            'doctors' =>$doctors,
+            'activeDoctorsCount' => $activeDoctorsCount,
+            'filters' => HttpRequest::only(['search']),
         ]);
     }
 

@@ -118,7 +118,7 @@
             <div class="w-full md:w-9/12 mx-2 h-64">
                 <!-- Profile tab -->
                 <!-- About Section -->
-                <div class="bg-gray-50 p-3 shadow-sm rounded-sm">
+                <div class="bg-white p-3 shadow-sm rounded-sm">
                     <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
                         <span clas="text-green-500">
                             <i class="fa-regular fa-user fa-lg"></i>
@@ -162,7 +162,7 @@
                 <div class="my-4 mt-5"></div>
 
 
-                <div class="bg-gray-50 p-3 shadow-sm rounded-sm">
+                <div class="bg-white p-3 shadow-sm rounded-sm">
 
                     <div class="grid grid-cols-1">
                         <div>

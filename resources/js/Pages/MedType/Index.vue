@@ -61,6 +61,24 @@
             }
         );
     });
+
+    onMounted(() => {
+    // Set a timeout to hide the success flash message after 3 seconds
+        const successFlashMessage = document.getElementById('flash-success-message');
+            if (successFlashMessage) {
+                setTimeout(() => {
+                successFlashMessage.style.display = 'none';
+                }, 3000);
+        }
+
+        // Set a timeout to hide the error flash message after 3 seconds
+        const errorFlashMessage = document.getElementById('flash-error-message');
+            if (errorFlashMessage) {
+                setTimeout(() => {
+                errorFlashMessage.style.display = 'none';
+            }, 3000);
+        }
+    });
 </script>
 
 <template>
@@ -68,6 +86,13 @@
     <Sidebar>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Medicine Type</h2>
+            <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
+                {{ $page.props.flash.success }}
+            </div>
+
+            <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
+                {{ $page.props.flash.error }}
+            </div>
         </template>
 
         <div class="px-2 mt-5">
@@ -210,3 +235,35 @@
         </div>
     </Sidebar>
 </template>
+<style scoped>
+
+#flash-success-message {
+    animation: fadeOut 5s ease-in-out forwards;
+}
+
+.progress-bar {
+    height: 8px;
+    width: 100%;
+    background-color: #4CAF50; /* Green color */
+    animation: progressBar 5s linear;
+}
+
+/* @keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+} */
+
+@keyframes progressBar {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+    }
+}
+
+</style>

@@ -8,13 +8,29 @@ use App\Models\Patient;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as HttpRequest;
 
 class PatientController extends Controller
 {
     public function index(){
-        $patient = Patient::all();
+        $patient = Patient::with('student', 'teacher')->when(HttpRequest::input('search'), function ($query, $search) {
+            $query->where('firstname', 'like', '%' . $search . '%')
+                ->orWhere('lastname', 'like', '%' . $search . '%')
+                ->orWhereHas('student', function ($studentQuery) use ($search) {
+                    $studentQuery->where('student_no', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('teacher', function ($teacherQuery) use ($search) {
+                    $teacherQuery->where('teacher_no', 'like', '%' . $search . '%');
+                });
+        })
+        ->orderBy('created_at','desc')
+        ->paginate(8)
+        ->withQueryString();
+        $activePatientsCount = Patient::where('status', 1)->count();
         return inertia('Patient/Index', [
-            'patient' => $patient
+            'patient' => $patient,
+            'activePatientsCount' => $activePatientsCount,
+            'filters' => HttpRequest::only(['search']),
         ]);
     }
 

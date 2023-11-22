@@ -225,47 +225,47 @@ console.log(props.appointments);
                                 <div class="p-1.5 min-w-full inline-block align-middle">
                                 <div class=" rounded-lg divide-y divide-gray-200 ">
                                     <div class="py-3 px-4">
-                                    <div class="relative max-w-xs">
-                                        <label for="hs-table-search" class="sr-only">Search</label>
-                                        <input type="search"  v-model="search" name="hs-table-search" id="hs-table-search" class="py-2 px-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none " placeholder="Search for appointment">
-                                        <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3">
-                                        <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                                        <div class="relative max-w-xs">
+                                            <label for="hs-table-search" class="sr-only">Search</label>
+                                            <input type="search"  v-model="search" name="hs-table-search" id="hs-table-search" class="py-2 px-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none " placeholder="Search for appointment">
+                                            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3">
+                                            <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                     <div class="overflow-hidden">
                                     <table class="min-w-full divide-y divide-gray-200 ">
                                         <thead class="bg-gray-50 ">
-                                        <tr>
+                                            <tr>
 
                                             <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Patient</th>
                                             <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Date and Time</th>
                                             <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Doctor</th>
                                             <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Status</th>
                                             <!-- <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Action</th> -->
-                                        </tr>
+                                            </tr>
                                         </thead>
-                                        <tbody class="divide-y divide-gray-200">
-                                            <tr v-if="appointments.length === 0">
-                                                <td colspan="5" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center">
-                                                    No appointments found.
-                                                </td>
-                                            </tr>
-                                            <tr v-for="app in appointments" :key="app.id">
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 ">{{ app.patient.firstname }} {{ app.patient.lastname }}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 ">{{ formattedDate(app.date) }} at {{ formatTimeToAMPM(app.time) }}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 ">{{ app.doctor.user.firstname }} {{ app.doctor.user.lastname }}</td>
-                                                <td class=" text-xs whitespace-nowrap  uppercase px-6 py-4  text-center font-bold " :class="{
-                                                                    'text-blue-600': app.status == 'Pending',
-                                                                    'text-red-600':app.status == 'Cancelled',
-                                                                    'text-green-600': app.status =='Accepted',
-                                                                }">{{ app.status}}</td>
-                                                <!-- <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                                                <button type="button" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">Delete</button>
-                                                </td> -->
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                            <tbody class="divide-y divide-gray-200">
+                                                <tr v-if="appointments.length === 0">
+                                                    <td colspan="5" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center">
+                                                        No appointments found.
+                                                    </td>
+                                                </tr>
+                                                <tr v-for="app in appointments" :key="app.id">
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 ">{{ app.patient.firstname }} {{ app.patient.lastname }}</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 ">{{ formattedDate(app.date) }} at {{ formatTimeToAMPM(app.time) }}</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 ">{{ app.doctor.user.firstname }} {{ app.doctor.user.lastname }}</td>
+                                                    <td class=" text-xs whitespace-nowrap  uppercase px-6 py-4  text-center font-bold " :class="{
+                                                                        'text-blue-600': app.status == 'Pending',
+                                                                        'text-red-600':app.status == 'Cancelled',
+                                                                        'text-green-600': app.status =='Accepted',
+                                                                    }">{{ app.status}}</td>
+                                                    <!-- <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                                    <button type="button" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">Delete</button>
+                                                    </td> -->
+                                                </tr>
+                                             </tbody>
+                                        </table>
                                     </div>
                                 </div>
                                 </div>
@@ -273,11 +273,10 @@ console.log(props.appointments);
                         </div>
 
                     </div>
-                    <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 2xl:col-span-1">
-                        <Calendar expanded class="my-custom-calendar" :attributes="attrs"  />
 
+                        <Calendar :attributes="attrs" class="my-custom-calendar" expanded />
                     </div>
-                </div>
+
             </div>
           </main>
         </div>

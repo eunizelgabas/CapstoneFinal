@@ -1,6 +1,6 @@
 <script setup>
     import Sidebar from '@/Layouts/Sidebar.vue';
-    import { ref } from 'vue';
+    import { ref, watch } from 'vue';
     import { Link, router, useForm, Head } from '@inertiajs/vue3';
 
     let showConfirm = ref(false)
@@ -21,7 +21,9 @@
     let props = defineProps({
         doctors: Array,
         user:Object,
-        services:Object
+        services:Object,
+        activeDoctorsCount: Number,
+        filters:Object
     })
 
     function closeModal(){
@@ -52,56 +54,89 @@
         }
     }
     //const inactiveDoctors = ref([]);
+    let search = ref(props.filters.search);
+    watch(search, (value) => {
+        router.get(
+            "/doctor",
+            { search: value },
+            {
+                preserveState: true,
+                replace: true,
+            }
+        );
+    });
 </script>
 
 <template>
     <Sidebar>
         <Head title="Doctor"/>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Doctor</h2>
-        </template>
+        <section class="container px-4 py-6 mx-auto">
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <div class="flex items-center gap-x-3">
+                        <h2 class="text-3xl font-bold text-black">List of Doctors</h2>
 
-        <div class="px-2 mt-5">
-            <div class="p-4 mx-2">
-                <div class="flex ">
-                    <h1 class="text-3xl font-medium text-gray-700 "></h1>
-                    <Link href="/doctor/create" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 mr-4" >Add Doctor</Link>
+                        <span class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full">{{ activeDoctorsCount }} doctors</span>
+                    </div>
                 </div>
+            </div>
+
+            <div class="mt-6 md:flex md:items-center md:justify-between md:w-full">
+                <div class="inline-flex overflow-hidden">
+                    <div class="py-3 px-4">
+                        <div class="relative max-w-xs">
+                            <label for="hs-table-search" class="sr-only">Search</label>
+                            <input type="search" v-model="search"  name="hs-table-search" id="hs-table-search" class="py-2 px-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none " placeholder="Search by name or id">
+                            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3">
+                                <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative flex items-center md:mt-0">
+
+                    <div class="flex items-center gap-x-3">
+                        <a as="button" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto hover:bg-blue-100 ">
+                            <i class="fa-solid fa-download"></i>
+
+                            <span>Export</span>
+                        </a>
+
+                        <Link href="/doctor/create" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+                            <i class="fa-solid fa-user-plus"></i>
+
+                            <span>Add doctor</span>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+
             <div class="w-full px-2">
                 <div class="h-12">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <!-- <div class="p-6 text-gray-900">You're logged in!</div> -->
-
                         <table class="min-w-max w-full table-auto">
                             <thead>
                                 <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                                    <th class="py-3 px-6 text-left">Id</th>
-                                    <th class="py-3 px-6 text-center">Doctor Name</th>
-                                    <th class="py-3 px-6 text-center">Gender</th>
+
+                                    <th class="py-3 px-6 text-center">FullName</th>
                                     <th class="py-3 px-6 text-center">Specialization</th>
-                                    <th class="py-3 px-6 text-center">Services</th>
+                                    <th class="py-3 px-6 text-center">Email</th>
                                     <th class="py-3 px-6 text-center">Contact No</th>
                                     <th class="py-3 px-6 text-center">Status</th>
                                     <th class="py-3 px-6 text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="text-gray-600 text-sm font-light" >
-
-                                <tr  class="border-b border-gray-200 hover:bg-gray-100" v-for="doc in doctors" :key="doc.id">
-                                    <td class="py-3 px-6 text-left whitespace-nowrap">
-                                        <div class="flex items-center">
-
-                                            <p class="font-medium">{{ doc.id }}</p>
-                                        </div>
+                                <!-- <tr v-if="doctors.data.length === 0">
+                                    <td colspan="6" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center">
+                                        No doctor found.
                                     </td>
+                                </tr> -->
+                                <tr  class="border-b border-gray-200 hover:bg-gray-100" v-for="doc in doctors.data" :key="doc.id">
                                     <td class="py-3 px-6 text-center">
                                         <div class="flex items-center justify-center">
                                             <p class="font-medium">{{ doc.user.firstname }} {{ doc.user.lastname }}</p>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-6 text-center">
-                                        <div class="flex items-center justify-center">
-                                            <p class="font-medium">{{ doc.user.gender }}</p>
                                         </div>
                                     </td>
 
@@ -111,8 +146,8 @@
                                         </div>
                                     </td>
                                     <td class="py-3 px-6 text-center">
-                                        <div class="flex items-center justify-center" v-for="service in doc.services" :key="service.id">
-                                            <p class="font-medium">{{ service.name }}</p>
+                                        <div class="flex items-center justify-center">
+                                            <p class="font-medium">{{ doc.user.email }}</p>
                                         </div>
                                     </td>
                                     <td class="py-3 px-6 text-center">
@@ -121,36 +156,22 @@
                                         </div>
                                     </td>
                                     <td class="py-3 px-6 text-center">
-                                        <div class="flex items-center justify-center">
+                                        <div class="flex items-center justify-center" >
                                             <p class="font-medium">
-                                                <span class=" remarks-cell bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs">{{ doc.user.status ? 'Active' : 'Inactive' }}</span>
+
+                                                <span class="remarks-cell  py-1 px-3 rounded-full text-xs"
+                                                :class="{
+                                                    'bg-red-200 text-red-600': doc.user.status == 0,
+                                                    'bg-green-200 text-green-600':doc.user.status == 1,
+
+                                                }"
+                                            >{{ doc.user.status ? 'Active' : 'Inactive' }}</span>
                                             </p>
                                         </div>
                                     </td>
                                     <td class="py-3 px-6 text-center">
                                         <div class="flex item-center justify-center">
-                                            <!-- <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
-                                                <a href="#" class="btn" @click="toggleStatus(doc)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-6 6m0 0l-6-6m6 6V9a6 6 0 0112 0v3" />
-                                                      </svg>
-                                                </a>
-                                            </div> -->
                                             <div class="flex item-center justify-center">
-                                                <!-- <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110" v-if="!doc.status">
-                                                    <a href="#" class="btn" @click="activateDoctor">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-6 6m0 0l-6-6m6 6V9a6 6 0 0112 0v3" />
-                                                          </svg>
-                                                    </a>
-                                                </div>
-                                                <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110" v-if="doc.status">
-                                                    <a href="#" class="btn" @click="deactivateDoctor">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 15l-6 6m0 0l-6-6m6 6V9a6 6 0 0112 0v3" />
-                                                          </svg>
-                                                    </a>
-                                                </div> -->
                                                 <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                                                     <Link :href="'/doctor/show/'+ doc.id" title="Show Details">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -158,9 +179,7 @@
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                         </svg>
                                                     </Link>
-
-
-                                            </div>
+                                                </div>
                                             </div>
                                             <div class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110">
                                                 <Link :href=" '/doctor/edit/' + doc.id" class="btn" title="Edit Doctor">
@@ -178,14 +197,23 @@
                                             </div>
                                         </div>
                                     </td>
+
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                    <div v-show="doctors.data.length < 1" class="flex flex-col w-full mt-9">
+                        <h1 class="text-center text-xl text-gray-400 mb-6">No doctor found</h1>
+                        <!-- <img src="../../Components/images/no-result.png" alt="no result" class="w-[250px] opacity-25 mx-auto"> -->
+                    </div>
+
+                    <!-- Paginator -->
+                    <div class="flex justify-between">
+                        <div class="mt-2" v-if="doctors.data.length > 0">Showing page {{ doctors.current_page }} of {{ doctors.last_page }}</div>
+                        <Pagination v-if="doctors.data.length > 0" :links="doctors.links" class="mt-6"/>
+                    </div>
                 </div>
             </div>
-
-            </div>
-        </div>
+        </section>
     </Sidebar>
 </template>
