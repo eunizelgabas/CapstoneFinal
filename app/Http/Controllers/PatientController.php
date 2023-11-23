@@ -7,6 +7,7 @@ use App\Models\Form;
 use App\Models\Patient;
 use App\Models\Student;
 use App\Models\Teacher;
+use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as HttpRequest;
 
@@ -172,22 +173,34 @@ class PatientController extends Controller
         }
     }
 
-    public function show(Patient $patient){
+    public function show(Patient $patient)
+    {
+        // Find patient by ID with eager loaded relationships
+        $patient = Patient::with('student', 'teacher')->find($patient->id);
 
-        $patient = Patient::with('student','teacher')->find($patient->id);
-        $user = $patient->user;
 
-        // Retrieve the appointments for the user (patient)
-        $patientAppointments = Appointment::with(['doctor.user','service'])->where('pat_id', $patient->id)->orderBy('created_at', 'desc')->paginate(4);
-        $medicalHistory = Form::with(['patient.student', 'doctor.user', 'history', 'remark', 'medicalhistory', 'physicalexamination', 'radiologic'])->orderBy('created_at','desc')->paginate(4);
-        return inertia ('Patient/Show',
-            [
-                'patient' => $patient,
-                'patientAppointments' => $patientAppointments,
-                'medicalHistory' => $medicalHistory
-                // 'form' => $form
-            ]);
+        // Fetch patient appointments with eager loaded relationships
+        $patientAppointments = Appointment::with(['doctor.user', 'service', 'patient'])
+            ->where('pat_id', $patient->id)
+            ->orderByDesc('created_at')
+            ->paginate(4);
+
+        // Fetch medical history with eager loaded relationships
+        $medicalHistory = Form::with(
+            ['patient', 'doctor.user', 'history', 'remark', 'medicalhistory', 'physicalexamination', 'radiologic']
+        )
+            ->where('pat_id', $patient->id)
+            ->orderByDesc('created_at')
+            ->paginate(4);
+
+
+        return inertia('Patient/Show', [
+            'patient' => $patient,
+            'patientAppointments' => $patientAppointments,
+            'medicalHistory' => $medicalHistory,
+        ]);
     }
+
 
 
     public function destroy(Patient $patient) {
@@ -210,6 +223,14 @@ class PatientController extends Controller
             'name' => $patient->firstname . ' ' . $patient->lastname,
 
         ]);
+    }
+
+    public function patientPdf(){
+        $patient = Patient::with('student', 'teacher')->orderBy('type', 'asc')->where('status', 1)->get();
+        $pdf = PDF::loadView('pdf.patientPdf', [
+            'patient' => $patient
+        ]);
+        return $pdf->stream();
     }
 }
 

@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\DB;
 class InventoryController extends Controller
 {
     public function index(){
-        // $medicine = Medicine::orderBy('name')->get();
-        $inventories = Inventory::orderBy('id')
+        $inventories = Inventory::orderBy('id','desc')
         ->with('medicine')->get();
 
         $inventories->each(function ($inventory) {
@@ -28,8 +27,7 @@ class InventoryController extends Controller
         // $totalAvail =$inventories->diff('Available');
         return inertia('Inventory/Index',[
             'inventories' => $inventories,
-            // 'medicine' => $medicine,
-        //    'totalAvail'=>  $totalAvail
+
 
         ]);
     }

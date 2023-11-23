@@ -286,7 +286,7 @@ console.log(props.appointments);
 <style scoped>
 .my-custom-calendar {
     width: 100% ;
-  height: 100%;
+    height: 100%;
 
 }
 </style>

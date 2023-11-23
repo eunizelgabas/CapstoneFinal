@@ -65,7 +65,7 @@ class DispensingController extends Controller
         $inventory->save();
     }
 
-    return redirect('/dispense')->with('message', 'Medicine type successfully created');
+    return redirect('/dispense')->with('success', 'Medicine type successfully created');
 }
 
 }

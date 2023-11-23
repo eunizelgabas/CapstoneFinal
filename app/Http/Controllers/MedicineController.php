@@ -65,7 +65,7 @@ class MedicineController extends Controller
             'cat_id'=>'required',
             'type_id' =>'required',
             'measurement' =>'required|string',
-            'stock' => 'required|numeric'
+            'stock' => 'numeric'
             // 'description' =>'required|string'
 
         ]);

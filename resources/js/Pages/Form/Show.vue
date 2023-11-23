@@ -1,6 +1,9 @@
 <script setup>
-    import Sidebar from '@/Layouts/Sidebar.vue'
-    import { Head, useForm } from '@inertiajs/vue3';
+import Sidebar from '@/Layouts/Sidebar.vue'
+import { Head, useForm } from '@inertiajs/vue3';
+import { ref , computed} from 'vue';
+import moment from 'moment';
+
 
     const props = defineProps({
         form: Object,
@@ -10,6 +13,8 @@
         // patient: Object,
         // history: Object
     })
+
+    const isStudent = ref(props.form.patient.student);
 
     let forms = useForm({
 
@@ -103,6 +108,9 @@ if (props.patient && props.patient.type === 'Student') {
       forms.course = props.patient.student.course;
     }
 
+    function formattedDate(date){
+        return moment(date).format('MMMM   D, YYYY');
+    }
 </script>
 
 
@@ -168,7 +176,9 @@ if (props.patient && props.patient.type === 'Student') {
             <div class="sm:col-span-1 flex items-center">
                 <label for="firstname" class="block text-xl font-medium leading-6 text-gray-900">Course:</label>
                 <div class="ml-2">
-                    <p class="text-xl text-black"><u>{{form.course}}</u></p>
+                        <p class="text-xl text-black">   <u>{{ isStudent ? (form.patient.student ? form.patient.student.course : "") : "" }}</u>
+                        </p>
+
                     <div class="text-sm text-red-500 italic"></div>
                 </div>
             </div>
@@ -182,7 +192,7 @@ if (props.patient && props.patient.type === 'Student') {
             <div class="sm:col-span-1 flex items-center ">
                 <label for="firstname" class="block text-xl font-medium leading-6 text-gray-900">Date:</label>
                 <div class="ml-2">
-                    <p class="text-xl text-black"><u>{{form.date}}</u></p>
+                    <p class="text-xl text-black"><u>{{formattedDate(form.date)}}</u></p>
                     <div class="text-sm text-red-500 italic"></div>
                 </div>
             </div>
@@ -963,7 +973,7 @@ if (props.patient && props.patient.type === 'Student') {
                 <td class="border border-gray-300 p-2"> <label for="lungs-normal" class="custom-checkbox">
                     <input
                     type="text"
-                    v-model="forms.gut" readonly
+                    v-model="forms.gut_findings" readonly
                     name="gut_findings"
                     id="gut_findings"
                     autocomplete="family-name"

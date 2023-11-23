@@ -23,6 +23,16 @@ class Patient extends Model
         return $this->hasMany(Appointment::class);
     }
 
+    public function form(){
+        return $this->hasMany(Form::class, 'pat_id');
+    }
+
+    public function isStudent()
+    {
+        // Add your logic to determine if the patient is a student
+        return $this->type === 'Student'; // For example, assuming you have a 'type' column in your patients table
+    }
+
 
     protected static function boot()
     {

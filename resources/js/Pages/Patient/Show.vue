@@ -125,7 +125,8 @@
 <template>
     <Sidebar>
         <Head title="Patients"/>
-        <template #header>
+
+        <div class="mt-5">
             <div class="flex justify-between">
                 <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
                 {{ $page.props.flash.success }}
@@ -135,7 +136,7 @@
                 {{ $page.props.flash.error }}
             </div>
                 <Breadcrumb :crumbs="crumbs"  />
-                <button @click="edit(patient)" class="px-4 py-2 border flex gap-2 items-center bg-gray-50 hover:bg-blue-300 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
+                <button @click="edit(patient)" class="px-4 py-2 mr-5 border flex gap-2 items-center bg-white hover:bg-blue-300 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
                     <i class="fa-regular fa-pen-to-square"></i>
                     <span class="">Edit Patient</span>
                 </button>
@@ -269,19 +270,17 @@
                 </Modal>
 
             </div>
+        </div>
+        <div class="flex flex-col lg:flex-row">
+            <div class="lg:w-1/4 w-full p-4">
 
-
-        </template>
-
-        <div class="flex justify-center mt-5">
-            <div class="lg:25 sm:w-25 md:w-25 mt-4 mx-2 mb-4 bg-white rounded-lg shadow-md">
-                <div class="p-4 text-center text-gray-500">
-                    <div class="flex items-center justify-center w-20 h-20 mx-auto mb-4 rounded-full p-4"
+                <div class="bg-white h-full rounded-lg shadow-sm text-center flex flex-col items-center justify-center">
+                    <div class="flex items-center justify-center w-20 h-20 mx-auto rounded-full p-4 mt-4"
                         :class="{
                             'bg-blue-200 text-blue-600': patient.sex == 'Male',
                             'bg-red-200 text-red-600': patient.sex == 'Female',
                         }">
-                        <div class="w-12 h-12 flex justify-center items-center rounded-full uppercase font-bold text-3xl">{{ patientInitials }}</div>
+                        <div class="w-12 h-12 flex justify-center items-center rounded-full uppercase font-bold text-2xl">{{ patientInitials }}</div>
                     </div>
                     <div class="text-sm mt-2">
                         <h1 class="font-bold text-xl text-gray-900">{{ patient.firstname }} {{ patient.lastname }}</h1>
@@ -299,105 +298,101 @@
                                 <p class="text-sm font-semibold text-zinc-700">Medical</p>
                             </div>
                         </div>
-                        <div class="text-center mt-5">
-                            <button class="flex justify-center items-center w-full px-4 py-2 border gap-2 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
-                                <p class="font-bold text-zinc-700">{{ patient.type }}</p>
-                                <span class="font-bold text-zinc-700">
-                                    ID No: {{ isStudent ? (patient.student ? patient.student.student_no : patient.teacher.teacher_no) : (patient.teacher ? patient.teacher.teacher_no : patient.student.student_no) }}
-                                </span>
+                    </div>
+                    <div class="text-center mt-5">
+                        <button class="flex justify-center items-center w-full px-4 py-2 mb-3 border gap-2 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
+                            <p class="font-bold text-zinc-700">{{ patient.type }}</p>
+                            <span class="font-bold text-zinc-700">
+                                ID No: {{ isStudent ? (patient.student ? patient.student.student_no : patient.teacher.teacher_no) : (patient.teacher ? patient.teacher.teacher_no : patient.student.student_no) }}
+                            </span>
 
-                            </button>
-                        </div>
-
+                        </button>
                     </div>
                 </div>
+
             </div>
-            <div class="px-6 py-4 m-4 w-full sm:w-90 md:w-90 bg-white rounded-lg shadow-md">
-                <div class="flex flex-col">
-                    <div class="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-12 p-6 md:p-10 ">
-                        <div class="flex flex-col">
-                            <div class="flex-1">
+
+            <div class="lg:w-3/4 w-full p-4">
+
+                <div class="bg-white py-3 px-4 text-start h-full rounded-lg shadow-sm flex">
+
+                    <div class="flex flex-col w-full">
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="p-4 ">
                                 <h5 class="mb-1 text-m font-bold">Gender</h5>
-                                <p class="mt-1 text-lg text-gray-600">{{ patient.sex }}</p>
+                                <p class="mt-1 mb-1 text-lg text-gray-600">{{ patient.sex }}</p>
+                                <div class="border-b-2 mt-1 border-gray-100"></div>
                             </div>
-                            <div class="mt-2 border-b-4 border-indigo-100"></div>
-                        </div>
 
-                        <div class="flex flex-col">
-                            <div class="flex-1">
+
+                            <div class="p-4">
                                 <h5 class="mb-1 text-m font-bold">Birthday</h5>
-                                <p class="mt-2 text-lg text-gray-600">{{ formattedDate(patient.dob)}}</p>
+                                <p class="mt-1 mb-1 text-lg text-gray-600">{{ formattedDate(patient.dob)}}</p>
+                                <div class="border-b-2 mt-1 border-gray-100"></div>
                             </div>
-                            <div class="border-b-4 border-indigo-100"></div>
-                        </div>
 
-                        <div class="flex flex-col">
-                            <div class="flex-1">
+                            <div class="p-4">
                                 <h5 class="mb-1 text-m font-bold">Contact No</h5>
-                                <p class="mt-2 text-lg text-gray-600">{{ patient.contact_no }}</p>
-                            </div>
-                            <div class="mt-3 border-b-4 border-indigo-100"></div>
-                        </div>
+                                <p class="mt-1 mb-1 text-lg text-gray-600">{{ patient.contact_no}}</p>
+                                <div class="border-b-2 mt-1 border-gray-100"></div>
 
-                        <div class="flex flex-col">
-                            <div class="flex-1">
-                                <h5 class="mb-1 text-m font-bold">Emergency Contact No</h5>
-                                <p class="mt-2 text-lg text-gray-600">{{ patient.emergency_contact }}</p>
                             </div>
-                            <div class="border-b-4 border-indigo-100"></div>
-                        </div>
 
-                        <div class="flex flex-col">
-                            <div class="flex-1">
+                            <div class="p-4">
+                                <h5 class="mb-1 text-m font-bold">Emergency Contact</h5>
+                                <p class="mt-1 mb-1 text-lg text-gray-600">{{ patient.emergency_contact}}</p>
+                                <div class="border-b-2 mt-1 border-gray-100"></div>
+
+                            </div>
+
+                            <div class="p-4">
                                 <h5 class="mb-1 text-m font-bold">Address</h5>
-                                <p class="mt-2 text-lg text-gray-600">{{ patient.address }}</p>
-                            </div>
-                            <div class="border-b-4 border-indigo-100"></div>
-                        </div>
+                                <p class="mt-1 mb-1 text-lg text-gray-600">{{patient.address}}</p>
+                                <div class="border-b-2 mt-1 border-gray-100"></div>
 
-                        <div class="flex flex-col">
-                            <div class="flex-1">
+                            </div>
+                            <div class="p-4">
                                 <h5 class="mb-1 text-m font-bold">Status</h5>
-                                <p class="mt-2 text-sm uppercase px-2 py-1 w-20 text-center rounded-full border font-bold"
+                                <p class="mt-1 mb-1 text-sm uppercase px-2 py-1 w-20 text-center rounded-full  font-bold"
                                     :class="{
                                         'bg-green-200 text-green-600': patient.status == 1,
                                         'bg-red-200 text-red-600': patient.status == 0,
                                     }">{{patient.status ? 'Active' : 'Inactive' }}
                                 </p>
+                                <div class="border-b-2 mt-1 border-gray-100"></div>
                             </div>
-                            <div class="mt-3 border-b-4 border-indigo-100"></div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
-        <div class="" >
-            <div class="w-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-                <div class="bg-white shadow-md rounded-lg sm:p-6 xl:p-8 2xl:col-span-2">
+        <div class="flex">
+            <!-- Left Card with 60% width -->
+            <div class="w-3/5 p-4">
+                <div class="bg-white h-full rounded-lg shadow-sm">
                     <div ref="tabs" class="p-2">
                         <div class="max-w-full mx-auto">
-                            <div class="mb-4 flex space-x-4 p-2 bg-gray-100 rounded-lg shadow-md">
-                                <button @click="openTab = 1" :class="{ 'bg-white text-blue-500 font-bold': openTab === 1 }" class="flex-1 py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue transition-all duration-300">
+                            <div class="mb-4 flex space-x-4 p-2 bg-gray-50 rounded-lg shadow-md font-semibold text-gray-500">
+                                <button @click="openTab = 1" :class="{ 'bg-white text-blue-500 font-semibold': openTab === 1 }" class="flex-1 py-2 px-4  rounded-md focus:outline-none focus:shadow-outline-blue transition-all duration-300">
                                     Appointment History
                                 </button>
-                                <button @click="openTab = 2" :class="{ 'bg-white text-blue-500 font-bold': openTab === 2 }" class="flex-1 py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue transition-all duration-300">
+                                <button @click="openTab = 2" :class="{ 'bg-white text-blue-500 font-semibold': openTab === 2 }" class="flex-1 py-2 px-4  rounded-md focus:outline-none focus:shadow-outline-blue transition-all duration-300">
                                     Medical Records
                                 </button>
-                                <!-- <button @click="openTab = 3" :class="{ 'bg-white text-blue-500': openTab === 3 }" class="flex-1 py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue transition-all duration-300">
-                                Weanings
-                                </button> -->
+
                             </div>
 
-                            <div v-show="openTab === 1" class="transition-all duration-300 bg-gray-100 p-4 rounded-lg shadow-md ">
+                            <div v-show="openTab === 1" class="transition-all duration-300 bg-white p-4">
+                                <div class="flex justify-between">
+                                    <h2 class="text-l font-semibold mb-2 text-gray-500">Appointment History</h2>
+                                    <Link :href="'/appointment/create/'+ patient.id" class="flex items-center justify-center w-1/4 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
 
-                                <div class="w-full bg-gray-100 border-b-2 border-gray-500">
-                                    <div class=" flex justify-between">
-                                        <h2 class="text-l font-semibold mb-2 text-blue-600">Appointment History</h2>
-                                        <Link :href="'/appointment/create/'+patient.id" class="bg-blue-500 hover:bg-blue-700 text-white  px-2 rounded mb-2 mr-4" >+</Link>
-                                    </div>
+                                    </Link>
                                 </div>
+
                                 <div class="max-w-2xl mx-auto mt-2">
                                     <div v-if="patientAppointments.data && patientAppointments.data.length > 0">
                                         <div class="flex gap-3 mb-2 bg-white border border-gray-300 rounded-xl overflow-hidden items-center justify-start" v-for="appointment in patientAppointments.data" :key="appointment.id">
@@ -491,29 +486,30 @@
                                     </div>
 
                                     <div v-else>
-                                        <p class="text-center font-bold text-gray-900 py-6">No appointment found</p>
+                                        <p class="text-center text-gray-900 py-6">No appointment found</p>
                                     </div>
 
 
 
                                 </div>
-
-
-                                <!-- <template v-else>
-                                    <p class="text-center font-bold text-gray-900 py-6">No breedings found</p>
-                                </template> -->
                             </div>
 
-                            <div v-show="openTab === 2" class="transition-all duration-300 bg-white p-4 rounded-lg shadow-md border-l-4 border-blue-600">
+                            <div v-show="openTab === 2" class="transition-all duration-300 bg-white p-4 ">
                                 <div class=" flex justify-between">
-                                        <h2 class="text-l font-semibold mb-2 text-blue-600">Medical History</h2>
-                                        <Link :href="'/healthForm/create/'+patient.id" class="bg-blue-500 hover:bg-blue-700 text-white font-bold  px-2 rounded mb-2 mr-4" >+</Link>
+                                        <h2 class="text-l font-semibold mb-2 text-gray-500">Medical History</h2>
+                                        <Link :href="'/healthForm/create/'+ patient.id" class=" mb-2 flex items-center justify-center w-1/4 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+
+                                    </Link>
                                     </div>
-                                    <div v-if="patientAppointments.data && patientAppointments.data.length > 0">
+                                    <div v-if="medicalHistory.data && medicalHistory.data.length > 0">
                                         <table class="w-full table-auto">
                                             <thead>
                                                 <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                                                     <th class="py-2 px-2">Date</th>
+                                                    <th class="py-2 px-2">Patient</th>
                                                     <th class="py-2 px-2">Attending Doctor</th>
                                                     <th class="py-2 px-2 ">Action</th>
                                                 </tr>
@@ -522,6 +518,9 @@
                                                 <tr v-for="med in medicalHistory.data" :key="med.id">
                                                     <td class="py-2 px-2 text-left whitespace-nowrap">
                                                         <p class="font-medium text-center">{{ formattedDate(med.date)}}</p >
+                                                    </td>
+                                                    <td class="py-2 px-2 text-left whitespace-nowrap">
+                                                        <p class="font-medium text-center">{{ med.patient.firstname}}</p >
                                                     </td>
                                                     <td class="py-2 px-2">
                                                         <p class="font-medium text-center">{{ med.doctor.user.firstname }} {{ med.doctor.user.lastname }}</p >
@@ -575,7 +574,7 @@
                                         </table>
                                     </div>
                                     <div v-else>
-                                        <p class="text-center font-bold text-gray-900 py-6">No medical history found</p>
+                                        <p class="text-center text-gray-900 py-6">No medical history found</p>
                                     </div>
 
                             </div>
@@ -583,17 +582,29 @@
 
                         </div>
                     </div>
-
                 </div>
-                <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8">
-                    <div class="flex justify-between items-center"> <!-- Added items-center -->
+            </div>
+
+            <!-- Right Card with 40% width -->
+            <div class="w-2/5 p-4">
+                <div class="bg-white h-full rounded-lg shadow-sm px-4 py-2">
+                    <div class="flex justify-between items-center">
                         <h2 class="font-bold">Lab Results</h2>
 
-                        <div class="flex items-center"> <!-- Added this container -->
-                            <Link href="#" class="text-blue-700 text-sm flex items-center"> <!-- Added flex and items-center -->
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                </svg> &nbsp; Add File
+                        <div class="flex items-center">
+                            <Link href="#" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_3098_154395)">
+                                    <path d="M13.3333 13.3332L9.99997 9.9999M9.99997 9.9999L6.66663 13.3332M9.99997 9.9999V17.4999M16.9916 15.3249C17.8044 14.8818 18.4465 14.1806 18.8165 13.3321C19.1866 12.4835 19.2635 11.5359 19.0351 10.6388C18.8068 9.7417 18.2862 8.94616 17.5555 8.37778C16.8248 7.80939 15.9257 7.50052 15 7.4999H13.95C13.6977 6.52427 13.2276 5.61852 12.5749 4.85073C11.9222 4.08295 11.104 3.47311 10.1817 3.06708C9.25943 2.66104 8.25709 2.46937 7.25006 2.50647C6.24304 2.54358 5.25752 2.80849 4.36761 3.28129C3.47771 3.7541 2.70656 4.42249 2.11215 5.23622C1.51774 6.04996 1.11554 6.98785 0.935783 7.9794C0.756025 8.97095 0.803388 9.99035 1.07431 10.961C1.34523 11.9316 1.83267 12.8281 2.49997 13.5832" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </g>
+                                    <defs>
+                                    <clipPath id="clip0_3098_154395">
+                                    <rect width="20" height="20" fill="white"/>
+                                    </clipPath>
+                                    </defs>
+                                </svg>
+
+                                <span>Add file</span>
                             </Link>
                         </div>
                     </div>
@@ -601,126 +612,9 @@
             </div>
         </div>
 
-
-
-
-
-
-                <!-- </div>
-                <div class="w-full md:w-3/5 lg:w-3/5 xl:w-3/5 md:ml-4">
-
-                    <div class="bg-white p-6 shadow-sm">
-                        <div class="flex justify-between ">
-                            <h4 class="text-2xl mb-3">Appointment History</h4>
-                            <Link href="/appointment/create" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 mr-4" >+</Link>
-                        </div>
-                        <table class="w-full text-sm text-left text-black-500 dark:text-gray-400">
-                            <thead class="text-xs text-white uppercase text-center bg-gray-50 dark:bg-blue-500 dark:text-white-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Date and Time
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                      Doctor
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                       Service
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Reason
-                                     </th>
-                                     <th scope="col" class="px-6 py-3">
-                                        Status
-                                     </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Action
-                                     </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <tr class="bg-blue-200 hover:bg-s-50 text-center font-medium text-black  whitespace-nowrap" v-for="appointment in patientAppointments" :key="appointment.id">
-
-                                    <td scope="row" >
-                                        {{ formattedDate(appointment.date)}} at {{ formatTimeToAMPM(appointment.time) }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ appointment.doctor.user.firstname }} {{ appointment.doctor.user.middlename }} {{ appointment.doctor.user.lastname }}{{ appointment.doctor.user.suffix }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ appointment.service.name }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ appointment.reason }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ appointment.status }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div  class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            <Link :href="'/appointment/show/'+ appointment.id" title="Show Details">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                </svg>
-                                            </Link>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div> -->
-
-                    <!-- <div class="bg-white p-6 mt-12 shadow-sm">
-                        <div class="flex justify-between ">
-                            <h4 class="text-2xl mb-3">History And Physical Form</h4>
-                            <Link :href="'/healthForm/create/'+patient.id" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 mr-4" >+</Link>
-                        </div>
-                        <table class="w-full text-sm text-left text-black-500 dark:text-gray-400">
-                            <thead class="text-xs text-white uppercase text-center bg-gray-50 dark:bg-blue-500 dark:text-white-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Date
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Doctor
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <tr class="bg-blue-200 hover:bg-s-50 text-center font-medium text-black  whitespace-nowrap" v-for="f in form" :key="form.id">
-
-                                    <td scope="row" >
-                                        {{ f.date }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ f.doctor.user.firstname }}  {{ f.doctor.user.middlename }}  {{ f.doctor.user.lastname }}
-                                    </td>
-                                    <td class="py-3 px-6 text-center">
-                                        <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110 ">
-                                            <Link :href="'/healthForm/show/'+ f.id" title="Show Details">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                </svg>
-                                            </Link>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div> -->
-                <!-- </div>
-            </div>
-        </div> -->
-
     </Sidebar>
 </template>
+
 
 <style scoped>
  .vertical-line {

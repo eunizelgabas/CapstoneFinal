@@ -1,9 +1,10 @@
 <script setup>
 import Sidebar from '@/Layouts/Sidebar.vue';
-import { Link,  Head, useForm, router } from '@inertiajs/vue3';
-import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';
+import Pagination from '@/Components/Pagination.vue';
+import { Link,  Head, useForm, router } from '@inertiajs/vue3';
+import Modal from '@/Components/Modal.vue';
 import { ref, computed } from 'vue';
 import { watch } from 'vue';
 
@@ -34,14 +35,6 @@ import { watch } from 'vue';
         showConfirm.value = false;
     }
 
-    const patientFirstName = ref(props.patient.firstname);
-    const patientLastName = ref(props.patient.lastname);
-
-    const patientInitials = computed(() => {
-      const firstNameInitial = patientFirstName.value.charAt(0).toUpperCase();
-      const lastNameInitial = patientLastName.value.charAt(0).toUpperCase();
-      return `${firstNameInitial} ${lastNameInitial}`;
-    });
 
     let search = ref(props.filters.search);
     watch(search, (value) => {
@@ -87,7 +80,7 @@ import { watch } from 'vue';
                 <div class="relative flex items-center  md:mt-0">
 
                     <div class="flex items-center  gap-x-3">
-                        <a as="button" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto hover:bg-blue-100 ">
+                        <a :href="route('patient.pdf')" as="button" target="_blank" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto hover:bg-blue-100 ">
                             <i class="fa-solid fa-download"></i>
 
                             <span>Export</span>

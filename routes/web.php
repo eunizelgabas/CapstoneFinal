@@ -124,6 +124,7 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::get('/doctor/show/{doctor}', [DoctorController::class, 'show']);
     Route::post('/doctor/{doctor}/activate', [DoctorController::class, 'activate'])->name('doctor.activate');
     Route::post('/doctor/{doctor}/deactivate', [DoctorController::class, 'deactivate'])->name('doctor.deactivate');
+    Route::get('/doctor/pdf', [DoctorController::class, 'doctorPdf'])->name('doctor.pdf');
     });
 
     //Services for Doctor
@@ -145,6 +146,7 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::put('/patient/{patient}',[PatientController::class, 'update']);
     Route::delete('/patient/{patient}', [PatientController::class, 'destroy']);
     Route::get('/patient/show/{patient}', [PatientController::class, 'show']);
+    Route::get('/patient/pdf', [PatientController::class, 'patientPdf'])->name('patient.pdf');
     });
 
     //Appointment for Admin/Doctor

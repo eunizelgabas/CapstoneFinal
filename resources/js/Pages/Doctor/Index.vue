@@ -1,7 +1,9 @@
 <script setup>
-    import Sidebar from '@/Layouts/Sidebar.vue';
-    import { ref, watch } from 'vue';
-    import { Link, router, useForm, Head } from '@inertiajs/vue3';
+import Sidebar from '@/Layouts/Sidebar.vue';
+import Pagination from '@/Components/Pagination.vue';
+import { ref, watch, onMounted } from 'vue';
+import { Link, router, useForm, Head } from '@inertiajs/vue3';
+
 
     let showConfirm = ref(false)
     let selectedDoctorForDelete = null
@@ -65,11 +67,39 @@
             }
         );
     });
+
+    onMounted(() => {
+    // Set a timeout to hide the success flash message after 3 seconds
+        const successFlashMessage = document.getElementById('flash-success-message');
+            if (successFlashMessage) {
+                setTimeout(() => {
+                successFlashMessage.style.display = 'none';
+                }, 3000);
+        }
+
+        // Set a timeout to hide the error flash message after 3 seconds
+        const errorFlashMessage = document.getElementById('flash-error-message');
+            if (errorFlashMessage) {
+                setTimeout(() => {
+                errorFlashMessage.style.display = 'none';
+            }, 3000);
+        }
+    });
+
 </script>
 
 <template>
     <Sidebar>
         <Head title="Doctor"/>
+        <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
+                {{ $page.props.flash.success }}
+                <div class="progress-bar success"></div>
+            </div>
+
+            <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
+                {{ $page.props.flash.error }}
+                <div class="progress-bar error"></div>
+            </div>
         <section class="container px-4 py-6 mx-auto">
             <div class="sm:flex sm:items-center sm:justify-between">
                 <div>
@@ -97,7 +127,7 @@
                 <div class="relative flex items-center md:mt-0">
 
                     <div class="flex items-center gap-x-3">
-                        <a as="button" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto hover:bg-blue-100 ">
+                        <a :href="route('doctor.pdf')" as="button" target="_blank" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto hover:bg-blue-100 ">
                             <i class="fa-solid fa-download"></i>
 
                             <span>Export</span>
@@ -217,3 +247,46 @@
         </section>
     </Sidebar>
 </template>
+<style scoped>
+
+#flash-success-message {
+    animation: fadeOut 6s ease-in-out forwards;
+}
+
+.progress-bar {
+    height: 5px;
+    width: 100%;
+    background-color: #4CAF50; /* Green color */
+    animation: progressBar 3s linear;
+}
+#flash-error-message {
+    animation: fadeOut 7s ease-in-out forwards;
+}
+
+.success .progress-bar {
+
+    animation: progressBar 5s linear;
+}
+.error .progress-bar {
+    background-color: #FF5733; /* Red color */
+    animation: progressBar 5s linear;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes progressBar {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+    }
+}
+</style>

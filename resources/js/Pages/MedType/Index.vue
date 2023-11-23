@@ -4,7 +4,7 @@
     import DangerButton from '@/Components/DangerButton.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
     import Pagination from '@/Components/Pagination.vue'
-    import { ref, watch } from 'vue';
+    import { onMounted, ref, watch } from 'vue';
     import { useForm, Link, Head,router } from '@inertiajs/vue3'
 
     let showConfirmDelete = ref(false)

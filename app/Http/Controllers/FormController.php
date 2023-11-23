@@ -13,6 +13,7 @@ use App\Models\Remark;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 
 class FormController extends Controller
 {
@@ -32,8 +33,13 @@ class FormController extends Controller
         'doc_id' => 'required|exists:doctors,id',
         'pat_id' => 'required|exists:patients,id',
         'vaccine' => 'required|string',
-        'date' => 'required|date',
+        'date' => 'date|after_or_equal:today',
     ]);
+
+    $date = now();
+
+    // Add the 'date' field to the form data array
+    $validatedFormData['date'] = $date;
 
     // Create the main form record
     $form = Form::create($validatedFormData);
@@ -161,22 +167,15 @@ class FormController extends Controller
 
     public function show(Form $form){
         $form->load(['patient.student', 'doctor', 'history', 'remark', 'medicalhistory', 'physicalexamination', 'radiologic'])->find($form->id);
-        $medicalhistory = MedicalHistory::all()->find($form->id);
-        // $physicalexamination = PhysicalExamination::all()->find($form->id);
-        // $remark = Remarks::all()->find($form->id);
-        // $history = History::all()->find($form->id);
-        // $serviceCount = $doctor->services->count();
+
         return inertia ('Form/Show',
             ['form'=> $form,
-            // 'medicalhistory' => $medicalhistory,
-            // 'physicalexamination' => $physicalexamination,
-            // 'remark' => $remark,
-            // 'history' => $history
+
         ]);
     }
 
     public function formPdf(Form $form){
-        $form->load(['patient', 'doctor'])->find($form->id);
+        $form->with(['patient', 'doctor'])->find($form->id);
         $medicalhistory = MedicalHistory::all()->find($form->id);
         $physicalexamination = PhysicalExamination::all()->find($form->id);
         $remark = Remark::all()->find($form->id);
@@ -195,7 +194,7 @@ class FormController extends Controller
     }
 
     public function medCert(Patient $patient){
-        $patient = Patient::with('student', 'form', 'teacher')->findOrFail($patient->id);
+        $patient = Patient::with('student','form', 'teacher')->findOrFail($patient->id);
 
         $age = Carbon::parse($patient->dob)->age;
         $data = [
@@ -207,11 +206,13 @@ class FormController extends Controller
             'patient' => $patient,
 
         ];
+        $date = Date::now();
 
         $pdf = PDF::loadView('pdf.medCert',[
             $data,
             'age'=> $age,
-            'patient' => $patient
+            'patient' => $patient,
+            'date'=> $date
             ] );
         return $pdf->stream();
 

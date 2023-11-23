@@ -45,9 +45,19 @@
 <template>
     <Head title="Update Doctor"/>
     <Sidebar>
-        <template #header>
+        <!-- <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Doctor</h2>
-        </template>
+        </template> -->
+        <div class="container px-4 py-6 mx-auto">
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <div class="flex items-center gap-x-3">
+                        <h2 class="text-3xl font-bold text-black">Edit Doctor: {{ doctor.user.firstname }} {{ doctor.user.lastname }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div>
             <div class="w-full mt-10 mx-auto px-4 ">
                 <form @submit.prevent="submit">

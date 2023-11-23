@@ -24,7 +24,11 @@
                     <span style="font-size: 18px;">Address: </span><u>{{$form->patient->address}}</u>
                 </td>
                 <td style="text-align: right;">
-                    <span style="font-size: 18px;">Course: </span> <u>{{$form->course}}</u>
+                    <span style="font-size: 18px;">Course: </span> @if ($form->patient->isStudent())
+                    <u>{{$form->patient->student->course}}</u>
+                  @else
+                  ____________
+                  @endif
                 </td>
 
             </tr>
@@ -641,15 +645,15 @@
                     <td >Neck, Thyroid</td>
                     <td style="padding: 2px; border: 1px solid #333;text-align: center; vertical-align: middle; ">
 
-                        <div class="checkbox" style="background-color: {{ $physicalexamination->nect_thyroid == 1 ? '#000' : 'transparent' }};">
-                            {{$physicalexamination->nect_thyroid == 1 ? 'X' : ''}}
+                        <div class="checkbox" style="background-color: {{ $physicalexamination->neck_thyroid == 1 ? '#000' : 'transparent' }};">
+                            {{$physicalexamination->neck_thyroid == 1 ? 'X' : ''}}
                         </div>
 
                     </td>
                     <td style="padding: 2px; border: 1px solid #333;text-align: center; vertical-align: middle; ">
 
-                        <div class="checkbox" style="background-color: {{ $physicalexamination->nect_thyroid == 0 ? '#000' : 'transparent' }};">
-                            {{$physicalexamination->nect_thyroid == 0 ? 'X' : ''}}
+                        <div class="checkbox" style="background-color: {{ $physicalexamination->neck_thyroid == 0 ? '#000' : 'transparent' }};">
+                            {{$physicalexamination->neck_thyroid == 0 ? 'X' : ''}}
                         </div>
                     </td>
                     <td >  {{$physicalexamination->neck_thyroid_findings}}</td>
@@ -720,7 +724,7 @@
                             {{$physicalexamination->abdomen == 0 ? 'X' : ''}}
                         </div>
                     </td>
-                    <td >  {{$physicalexamination->abdomen}}</td>
+                    <td >  {{$physicalexamination->abdomen_findings}}</td>
                 </tr>
                 <tr  style="padding: 2px; border: 1px solid #333;">
                     <td >Back</td>
@@ -737,7 +741,7 @@
                             {{$physicalexamination->back == 0 ? 'X' : ''}}
                         </div>
                     </td>
-                    <td >  {{$physicalexamination->back}}</td>
+                    <td >  {{$physicalexamination->back_findings}}</td>
                 </tr>
                 <tr  style="padding: 2px; border: 1px solid #333;">
                     <td >Anus/Rectum(Hemorrhoids)</td>

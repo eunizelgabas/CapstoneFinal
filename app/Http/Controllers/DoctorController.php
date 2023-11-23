@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Service;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as HttpRequest;
 use Spatie\Permission\Models\Role;
@@ -91,7 +93,7 @@ class DoctorController extends Controller
             $doctorRole = Role::where('name', 'doctor')->first();
             $user->assignRole($doctorRole);
 
-            return redirect('/doctor')->with('message', 'Doctor successfully created');
+            return redirect('/doctor')->with('success', 'Doctor successfully created');
     }
 
 
@@ -143,7 +145,19 @@ class DoctorController extends Controller
     public function show(Doctor $doctor){
         $doctor = Doctor::with(['user', 'services'])->find($doctor->id);
         $serviceCount = $doctor->services->count();
-        return inertia ('Doctor/Show', ['doctor'=> $doctor, 'serviceCount'=> $serviceCount]);
+        $recentAppointments = Appointment::with('patient', 'service', 'doctor.user')
+        ->whereYear('created_at', now()->year)
+        ->whereMonth('created_at', now()->month)
+        ->where('doc_id', $doctor->id)
+        ->orderBy('date', 'desc') // Assuming you have an 'appointment_date' column
+        ->take(10) // Adjust this number based on the number of recent appointments you want to retrieve
+        ->get();
+
+        return inertia ('Doctor/Show', [
+            'doctor'=> $doctor,
+            'serviceCount'=> $serviceCount,
+            'recentAppointments' => $recentAppointments
+        ]);
     }
 
     public function getServices(Doctor $doctor)
@@ -179,5 +193,20 @@ public function getDoctorServices()
             'doctorName' => '',
             'services' => [],
         ]);
+    }
+
+    public function doctorPdf(){
+        $doctor = Doctor::with('user', 'services')
+            ->orderBy('id', 'asc')
+            ->whereHas('user', function ($query) {
+                $query->where('status', 1);
+            })
+            ->get();  // Execute the query and get the results
+
+        $pdf = PDF::loadView('pdf.doctorPdf', [
+            'doctor' => $doctor
+        ]);
+
+        return $pdf->stream();
     }
 }

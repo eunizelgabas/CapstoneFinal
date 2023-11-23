@@ -94,7 +94,7 @@
         age: props.patient.dob,
         doc_id: '',
         pat_id: props.patient.id,
-        date: ''
+
     })
 
 
@@ -115,17 +115,6 @@
     const isReflexesReadonly = computed(() => form.reflexes === '1');
     const isExtremitiesReadonly = computed(() => form.extremities === '1');
     const isDentalReadonly = computed(() => form.dental === '1');
-
-
-
-
-
-    // const handleFileChange = (event) => {
-    //   // Handle the file change event and update form.exam_results
-    //   // Assuming form is a reactive property defined in your setup
-    //   // You should adjust this based on your specific setup
-    //   form.exam_results = event.target.files[0];
-    // };
 
     const imagePreview = ref(null);
 
@@ -218,13 +207,13 @@
                                 <div class="text-sm text-red-500 italic" ></div>
                                 </div>
                             </div>
-                            <div class="sm:col-span-1">
+                            <!-- <div class="sm:col-span-1">
                                 <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Date</label>
                                 <div class="mt-2">
                                 <input type="date" v-model="form.date"  name="date" id="date" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <div class="text-sm text-red-500 italic" ></div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="sm:col-span-1" >
                                 <label for="doctor" class="block text-sm font-medium leading-6 text-gray-900">Doctor</label>
                                 <div class="mt-2">
