@@ -13,21 +13,39 @@ use App\Models\Remark;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 
 class FormController extends Controller
 {
     public function create(Patient $patient){
-        $doctor = Doctor::whereHas('user')->with([ 'user'])->get();
+        $isAdminOrDoctor = auth()->user()->hasAnyRole(['Admin', 'Doctor']);
+        $isDoctor = auth()->user()->hasRole('Doctor');
+        $selectedDoctor = null;
+        // $doctor = Doctor::whereHas('user')->with([ 'user'])->get();
+        $doctor = Doctor::whereHas('user', function ($query) {
+            $query->where('status', 1);
+        })->with(['user'])->get();
         $patient->load('student', 'teacher');
+
+        if ($isDoctor) {
+            // If the user is a doctor, get their information
+            $selectedDoctor = Doctor::where('user_id', auth()->user()->id)->first();
+        }
+
         return inertia('Form/Sample', [
             'patient' => $patient,
-            'doctor' => $doctor
+            'doctor' => $doctor,
+            'isAdminOrDoctor' => $isAdminOrDoctor,
+            'isDoctor' => $isDoctor,
+            'selectedDoctor' => $selectedDoctor
         ]);
     }
 
     public function store(Request $request)
 {
+    $user = Auth::user();
+
     // Validate the main form data
     $validatedFormData = $request->validate([
         'doc_id' => 'required|exists:doctors,id',
@@ -36,11 +54,12 @@ class FormController extends Controller
         'date' => 'date|after_or_equal:today',
     ]);
 
-    $date = now();
-
-    // Add the 'date' field to the form data array
-    $validatedFormData['date'] = $date;
-
+    if ($user->hasRole('Doctor')) {
+        $fields['doc_id'] = $user->doctor->id;
+    } elseif ($user->hasRole('Admin')) {
+        // If the user is an Admin, expect the doc_id from the form
+        $fields['doc_id'] = $request->input('doc_id');
+    }
     // Create the main form record
     $form = Form::create($validatedFormData);
     $formId = $form->id;
@@ -93,7 +112,7 @@ class FormController extends Controller
         'rr' => 'string',
         'pr' => 'string',
         'saturation' => 'string',
-        'lmp' => 'string',
+        'lmp' => 'date',
         'head_neck_scalp' => 'boolean',
         'eyes' => 'boolean',
         'ears' => 'boolean',
@@ -148,7 +167,7 @@ class FormController extends Controller
     //Validate and store Radiologic
     $radiologicData = $request->validate([
         // Add validation rules for other fields
-        'exam_results' => 'sometimes|file|mimes:jpeg,png,jpg,gif,pdf,doc,docx|max:10240',
+        'exam_results' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf,doc,docx|max:10240',
     ]);
 
     $fileName = null;
@@ -175,18 +194,22 @@ class FormController extends Controller
     }
 
     public function formPdf(Form $form){
-        $form->with(['patient', 'doctor'])->find($form->id);
+        $form->with(['patient', 'doctor', 'physicalexamination'])->find($form->id);
         $medicalhistory = MedicalHistory::all()->find($form->id);
-        $physicalexamination = PhysicalExamination::all()->find($form->id);
+        $history = History::all()->find($form->id);
+        // $physicalexamination = PhysicalExamination::all()->find($form->id);
+        $physicalexamination = $form->physicalexamination;
         $remark = Remark::all()->find($form->id);
         $age = Carbon::parse($form->patient->dob)->age;
 
          $pdf = PDF::loadView('pdf.form',
-         ['form'=> $form,
-         'medicalhistory' => $medicalhistory,
-         'physicalexamination' => $physicalexamination,
-         'remark' => $remark,
-         'age' => $age
+         [
+            'form'=> $form,
+            'medicalhistory' => $medicalhistory,
+            'physicalexamination' => $physicalexamination,
+            'remark' => $remark,
+            'age' => $age,
+            'history' => $history
         ]);
 
         return $pdf->stream();

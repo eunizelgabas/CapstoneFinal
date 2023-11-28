@@ -19,7 +19,6 @@ import { onMounted } from 'vue';
         type_id: '',
         stock: '',
         measurement: '',
-        // description: ''
     })
 
     let deleteForm = useForm({});

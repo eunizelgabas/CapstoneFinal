@@ -15,7 +15,8 @@ use Spatie\Permission\Traits\HasRoles;
 class DoctorController extends Controller
 {
     public function index(){
-        $doctors = Doctor::with(['user', 'services'])->when(HttpRequest::input('search'), function ($query, $search) {
+        $doctors = Doctor::with(['user', 'services'])
+        ->when(HttpRequest::input('search'), function ($query, $search) {
             $query->where('specialization', 'like', '%' . $search . '%')
                 ->orWhere('lic_no', 'like', '%' . $search . '%')
                 ->orWhereHas('user', function ($userQuery) use ($search) {
@@ -208,5 +209,19 @@ public function getDoctorServices()
         ]);
 
         return $pdf->stream();
+    }
+
+    public function deactivateDoctor(Doctor $doctor){
+        // Assuming there is a 'user' relationship in your Doctor model
+        $doctor->user->update(['status' => 0]);
+
+        return redirect('/doctor/show/' . $doctor->id)->with('success', 'Doctor deactivated successfully');
+    }
+
+
+    public function activateDoctor(Doctor $doctor){
+        $doctor->user->update(['status' => 1]);
+
+        return redirect('/doctor/show/' . $doctor->id)->with('success','Doctor activated successfully');
     }
 }

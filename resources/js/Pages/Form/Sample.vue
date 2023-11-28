@@ -1,6 +1,6 @@
 <script setup>
 import Sidebar from '@/Layouts/Sidebar.vue'
-import { ref,  computed , watch} from 'vue';
+import { ref,  computed , watch, onMounted} from 'vue';
 import {  useForm, Head } from '@inertiajs/vue3';
 import { Transition } from 'vue';
 
@@ -8,7 +8,9 @@ let props = defineProps({
         medicalhistory: Array,
         patient: Object,
         doctor: Array,
-    })
+        isAdminOrDoctor:Boolean,
+        isDoctor: Boolean,
+})
   const steps = ref(1);
   const isLoading = ref(false);
 
@@ -152,23 +154,28 @@ let props = defineProps({
         return age;
     }
 
-    // const submit = () =>{
-    //     form.post('/healthForm')
+    const isAdminOrDoctor = props.isAdminOrDoctor;
 
-    // }
-    const submit = async () => {
-      isLoading.value = true;
+    onMounted(() => {
+  // Fetch services based on the logged-in user's role
+  if (props.isDoctor) {
+    // User is a doctor, set doctor and services automatically
+    const doctor = props.doctor[0]; // You might need to get the correct doctor based on your data
+    form.doc_id = doctor.id;
 
-      try {
-        await form.post('/healthForm');
-        // Handle success if needed
-      } catch (error) {
-        // Handle error if needed
-        console.error(error);
-      } finally {
-        isLoading.value = false;
-      }
-    };
+  }
+});
+
+const filteredDoctors = computed(() => {
+    return props.doctors.filter(doctor => doctor.user.status === 1);
+});
+
+    const submit = () =>{
+        isLoading.value = true;
+        form.post('/healthForm')
+
+
+    }
 
 </script>
 
@@ -189,7 +196,7 @@ let props = defineProps({
                         <p
                             class="mr-2 mb-3"
                             @click="steps = 1"
-                            :class="[steps == 1 ? 'text-gray-500 border-gray-400' : 'border-green-300 text-green-300']">
+                            :class="[steps == 1 ? 'text-gray-900 border-gray-400' : 'border-green-300 text-green-300']">
                             Personal Information
                             <span v-show="steps >= 2 || isLoading == true">✓</span>
                         </p>
@@ -197,7 +204,7 @@ let props = defineProps({
                             class="mr-2 mb-3"
                             @click="steps = 2"
                             :class="
-                            [(steps == 2 ? 'border-b-gray-700 text-gray-700' : 'text-gray-400 border-gray-50'),
+                            [(steps == 2 ? 'border-b-gray-700 text-gray-900' : 'text-gray-500 border-gray-200'),
                             (isLoading == true ? 'border-green-300 text-green-300' : '')]
                             ">
                         A. Medical History
@@ -207,7 +214,7 @@ let props = defineProps({
                             class="mr-2 mb-3"
                             @click="steps = 3"
                             :class="
-                            [(steps == 3 ? 'border-b-gray-700 text-gray-700' : 'text-gray-400 border-gray-50'),
+                            [(steps == 3 ?  'border-b-gray-700 text-gray-900' : 'text-gray-500 border-gray-200'),
                             (isLoading == true ? 'border-green-300 text-green-300' : '')]
                             ">
                             B. History
@@ -217,7 +224,7 @@ let props = defineProps({
                             class="mr-2 mb-3"
                             @click="steps = 4"
                             :class="
-                            [(steps == 4 ? 'border-b-gray-700 text-gray-700' : 'text-gray-400 border-gray-50'),
+                            [(steps == 4 ?  'border-b-gray-700 text-gray-900' : 'text-gray-500 border-gray-200'),
                             (isLoading == true ? 'border-green-300 text-green-300' : '')]
                             ">
                             C. Physical Examination
@@ -227,7 +234,7 @@ let props = defineProps({
                             class="mr-2 mb-3"
                             @click="steps = 5"
                             :class="
-                            [(steps == 5 ? 'border-b-gray-700 text-gray-700' : 'text-gray-400 border-gray-50'),
+                            [(steps == 5 ?  'border-b-gray-700 text-gray-900' : 'text-gray-500 border-gray-200'),
                             (isLoading == true ? 'border-green-300 text-green-300' : '')]
                             ">
                             D. Radiologic and Lab Results
@@ -237,7 +244,7 @@ let props = defineProps({
                             class="mr-2 mb-3"
                             @click="steps = 6"
                             :class="
-                            [(steps == 6 ? 'border-b-gray-700 text-gray-700' : 'text-gray-400 border-gray-50'),
+                            [(steps == 6 ?  'border-b-gray-700 text-gray-900' : 'text-gray-500 border-gray-200'),
                             (isLoading == true ? 'border-green-300 text-green-300' : '')]
                             ">
                             C. Remarks
@@ -734,7 +741,7 @@ let props = defineProps({
                             <div class="sm:col-span-1">
                                 <label for="lmp" class="block text-sm font-medium leading-6 text-gray-900">LMP:</label>
                                 <div class="mt-2">
-                                <input type="text" v-model="form.lmp"  name="lmp" id="lmp" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <input type="date" v-model="form.lmp"  name="lmp" id="lmp" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <div class="text-sm text-red-500 italic" ></div>
                                 </div>
                             </div>
@@ -1189,38 +1196,6 @@ let props = defineProps({
 
                     <div class="flex flex-col" v-else-if="steps == 5">
                         <p class="_sub-title">Radiologic and Laboratories Examination Results</p>
-
-                        <!-- <div class="mb-5 text-center">
-                            <div class="mx-auto w-32 h-32 mb-2 border squared-full relative bg-gray-100 mb-4 shadow-inset">
-                            <img id="image" class="object-cover w-full h-32 rounded-full" :src="image" />
-                            </div>
-
-                            <label
-                            for="fileInput"
-                            type="button"
-                            class="cursor-pointer inine-flex justify-between items-center focus:outline-none border py-2 px-4 rounded-lg shadow-sm text-left text-gray-600 bg-white hover:bg-gray-100 font-medium"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    class="inline-flex flex-shrink-0 w-6 h-6 -mt-1 mr-1"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="2"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
-                                    <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
-                                    <circle cx="12" cy="13" r="3" />
-                                </svg>
-                                Browse Photo
-                            </label>
-
-                            <div class="mx-auto w-48 text-gray-500 text-xs text-center mt-1">Click to add Radiologic and Lab Results</div>
-
-                                <input name="photo" id="fileInput" accept="image/*" class="hidden" type="file" @change="handleFileChange" />
-                            </div> -->
                             <div class="w-full relative border-2 mt-5 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
                                 <input type="file" @change="handleFileChange" class="absolute inset-0 w-full h-full opacity-0 z-50" />
                                 <div class="text-center">
@@ -1243,7 +1218,7 @@ let props = defineProps({
 
 
                             </div>
-                            <p @click="steps = 6" class="_btn-bordered mt-5 ">Next -></p>
+                        <p @click="steps = 6" class="_btn-bordered mt-5 ">Next -></p>
                     </div>
 
                     <div class="flex flex-col" v-else-if="steps == 6">
@@ -1259,14 +1234,6 @@ let props = defineProps({
                         </div>
                     </div>
 
-
-                    <!-- Step 7 / Show thank you text if response status 200 -->
-                    <div v-else class="flex items-center justify-center flex-col">
-                    <p class="text-4xl text-green-400">✓</p>
-                    <h3 class="text-gray-50 font-bold text-2xl">Thank you</h3>
-                    <p class="text-gray-400 text-md">Your message has been sent.</p>
-                    <!-- Step 3-end -->
-                    </div>
                 </Transition>
             </form>
 </div>

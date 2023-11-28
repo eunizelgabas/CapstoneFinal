@@ -132,6 +132,7 @@ function about() {
         <Login/>
     </div> -->
 
+
     <div class="bg-image"></div>
 
 <!-- Overlay with Opacity -->
@@ -154,7 +155,7 @@ function about() {
                     <Link :href="route('login')"  as="button" class="px-5 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-blue-600 lg:px-10 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Log in</Link>
                 </div>
                 <div class="mt-3 rounded-lg sm:mt-0 sm:ml-3">
-                    <Link :href="route('appointment.create')"  as="button" class="items-center block px-5 lg:px-10 py-3.5 text-base font-medium text-center text-black transition duration-500 bg-blue-400 ease-in-out transform  rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 hover:bg-blue-500 hover:text-white">Book Appointment</Link>
+                    <Link :href="route('appointment.create')"  as="button" class="items-center block px-5 lg:px-10 py-3.5 text-base font-medium text-center text-white transition duration-500 bg-blue-400 ease-in-out transform  rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 hover:bg-blue-500 hover:text-white">Book Appointment</Link>
                 </div>
             </div>
             </div>

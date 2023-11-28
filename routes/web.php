@@ -12,6 +12,8 @@ use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\MedTypeController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RadiologicController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SampleAppController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StockController;
@@ -58,16 +60,16 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     //Medicine Category
     Route::middleware('can:manage-category')->group(function() {
     Route::get('/category', [MedCategoryController::class, 'index'])->name('category.index');
-    Route::put('/category/{medcategory}',[MedCategoryController::class, 'update']);
     Route::post('/category',[MedCategoryController::class, 'store']);
+    Route::put('/category/{medcategory}',[MedCategoryController::class, 'update']);
     Route::delete('/category/{medcategory}', [MedCategoryController::class, 'destroy']);
     });
 
     //Medicine Type
     Route::middleware('can:manage-type')->group(function() {
         Route::get('/type', [MedTypeController::class, 'index'])->name('type.index');
-        Route::put('/type/{medtype}',[MedTypeController::class, 'update']);
         Route::post('/type',[MedTypeController::class, 'store']);
+        Route::put('/type/{medtype}',[MedTypeController::class, 'update']);
         Route::delete('/type/{medtype}', [MedTypeController::class, 'destroy']);
     });
 
@@ -125,6 +127,8 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::post('/doctor/{doctor}/activate', [DoctorController::class, 'activate'])->name('doctor.activate');
     Route::post('/doctor/{doctor}/deactivate', [DoctorController::class, 'deactivate'])->name('doctor.deactivate');
     Route::get('/doctor/pdf', [DoctorController::class, 'doctorPdf'])->name('doctor.pdf');
+    Route::post('/doctor/deactivate/{doctor}', [DoctorController::class, 'deactivateDoctor']);
+    Route::post('/doctor/activate/{doctor}', [DoctorController::class, 'activateDoctor']);
     });
 
     //Services for Doctor
@@ -153,6 +157,7 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::middleware('can:manage-appointment')->group(function() {
     Route::get('/appointment/index', [AppointmentController::class,  'index'])->name('appointment.index');
     Route::get('/appointment/create-for-patient', [AppointmentController::class,  'createForPatient'])->name('appointment.createForPatient');
+    Route::get('/appointment/create-for-patient2/{patient}', [AppointmentController::class,  'createForPatient2']);
     Route::post('/appointment/store-for-patient', [AppointmentController::class, 'storeForPatient'])->name('appointments.storeForPatient');
     Route::get('/appointment/show/{appointment}', [AppointmentController::class, 'show']);
     Route::get('/appointment/edit/{appointment}', [AppointmentController::class, 'edit']);
@@ -171,6 +176,12 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::get('/healthForm/pdf/{form}',[FormController::class, 'formPdf']);
     Route::get('/generate-pdf/{patient}', [FormController::class, 'medCert']);
     });
+
+    //Radiologic
+    Route::get('/radiologic/create/{patient}', [RadiologicController::class, 'create']);
+    Route::post('/radiologic', [RadiologicController::class, 'store']);
+    //Reports
+    Route::get('/report', [ReportController::class, 'index'])->name('report.chart');
 });
 
 require __DIR__.'/auth.php';

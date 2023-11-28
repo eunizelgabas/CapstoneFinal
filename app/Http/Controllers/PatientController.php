@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use App\Models\Form;
 use App\Models\Patient;
+use App\Models\Radiologic;
 use App\Models\Student;
 use App\Models\Teacher;
 use Barryvdh\DomPDF\Facade\PDF;
@@ -86,7 +87,7 @@ class PatientController extends Controller
             $patient->teacher()->save($teacher);
         }
         // $patient->update(['type' => $type]);
-        return redirect()->route('patient.index');
+        return redirect()->route('patient.index')->with('success', 'Patient successfully created');
     }
 
     public function edit(Patient $patient){
@@ -152,32 +153,95 @@ class PatientController extends Controller
 
     return redirect('/patient/show/' . $patient->id)->with('success', 'Patient successfully updated');
     }
-    public function search(Request $request)
+    // public function search(Request $request)
+    // {
+    //     try {
+    //         $term = $request->query('term');
+
+    //         $patients = Patient::where('type', 'Student')
+    //         ->orWhere('type', 'Teacher')
+    //         ->where(function ($query) use ($term) {
+    //             $query->where('firstname', 'like', '%' . $term . '%')
+    //                 ->orWhere('lastname', 'like', '%' . $term . '%')
+    //                 ->orWhere('lastname', 'like', '%' . $term . '%');
+    //         })
+    //         ->where('status', 1) // Filter active patients
+    //         ->get();
+
+    //         return response()->json(['patients' => $patients]);
+    //     } catch (\Exception $e) {
+    //         // Handle the exception and return an error response if needed
+    //         return response()->json(['error' => 'An error occurred while searching for patients.'], 500);
+    //     }
+    // }
+
+     public function search(Request $request)
     {
         try {
             $term = $request->query('term');
 
-            $patients = Patient::where('type', 'Student')
-            ->orWhere('type', 'Teacher')
-            ->where(function ($query) use ($term) {
-                $query->where('firstname', 'like', '%' . $term . '%')
-                    ->orWhere('lastname', 'like', '%' . $term . '%');
-            })
-            ->where('status', 1) // Filter active patients
-            ->get();
+            $patients = Patient::with('student', 'teacher')
+                ->when($term, function ($query) use ($term) {
+                    $query->where('firstname', 'like', '%' . $term . '%')
+                        ->orWhere('lastname', 'like', '%' . $term . '%')
+                        ->orWhereHas('student', function ($studentQuery) use ($term) {
+                            $studentQuery->where('student_no', 'like', '%' . $term . '%');
+                        })
+                        ->orWhereHas('teacher', function ($teacherQuery) use ($term) {
+                            $teacherQuery->where('teacher_no', 'like', '%' . $term . '%');
+                        });
+                })
+                ->where('status', 1) // Filter active patients
+                ->get();
 
             return response()->json(['patients' => $patients]);
         } catch (\Exception $e) {
             // Handle the exception and return an error response if needed
             return response()->json(['error' => 'An error occurred while searching for patients.'], 500);
         }
+
     }
+
+
+
+//     public function search(Request $request)
+// {
+//     try {
+//         $term = $request->query('term');
+
+//         $patients = Patient::where('type', 'Student')
+//             ->orWhere('type', 'Teacher')
+//             ->where(function ($query) use ($term) {
+//                 $query->where('firstname', 'like', '%' . $term . '%')
+//                     ->orWhere('lastname', 'like', '%' . $term . '%')
+//                     ->orWhere(function ($subquery) use ($term) {
+//                         $subquery->where('type', 'Student')
+//                             ->where('student_no', 'like', '%' . $term . '%');
+//                     })
+//                     ->orWhere(function ($subquery) use ($term) {
+//                         $subquery->where('type', 'Teacher')
+//                             ->where('teacher_no', 'like', '%' . $term . '%');
+//                     });
+//             })
+//             ->where('status', 1) // Filter active patients
+//             ->get();
+
+//         // Additional conditions based on relationships (if needed)
+
+//         return response()->json(['patients' => $patients]);
+//     } catch (\Exception $e) {
+//         // Handle the exception and return an error response if needed
+//         return response()->json(['error' => 'An error occurred while searching for patients.'], 500);
+//     }
+// }
 
     public function show(Patient $patient)
     {
         // Find patient by ID with eager loaded relationships
         $patient = Patient::with('student', 'teacher')->find($patient->id);
 
+        $appCount = Appointment::where('pat_id', $patient->id)->count();
+        $medCount = Form::where('pat_id', $patient->id)->count();
 
         // Fetch patient appointments with eager loaded relationships
         $patientAppointments = Appointment::with(['doctor.user', 'service', 'patient'])
@@ -194,10 +258,17 @@ class PatientController extends Controller
             ->paginate(4);
 
 
+        $radiologic = Form::with(['patient', 'doctor.user','radiologic'])
+        ->where('pat_id', $patient->id)
+            ->orderByDesc('created_at')
+            ->get();
         return inertia('Patient/Show', [
             'patient' => $patient,
             'patientAppointments' => $patientAppointments,
             'medicalHistory' => $medicalHistory,
+            'radiologic' => $radiologic,
+            'appCount' => $appCount,
+            'medCount' => $medCount
         ]);
     }
 

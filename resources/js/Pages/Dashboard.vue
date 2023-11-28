@@ -65,21 +65,6 @@ let props = defineProps({
         );
     });
 
-
-//     const attrs = ref([
-
-//     ...props.appointments.map(appointment => ({
-//     key: 'appointment-date',
-//     highlight: 'green',
-//     style: 'background-color: red; color: white;',
-//     dates: new Date(appointment.date),
-//     popover: {
-//         label: `${appointment.patient.firstname} ${appointment.patient.lastname}\n${appointment.time}`,
-//         visibility: 'hover', // Show popover on hover
-//     },
-//   })),
-
-//     ]);
 const attrs = ref([
   ...props.appointments.map(appointment => {
     const appointmentDate = new Date(appointment.date);
@@ -119,8 +104,7 @@ const attrs = ref([
     };
   }),
 ]);
-console.log(props.appointments);
-    console.log(attrs.value);
+
 
 
     const formattedAppointments = computed(() => {
@@ -275,11 +259,26 @@ console.log(props.appointments);
                     </div>
 
                         <Calendar :attributes="attrs" class="my-custom-calendar" expanded />
+
+
                     </div>
 
+
             </div>
+            <!-- <div class="pt-8 px-2" >
+                <div class="w-full grid grid-cols-1 xl:grid-cols-1 2xl:grid-cols-3 gap-4">
+                   <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 2xl:col-span-2">
+
+                   </div>
+                    <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 2xl:col-span-1">
+
+                    </div>
+                </div>
+            </div> -->
           </main>
+
         </div>
+
 
     </Sidebar>
 </template>
@@ -289,4 +288,12 @@ console.log(props.appointments);
     height: 100%;
 
 }
+
+/* #app {
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-align: center;
+} */
 </style>

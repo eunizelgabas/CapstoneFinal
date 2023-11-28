@@ -11,6 +11,7 @@ class StockController extends Controller
 {
     public function index(Request $request)
     {
+        $purchaseCount = Stock::count();
         $medicine = Medicine::orderBy('name')->get();
 
         $stockQuery = Stock::orderBy('id')->with('medicine');
@@ -24,10 +25,11 @@ class StockController extends Controller
 
         $stocks = $stockQuery->paginate(8)->withQueryString();
 
-        return inertia('Stock/Index', [
+        return inertia('Stock/Sample', [
             'medicine' => $medicine,
             'stocks'   => $stocks,
             'filters'  => $request->only(['search']),
+            'purchaseCount' => $purchaseCount
         ]);
     }
 
@@ -68,30 +70,81 @@ class StockController extends Controller
         }
 
 
-        return redirect()->route('stock.index')->with('message', 'Stock successfully added');
+        return redirect()->route('stock.index')->with('success', 'Stock successfully added');
     }
 
-    public function update(Request $request, Stock $stock){
+    // public function update(Request $request, Stock $stock){
+    //     $fields = $request->validate([
+    //         'med_id'=>'required|numeric',
+    //         'qty'=>'required',
+    //         'purchase_date' => 'required|date',
+    //     ]);
+
+    //     $stock->update($fields);
+    //     // $stock = Stock::update($fields);
+
+    //     $medicine = Inventory::where('med_id', $stock->med_id)->firstOrFail();
+    //     $medicine->stocks+= $stock->qty;
+    //     $medicine->save();
+
+
+    //     return redirect('/stock.index')->with('success', "Purchase Medicine successfully updated");
+    // }
+    public function update(Request $request,Stock $stock) {
         $fields = $request->validate([
-            'med_id'=>'required|numeric',
-            'qty'=>'required',
+            'med_id' => 'required|numeric',
             'purchase_date' => 'required|date',
+            'qty' => 'required|numeric',
         ]);
 
+        // Find the stock record to update
+        $stock = Stock::findOrFail($stock->id);
+
+        // Calculate the difference in quantity
+        $qtyDifference = $fields['qty'] - $stock->qty;
+
+        // Update the stock record
         $stock->update($fields);
-        // $stock = Stock::update($fields);
 
-        $medicine = Inventory::where('med_id', $stock->med_id)->firstOrFail();
-        $medicine->stocks+= $stock->qty;
-        $medicine->save();
+        // Update the medicine stock
+        $medicine = Medicine::findOrFail($fields['med_id']);
+        $medicine->increment('stock', $qtyDifference);
 
+        // Update the inventory
+        $inventory = Inventory::where('med_id', $stock->med_id)->first();
+        if ($inventory) {
+            $inventory->stock_in += $qtyDifference;
+            $inventory->save();
+        } else {
+            $inventory = new Inventory([
+                'med_id' => $medicine->id,
+                'stock_in' => $qtyDifference,
+            ]);
+            $inventory->save();
+        }
 
-        return redirect('/inventory')->with('message', "You successfully updated the medicine inventory");
+        return redirect()->route('stock.index')->with('success', 'Stock successfully updated');
     }
 
+
     public function destroy(Stock $stock) {
+        // Find the stock record to delete
+        $stock = Stock::findOrFail($stock->id);
+
+        // Decrement the medicine stock
+        $medicine = Medicine::findOrFail($stock->med_id);
+        $medicine->decrement('stock', $stock->qty);
+
+        // Update the inventory
+        $inventory = Inventory::where('med_id', $stock->med_id)->first();
+        if ($inventory) {
+            $inventory->stock_in -= $stock->qty;
+            $inventory->save();
+        }
+
+        // Delete the stock record
         $stock->delete();
 
-        return back();
+        return redirect()->route('stock.index')->with('success', 'Stock successfully deleted');
     }
 }

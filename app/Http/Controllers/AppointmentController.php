@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Request as HttpRequest;
 
 class AppointmentController extends Controller
 {
@@ -20,21 +21,80 @@ class AppointmentController extends Controller
         $user = auth()->user();
 
         if ($user->hasRole('Admin')) {
-            $appointments = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])->orderBy('created_at','desc')->get();
+            // $appointments = Appointment::with([
+            //     'doctor', 'doctor.user', 'patient', 'service'
+            //     ])->orderBy('created_at','desc')
+            //     ->paginate(8)
+            //     ->withQueryString();
+                $appointments = Appointment::query()->with([
+                    'doctor', 'doctor.user', 'patient', 'service'
+                    ])->orderBy('created_at','desc')->when(HttpRequest::input('search'), function($query, $search){
+                        $query->whereHas('patient', function($patientQuery) use ($search){
+                            $patientQuery->where('firstname',  'like' , '%' . $search . '%')
+                            ->orWhere('lastname', 'like', '%' . $search . '%');
+                        })->orWhereHas('service', function ($serviceQuery) use ($search) {
+                            $serviceQuery->where('name', 'like', '%' . $search . '%');
+                        })->orWhereHas('doctor.user', function ($userQuery) use ($search) {
+                            $userQuery->where('firstname', 'like', '%' . $search . '%')
+                            ->orWhere('lastname', 'like', '%' . $search . '%');
+                        });
+                    })
+                    ->paginate(8)
+                    ->withQueryString();
+
             $acceptedApp = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])
             ->where('status', '=', 'Accepted')
             ->orderBy('created_at', request('sort', 'desc'))
-            ->get();
+            ->when(HttpRequest::input('search'), function($query, $search){
+                $query->whereHas('patient', function($patientQuery) use ($search){
+                    $patientQuery->where('firstname',  'like' , '%' . $search . '%')
+                    ->orWhere('lastname', 'like', '%' . $search . '%');
+                })->orWhereHas('service', function ($serviceQuery) use ($search) {
+                    $serviceQuery->where('name', 'like', '%' . $search . '%');
+                })->orWhereHas('doctor.user', function ($userQuery) use ($search) {
+                    $userQuery->where('firstname', 'like', '%' . $search . '%')
+                    ->orWhere('lastname', 'like', '%' . $search . '%');
+                });
+            })
+            ->paginate(8)
+            ->withQueryString();
 
             $cancelApp = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])
             ->where('status', '=', 'Cancelled')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->when(HttpRequest::input('search'), function($query, $search){
+                $query->whereHas('patient', function($patientQuery) use ($search){
+                    $patientQuery->where('firstname',  'like' , '%' . $search . '%')
+                    ->orWhere('lastname', 'like', '%' . $search . '%');
+                })->orWhereHas('service', function ($serviceQuery) use ($search) {
+                    $serviceQuery->where('name', 'like', '%' . $search . '%');
+                })->orWhereHas('doctor.user', function ($userQuery) use ($search) {
+                    $userQuery->where('firstname', 'like', '%' . $search . '%')
+                    ->orWhere('lastname', 'like', '%' . $search . '%');
+                });
+            })
+            ->paginate(8)
+            ->withQueryString();
+
         } elseif ($user->hasRole('Doctor')) {
             $appointments = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])
                 ->whereHas('doctor', function ($query) use ($user) {
                     $query->where('user_id', $user->id);
-                })->orderBy('created_at',request('sort', 'desc'))->get();
+                })->orderBy('created_at',request('sort', 'desc')
+
+                )
+                ->when(HttpRequest::input('search'), function($query, $search){
+                    $query->whereHas('patient', function($patientQuery) use ($search){
+                        $patientQuery->where('firstname',  'like' , '%' . $search . '%')
+                        ->orWhere('lastname', 'like', '%' . $search . '%');
+                    })->orWhereHas('service', function ($serviceQuery) use ($search) {
+                        $serviceQuery->where('name', 'like', '%' . $search . '%');
+                    })->orWhereHas('doctor.user', function ($userQuery) use ($search) {
+                        $userQuery->where('firstname', 'like', '%' . $search . '%')
+                        ->orWhere('lastname', 'like', '%' . $search . '%');
+                    });
+                })->paginate(8)
+                ->withQueryString();
 
                 $acceptedApp = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])
                 ->where('status', '=', 'Accepted')
@@ -42,13 +102,38 @@ class AppointmentController extends Controller
                     $query->where('user_id', $user->id);
                 })
                 ->orderBy('created_at', 'desc')
-                ->get();
+                ->when(HttpRequest::input('search'), function($query, $search){
+                    $query->whereHas('patient', function($patientQuery) use ($search){
+                        $patientQuery->where('firstname',  'like' , '%' . $search . '%')
+                        ->orWhere('lastname', 'like', '%' . $search . '%');
+                    })->orWhereHas('service', function ($serviceQuery) use ($search) {
+                        $serviceQuery->where('name', 'like', '%' . $search . '%');
+                    })->orWhereHas('doctor.user', function ($userQuery) use ($search) {
+                        $userQuery->where('firstname', 'like', '%' . $search . '%')
+                        ->orWhere('lastname', 'like', '%' . $search . '%');
+                    });
+                })
+                ->paginate(8)
+                ->withQueryString();
 
                 $cancelApp = Appointment::with(['doctor', 'doctor.user', 'patient', 'service'])
                 ->where('status', '=', 'Cancelled')
                 ->whereHas('doctor', function ($query) use ($user) {
                     $query->where('user_id', $user->id);
-                })->orderBy('id','desc')->get();
+                })->orderBy('id','desc')
+                ->when(HttpRequest::input('search'), function($query, $search){
+                    $query->whereHas('patient', function($patientQuery) use ($search){
+                        $patientQuery->where('firstname',  'like' , '%' . $search . '%')
+                        ->orWhere('lastname', 'like', '%' . $search . '%');
+                    })->orWhereHas('service', function ($serviceQuery) use ($search) {
+                        $serviceQuery->where('name', 'like', '%' . $search . '%');
+                    })->orWhereHas('doctor.user', function ($userQuery) use ($search) {
+                        $userQuery->where('firstname', 'like', '%' . $search . '%')
+                        ->orWhere('lastname', 'like', '%' . $search . '%');
+                    });
+                })
+                ->paginate(8)
+                ->withQueryString();
         }  else {
             // Handle other roles or unauthorized access as needed
             return abort(403);
@@ -60,6 +145,7 @@ class AppointmentController extends Controller
             'cancelApp' => $cancelApp,
             'acceptedApp' => $acceptedApp,
             'sort' => request('sort', 'desc'),
+            'filters' => HttpRequest::only(['search']),
         ]);
     }
 
@@ -165,6 +251,37 @@ class AppointmentController extends Controller
         ]);
     }
 
+    public function createForPatient2(Patient $patient)
+    {
+        $services = Service::all();
+        $isAdminOrDoctor = auth()->user()->hasAnyRole(['Admin', 'Doctor']);
+        $isDoctor = auth()->user()->hasRole('Doctor');
+        $selectedDoctor = null;
+        $availableServices = [];
+
+        $doctors = Doctor::whereHas('user', function ($query) {
+            $query->where('status', 1);
+        })->with(['services', 'user'])->get();
+
+        if ($isDoctor) {
+            // If the user is a doctor, get their information
+            $selectedDoctor = Doctor::where('user_id', auth()->user()->id)->first();
+            $availableServices = $selectedDoctor->services;
+        }
+
+        $patient->load('student', 'teacher');
+
+        return inertia('Appointment/CreateForPatient2', [
+            'doctors' => $doctors,
+            'services' => $services,
+            'patient' => $patient,  // Pass the specific patient to the view
+            'isAdminOrDoctor' => $isAdminOrDoctor,
+            'isDoctor' => $isDoctor,
+            'selectedDoctor' => $selectedDoctor,
+            'availableServices' => $availableServices,
+        ]);
+    }
+
     public function storeForPatient(Request $request){
         $user = Auth::user();
 
@@ -173,7 +290,7 @@ class AppointmentController extends Controller
             'doc_id' => 'required',
             'service_id' => 'required|exists:services,id',
             'date' => 'required|date|after_or_equal:today',
-            'time' => 'required|after_or_equal:now',
+            'time' => 'required',
             'reason' => 'required',
             'email' => 'nullable|email'
         ]);

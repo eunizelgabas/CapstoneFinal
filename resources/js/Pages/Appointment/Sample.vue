@@ -1,10 +1,11 @@
 <script setup>
 import Sidebar from '@/Layouts/Sidebar.vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import Pagination from '@/Components/Pagination.vue';
+import { Link, router, useForm, Head } from '@inertiajs/vue3';
 import { computed } from '@vue/reactivity';
 import moment from 'moment';
 import { watch } from 'vue';
-import { ref } from 'vue';
+import { ref } from 'vue'
 
 const openTab = ref(1);
 const sort = ref('latest');
@@ -15,7 +16,8 @@ const props = defineProps({
         // patientAppointments: Array,
         user:Object,
         acceptedApp: Array,
-        cancelApp : Array
+        cancelApp : Array,
+        filters: Object
 })
 
 function formattedDate(date){
@@ -44,27 +46,55 @@ const sortedAppointments = computed(() => {
 
 
 });
-let show = ref(false);
 
-const isOpen = () => {show.value = !show.value};
+// const openTab = ref(1);
+
+watch(() => openTab.value, (newValue) => {
+    console.log('openTab changed:', newValue);
+});
+
+let search = ref(props.filters.search);
+    watch(search, (value) => {
+        router.get(
+            "/appointment/index",
+            { search: value },
+            {
+                preserveState: true,
+                replace: true,
+            }
+        );
+    });
 
 </script>
 
 <template>
     <Sidebar>
+        <Head title="Appointment List"/>
         <div class="sm:px-6 w-full">
 
         <div class="px-4 md:px-10 py-4 md:py-7">
             <div class="flex items-center justify-between">
                 <p tabindex="0" class="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800">Appointment Lists</p>
-                <div class="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 cursor-pointer rounded">
+                <!-- <div class="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 cursor-pointer rounded">
                     <p>Sort By:</p>
                     <select aria-label="select" model="sort" @change="updateSort" class="focus:text-indigo-600 focus:outline-none bg-transparent ml-1">
                         <option value="latest" class="text-sm text-indigo-800">Latest</option>
                         <option value="oldest" class="text-sm text-indigo-800">Oldest</option>
-                        <!-- <option class="text-sm text-indigo-800">Latest</option> -->
+
                     </select>
+                </div> -->
+                <div class="inline-flex overflow-hidden">
+                    <div class="py-3 px-4">
+                        <div class="relative max-w-xs">
+                            <label for="hs-table-search" class="sr-only">Search</label>
+                            <input type="search" v-model="search"  name="hs-table-search" id="hs-table-search" class="py-2 px-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none " placeholder="Search by appointment">
+                            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3">
+                                <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
             <div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
@@ -90,7 +120,7 @@ const isOpen = () => {show.value = !show.value};
                         <p class="text-sm font-medium leading-none text-white">Add Appointment</p>
                     </Link>
                 </div>
-                <div  v-show="openTab === 1" class="mt-7 overflow-x-auto">
+                <div  v-if="openTab === 1" class="mt-7 overflow-x-auto">
                     <table class="w-full whitespace-nowrap">
                         <thead>
                             <tr>
@@ -103,12 +133,12 @@ const isOpen = () => {show.value = !show.value};
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-if="appointments.length === 0">
+                            <!-- <tr v-if="appointments.length === 0">
                                 <td colspan="6" class="px-6 py-4 whitespace-nowrap text-lg  text-gray-800 text-center">
                                         No appointment found.
                                 </td>
-                            </tr>
-                            <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded" v-for="app in appointments" :key="app.id">
+                            </tr> -->
+                            <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded" v-for="app in appointments.data" :key="app.id">
                                 <td>
                                     <div class="flex items-center pl-5">
                                         <p class="text-base font-medium leading-none text-gray-700 mr-2">{{ app.patient.firstname }} {{ app.patient.lastname }}</p>
@@ -174,8 +204,17 @@ const isOpen = () => {show.value = !show.value};
 
                         </tbody>
                     </table>
+                    <div v-if="appointments.data.length < 1" class="flex flex-col w-full mt-9">
+                        <h1 class="text-center text-xl text-gray-400 mb-6">No apppointment found</h1>
+                        <!-- <img src="../../Components/images/no-result.png" alt="no result" class="w-[250px] opacity-25 mx-auto"> -->
+                    </div>
+                    <div class="flex justify-between">
+                        <div class="mt-2" v-if="appointments.data.length > 0">Showing page {{ appointments.current_page }} of {{ appointments.last_page }}</div>
+                        <Pagination v-if="appointments.data.length > 0" :links="appointments.links" class="mt-6"/>
+                    </div>
                 </div>
-                <div  v-show="openTab === 2" class="mt-7 overflow-x-auto">
+
+                <div v-if="openTab === 2" class="mt-7 overflow-x-auto">
                     <table class="w-full whitespace-nowrap">
                         <thead>
                             <tr>
@@ -188,12 +227,12 @@ const isOpen = () => {show.value = !show.value};
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-if="acceptedApp.length === 0">
+                            <!-- <tr v-if="acceptedApp.length === 0">
                                 <td colspan="6" class="px-6 py-4 whitespace-nowrap text-lg  text-gray-800 text-center">
                                         No accepted appointment found.
                                 </td>
-                            </tr>
-                            <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded" v-for="test in acceptedApp" :key="test.id">
+                            </tr> -->
+                            <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded" v-for="test in acceptedApp.data" :key="test.id">
                                 <td>
                                     <div class="flex items-center pl-5">
                                         <p class="text-base font-medium leading-none text-gray-700 mr-2">{{ test.patient.firstname }} {{ test.patient.lastname }}</p>
@@ -259,8 +298,17 @@ const isOpen = () => {show.value = !show.value};
 
                         </tbody>
                     </table>
+
+                    <div v-if="acceptedApp.data.length < 1" class="flex flex-col w-full mt-9">
+                        <h1 class="text-center text-xl text-gray-400 mb-6">No accepted apppointment found</h1>
+                        <!-- <img src="../../Components/images/no-result.png" alt="no result" class="w-[250px] opacity-25 mx-auto"> -->
+                    </div>
+                    <div class="flex justify-between">
+                        <div class="mt-2" v-if="acceptedApp.data.length > 0">Showing page {{ acceptedApp.current_page }} of {{ acceptedApp.last_page }}</div>
+                        <Pagination v-if="acceptedApp.data.length > 0" :links="acceptedApp.links" class="mt-6"/>
+                    </div>
                 </div>
-                <div v-show="openTab === 3" class="mt-7 overflow-x-auto" >
+                <div v-if="openTab === 3" class="mt-7 overflow-x-auto" >
                     <table class="w-full whitespace-nowrap">
                         <thead>
                             <tr>
@@ -273,12 +321,7 @@ const isOpen = () => {show.value = !show.value};
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-if="cancelApp.length === 0">
-                                <td colspan="6" class="px-6 py-4 whitespace-nowrap text-lg  text-gray-800 text-center">
-                                        No cancelled appointment found.
-                                </td>
-                            </tr>
-                            <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded" v-for="sam in cancelApp" :key="sam.id" >
+                            <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 rounded" v-for="sam in cancelApp.data" :key="sam.id" >
                                 <td>
                                     <div class="flex items-center pl-5">
                                         <p class="text-base font-medium leading-none text-gray-700 mr-2">{{ sam.patient.firstname }} {{ sam.patient.lastname }}</p>
@@ -344,6 +387,14 @@ const isOpen = () => {show.value = !show.value};
 
                         </tbody>
                     </table>
+                    <div v-if="cancelApp.data.length < 1" class="flex flex-col w-full mt-9">
+                        <h1 class="text-center text-xl text-gray-400 mb-6">No cancelled apppointment found</h1>
+                        <!-- <img src="../../Components/images/no-result.png" alt="no result" class="w-[250px] opacity-25 mx-auto"> -->
+                    </div>
+                    <div class="flex justify-between">
+                        <div class="mt-2" v-if="cancelApp.data.length > 0">Showing page {{ cancelApp.current_page }} of {{ cancelApp.last_page }}</div>
+                        <Pagination v-if="cancelApp.data.length > 0" :links="cancelApp.links" class="mt-6"/>
+                    </div>
                 </div>
             </div>
         </div>

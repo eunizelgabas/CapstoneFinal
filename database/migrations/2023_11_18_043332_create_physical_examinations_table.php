@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('pr');
             $table->string('rr');
             $table->string('saturation');
-            $table->string('lmp');
+            $table->date('lmp');
             $table->boolean('head_neck_scalp')->comment("1-normal, 0-abnormal");
             $table->string('head_neck_scalp_findings')->nullable();
             $table->boolean('eyes')->comment("1-normal, 0-abnormal");

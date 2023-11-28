@@ -25,8 +25,6 @@
         filters:Object,
         errors: null,
         flash: Object,
-
-        // hidePagination: Boolean,
     })
 
 

@@ -12,6 +12,7 @@ class MedicineController extends Controller
 {
     public function index(Request $request)
     {
+        $medCount = Medicine::count();
         $types = MedType::orderBy('name')->get();
         $categories = MedCategory::orderBy('name')->get();
         $inventory = Inventory::orderBy('created_at', 'asc')->get();
@@ -22,7 +23,8 @@ class MedicineController extends Controller
         $medicineQuery = Medicine::orderBy('created_at', 'desc')
             ->with('type')
             ->with('category')
-            ->with('inventory');
+            ->with('inventory')
+            ->withCount('inventory');
 
         if ($selectedCategory) {
             $medicineQuery->whereHas('category', function ($query) use ($selectedCategory) {
@@ -46,7 +48,7 @@ class MedicineController extends Controller
 
         $medicines = $medicineQuery->paginate(8)->withQueryString();
 
-        return inertia('Medicine/Index', [
+        return inertia('Medicine/Sample', [
             'medicines' => $medicines,
             'types' => $types,
             'categories' => $categories,
@@ -54,6 +56,7 @@ class MedicineController extends Controller
             'selectedCategory' => $selectedCategory,
             'inventory' => $inventory,
             'filters' => $request->only(['search']),
+            'medCount'=> $medCount
         ]);
     }
 
@@ -84,7 +87,7 @@ class MedicineController extends Controller
             $inventory->save();
         }
 
-        return redirect('/medicine')->with('message', 'Medicine successfully created');
+        return redirect('/medicine')->with('success', 'Medicine successfully created');
     }
 
     public function update(Request $request, Medicine $medicine){
@@ -98,12 +101,19 @@ class MedicineController extends Controller
         ]);
 
         $medicine->update($fields);
-        return redirect('/medicine')->with('message', "You successfully updated the medicine category");
+        return redirect('/medicine')->with('success', "Medicine successfully updated");
     }
 
     public function destroy(Medicine $medicine) {
-        $medicine->delete();
+        // $medicine->delete();
 
-        return back();
+        // return back();
+        if(!$medicine->inventory()->exists()) {
+            $medicine->delete();
+
+            return back()->with('success', 'Medicine deleted successfully.');
+        } else {
+            return back()->with('error', 'Sorry, this medicine  cannot be deleted because it contains existing medicine inventory in the system.');
+        }
     }
 }

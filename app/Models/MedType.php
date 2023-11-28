@@ -12,6 +12,6 @@ class MedType extends Model
 
     public function medicine()
     {
-        return $this->hasMany(Medicine::class, 'med_id');
+        return $this->hasMany(Medicine::class, 'type_id');
     }
 }

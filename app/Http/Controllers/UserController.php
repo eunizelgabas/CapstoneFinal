@@ -8,14 +8,28 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Request as HttpRequest;
 
 class UserController extends Controller
 {
     public function index(){
 
-        $users = User::with('roles')->get();
-        return inertia('User/Index', [
-            'users' => $users
+        $activeUserCount = User::count();
+        // $users = User::with('roles')->get();
+        $users = User::query()
+        ->when(HttpRequest::input('search'), function ($query, $search) {
+            $query->where('firstname', 'like', '%' . $search . '%')
+            ->orWhere('lastname', 'like', '%' . $search . '%')
+            ->orWhere('email', 'like', '%' . $search . '%');
+        })
+        ->with('roles')
+        ->withCount('doctor')
+        ->paginate(8)
+        ->withQueryString();
+        return inertia('User/Sample', [
+            'users' => $users,
+            'activeUserCount' => $activeUserCount,
+            'filters' => HttpRequest::only(['search']),
         ]);
     }
 
@@ -72,7 +86,7 @@ class UserController extends Controller
             $doctor->services()->attach($selectedServiceIds);
         }
 
-        return redirect()->route('user.index');
+        return redirect()->route('user.index')->with('success', 'User created successfully.');
     }
 
     public function edit(User $user){
@@ -170,12 +184,19 @@ class UserController extends Controller
         }
 
 
-        return redirect()->route('user.index');
+        return redirect()->route('user.index')->with('success', 'User updated successfully.');
     }
 
     public function destroy(User $user) {
-        $user->delete();
+        // $user->delete();
 
-        return back();
+        // return back();
+        if(!$user->doctor()->exists()) {
+            $user->delete();
+
+            return back()->with('success', 'User deleted successfully.');
+        } else {
+            return back()->with('error', 'Sorry, this user cannot be deleted because it contains existing info in the system.');
+        }
     }
 }

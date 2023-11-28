@@ -9,14 +9,16 @@ use Illuminate\Support\Facades\Request as HttpRequest;
 class MedTypeController extends Controller
 {
     public function index(){
-
-        return inertia('MedType/Index',[
+        $typeCount = MedType::count();
+        return inertia('MedType/Sample',[
             'medtypes' => MedType::query()
             ->when(HttpRequest::input('search'), function ($query, $search) {
                 $query->where('name', 'like', '%' . $search . '%');
-            })->paginate(8)
+            })->withCount('medicine')
+            ->paginate(8)
             ->withQueryString(),
-            'filters' => HttpRequest::only(['search'])
+            'filters' => HttpRequest::only(['search']),
+            'typeCount'=> $typeCount
         ]);
     }
 
@@ -29,7 +31,7 @@ class MedTypeController extends Controller
 
         MedType::create($fields);
 
-        return redirect('/type')->with('message', 'Medicine type successfully created');
+        return redirect('/type')->with('success', 'Medicine type successfully created');
     }
 
     public function update(Request $request, MedType $medtype){
@@ -38,12 +40,16 @@ class MedTypeController extends Controller
         ]);
 
         $medtype->update($fields);
-        return redirect('/type')->with('message', "You successfully updated the medicine category");
+        return redirect('/type')->with('success', "Medicine type successfully updated");
     }
 
     public function destroy(MedType $medtype) {
-        $medtype->delete();
+        if(!$medtype->medicine()->exists()) {
+            $medtype->delete();
 
-        return back();
+            return back()->with('success', 'Medicine Type deleted successfully.');
+        } else {
+            return back()->with('error', 'Sorry, this medicine type cannot be deleted because it contains existing medicines in the system.');
+        }
     }
 }

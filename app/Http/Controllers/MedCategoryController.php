@@ -9,15 +9,17 @@ use Illuminate\Support\Facades\Request as HttpRequest;
 class MedCategoryController extends Controller
 {
     public function index(){
-        return inertia('MedCategory/Index',[
+        $categoryCount = MedCategory::count();
+        return inertia('MedCategory/Sample',[
             'medcategories' => MedCategory::query()
-                    ->when(HttpRequest::input('search'), function ($query, $search) {
-                        $query->where('name', 'like', '%' . $search . '%');
-                    })
-                    ->withCount('medicine')
-                    ->paginate(6)
-                    ->withQueryString(),
-                    'filters' => HttpRequest::only(['search'])
+                ->when(HttpRequest::input('search'), function ($query, $search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })
+                ->withCount('medicine')
+                ->paginate(8)
+                ->withQueryString(),
+                'filters' => HttpRequest::only(['search']),
+                'categoryCount' => $categoryCount
 
         ]);
 
@@ -30,7 +32,7 @@ class MedCategoryController extends Controller
 
         MedCategory::create($fields);
 
-        return redirect('/category')->with('success', 'Category successfully created');
+        return redirect('/category')->with('success', 'Medicine Category successfully created');
     }
 
     public function update(Request $request, MedCategory $medcategory){
@@ -39,7 +41,7 @@ class MedCategoryController extends Controller
         ]);
 
         $medcategory->update($fields);
-        return redirect('/category')->with('success', "You successfully updated the medicine category");
+        return redirect('/category')->with('success', "Medicine Category updated successfully");
     }
 
     public function destroy(MedCategory $medcategory) {
@@ -48,9 +50,9 @@ class MedCategoryController extends Controller
         if(!$medcategory->medicine()->exists()) {
             $medcategory->delete();
 
-            return back()->with('success', 'Category deleted successfully.');
+            return back()->with('success', 'Medicine Category deleted successfully.');
         } else {
-            return back()->with('error', 'Sorry, this category cannot be deleted because it contains existing medicines in the system.');
+            return back()->with('error', 'Sorry, this medicine category cannot be deleted because it contains existing medicines in the system.');
         }
     }
 }

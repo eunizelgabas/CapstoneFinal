@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 class DispensingController extends Controller
 {
     public function index(Request $request){
+        $dispenseCount = Dispensing::count();
         $medicine = Medicine::orderBy('name')->get();
 
         $dispensesQuery = Dispensing::orderBy('id')
@@ -27,10 +28,11 @@ class DispensingController extends Controller
 
         $dispenses = $dispensesQuery->paginate(8)->withQueryString();
 
-        return inertia('Dispense/Index', [
+        return inertia('Dispense/Sample', [
             'medicine' => $medicine,
             'dispenses' => $dispenses,
             'filters' => $request->only(['search']),
+            'dispenseCount' => $dispenseCount
         ]);
     }
 

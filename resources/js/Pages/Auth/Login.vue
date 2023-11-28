@@ -57,12 +57,13 @@ const submit = () => {
             {{ status }}
         </div>
 
+
         <template #log>
             <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
             {{ $page.props.flash.error }}
         </div>
             <div class="min-w-screen min-h-screen  flex items-center justify-center px-5 py-5">
-                <div class="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden" style="max-width:1000px">
+                <div class="bg-white text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden" style="max-width:1000px">
                     <div class="md:flex w-full">
                         <div class="hidden md:block w-1/2">
                             <img src="/images/mdcs.jpg" class="w-full h-full object-cover" alt="">

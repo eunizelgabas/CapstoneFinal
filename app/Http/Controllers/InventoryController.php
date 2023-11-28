@@ -25,7 +25,7 @@ class InventoryController extends Controller
 
         // Calculate the total available stock by summing the stockAvail attribute
         // $totalAvail =$inventories->diff('Available');
-        return inertia('Inventory/Index',[
+        return inertia('Inventory/Sample',[
             'inventories' => $inventories,
 
 
