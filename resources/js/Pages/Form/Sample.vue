@@ -310,6 +310,7 @@ const filteredDoctors = computed(() => {
                                         <div class="text-sm text-red-500 italic" ></div>
                                         </div>
                                     </div>
+
                                     <div class="sm:col-span-1" >
                                         <label for="doctor" class="block text-sm font-medium leading-6 text-gray-900">Doctor</label>
                                         <div class="mt-2">
