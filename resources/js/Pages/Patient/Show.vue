@@ -158,7 +158,7 @@
                 {{ $page.props.flash.error }}
             </div>
                 <Breadcrumb :crumbs="crumbs"  />
-                <button @click="edit(patient)" class="px-4 py-2 mr-5 border flex gap-2 items-center bg-white hover:bg-blue-300 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
+                <button  @click="edit(patient)" class="px-4 py-2 mr-5 border flex gap-2 items-center bg-white hover:bg-blue-300 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
                     <i class="fa-regular fa-pen-to-square"></i>
                     <span class="">Edit Patient</span>
                 </button>

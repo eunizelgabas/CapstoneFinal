@@ -7,8 +7,7 @@ import { Transition } from 'vue';
 let props = defineProps({
         medicalhistory: Array,
         patient: Object,
-        doctor: Array,
-        isAdminOrDoctor:Boolean,
+        doctor: Object,
         isDoctor: Boolean,
 })
   const steps = ref(1);
@@ -99,7 +98,10 @@ let props = defineProps({
         date: '',
         vaccine: '',
         course: null,
-        test:calculateAge(props.patient.dob)
+        test:calculateAge(props.patient.dob),
+        doc_name:"",
+        lic_no:""
+
 
 
     })
@@ -154,20 +156,20 @@ let props = defineProps({
         return age;
     }
 
-    const isAdminOrDoctor = props.isAdminOrDoctor;
 
     onMounted(() => {
   // Fetch services based on the logged-in user's role
-  if (props.isDoctor) {
+  if (props.isDoctor && props.doctor && props.doctor.length > 0) {
     // User is a doctor, set doctor and services automatically
     const doctor = props.doctor[0]; // You might need to get the correct doctor based on your data
     form.doc_id = doctor.id;
-
+    form.doc_name = `${doctor.user.firstname} ${doctor.user.lastname}`;
+    form.lic_no = doctor.lic_no;
   }
 });
 
 const filteredDoctors = computed(() => {
-    return props.doctors.filter(doctor => doctor.user.status === 1);
+    return props.doctor.filter(doctor => doctor.user.status === 1);
 });
 
     const submit = () =>{
@@ -311,12 +313,27 @@ const filteredDoctors = computed(() => {
                                         </div>
                                     </div>
 
-                                    <div class="sm:col-span-1" >
+                                    <div class="sm:col-span-1">
+                                        <label for="doc_id" class="block text-sm font-medium leading-6 text-gray-900">Doctor</label>
+                                        <div class="mt-2">
+                                        <input type="text" v-model="form.doc_name" disabled name="doc_id" id="doc_id" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <div class="text-sm text-red-500 italic" ></div>
+                                        </div>
+                                    </div>
+                                    <div class="sm:col-span-1">
+                                        <label for="doc_id" class="block text-sm font-medium leading-6 text-gray-900">License No</label>
+                                        <div class="mt-2">
+                                        <input type="text" v-model="form.lic_no" readonly name="doc_id" id="doc_id" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <div class="text-sm text-red-500 italic" ></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="sm:col-span-1" v-if="!isDoctor" >
                                         <label for="doctor" class="block text-sm font-medium leading-6 text-gray-900">Doctor</label>
                                         <div class="mt-2">
                                         <select id="doctor" v-model="form.doc_id" name="doctor"  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
                                             <option selected disabled >Select doctor</option>
-                                            <option v-for="doc in doctor" :key="doc.id" :value="doc.id">{{ doc.user.firstname }} {{ doc.user.lastname }}</option>
+                                            <option v-for="doc in filteredDoctors" :key="doc.id" :value="doc.id">{{ doc.user.firstname }} {{ doc.user.lastname }}</option>
                                         </select>
                                         <div class="text-sm text-red-500 italic" v-if="form.errors.doc_id">{{ form.errors.doc_id }}</div>
                                     </div>

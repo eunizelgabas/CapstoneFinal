@@ -19,10 +19,9 @@ use Illuminate\Support\Facades\Date;
 class FormController extends Controller
 {
     public function create(Patient $patient){
-        $isAdminOrDoctor = auth()->user()->hasAnyRole(['Admin', 'Doctor']);
+       
         $isDoctor = auth()->user()->hasRole('Doctor');
         $selectedDoctor = null;
-        // $doctor = Doctor::whereHas('user')->with([ 'user'])->get();
         $doctor = Doctor::whereHas('user', function ($query) {
             $query->where('status', 1);
         })->with(['user'])->get();
@@ -36,7 +35,6 @@ class FormController extends Controller
         return inertia('Form/Sample', [
             'patient' => $patient,
             'doctor' => $doctor,
-            'isAdminOrDoctor' => $isAdminOrDoctor,
             'isDoctor' => $isDoctor,
             'selectedDoctor' => $selectedDoctor
         ]);
@@ -216,17 +214,21 @@ class FormController extends Controller
 
     }
 
-    public function medCert(Patient $patient){
-        $patient = Patient::with('student','form', 'teacher')->findOrFail($patient->id);
+    public function medCert(Form $form){
 
-        $age = Carbon::parse($patient->dob)->age;
+        $form = Form::with('patient.student', 'patient.teacher', 'doctor.user')->findOrFail($form->id);
+        // $patient = Patient::with('student', 'teacher')->findOrFail($form->id);
+        // $doctor = Doctor::with(['user'])->get()->findOrFail($form->id);
+
+        $age = Carbon::parse($form->patient->dob)->age;
         $data = [
             'title' => 'MATER DEI COLLEGE',
             'header' => 'Medical Certificate',
             'address' => 'Tubigon, Bohol',
             'facility' => 'School Clinic',
             'date' => date('d/m/Y'),
-            'patient' => $patient,
+            'form' => $form,
+
 
         ];
         $date = Date::now();
@@ -234,8 +236,9 @@ class FormController extends Controller
         $pdf = PDF::loadView('pdf.medCert',[
             $data,
             'age'=> $age,
-            'patient' => $patient,
-            'date'=> $date
+            'form' => $form,
+            'date'=> $date,
+            // 'doctor'=> $doctor
             ] );
         return $pdf->stream();
 

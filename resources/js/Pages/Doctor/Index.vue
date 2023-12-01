@@ -92,14 +92,14 @@ import { Link, router, useForm, Head } from '@inertiajs/vue3';
     <Sidebar>
         <Head title="Doctor"/>
         <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
-                {{ $page.props.flash.success }}
-                <div class="progress-bar success"></div>
-            </div>
+            {{ $page.props.flash.success }}
+            <div class="progress-bar success"></div>
+        </div>
 
-            <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
-                {{ $page.props.flash.error }}
-                <div class="progress-bar error"></div>
-            </div>
+        <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
+            {{ $page.props.flash.error }}
+            <div class="progress-bar error"></div>
+        </div>
         <section class="container px-4 py-6 mx-auto">
             <div class="sm:flex sm:items-center sm:justify-between">
                 <div>

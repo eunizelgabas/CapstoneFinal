@@ -19,10 +19,10 @@
     <br>
     <br>
 
-    <p>This is to certify that I have personally examined <u>{{$patient->firstname}} {{$patient->lastname}}</u> &nbsp; Age/Sex <u>{{$age}} &nbsp; {{$patient->sex}}</u> </p>
-    <p>From <u>{{$patient->address}}</u>&nbsp; Course
-        @if ($patient->isStudent())
-          <u>{{$patient->student->course}}</u>
+    <p>This is to certify that I have personally examined <u>{{$form->patient->firstname}} {{$form->patient->lastname}}</u> &nbsp; Age/Sex <u>{{$age}} &nbsp; {{$form->patient->sex}}</u> </p>
+    <p>From <u>{{$form->patient->address}}</u>&nbsp; Course
+        @if ($form->patient->isStudent())
+          <u>{{$form->patient->student->course}}</u>
         @else
         ____________
         @endif
@@ -46,9 +46,9 @@
     <br>
     <br>
     <br><br>
-    <u>Phoebe Caspe, MD</u><br>
+    <u>{{$form->doctor->user->firstname}} {{$form->doctor->user->lastname}}, MD</u><br>
     <p>School Physician</p>
-    <p>Lic. no.0115415</p>
+    <p>Lic. no. {{$form->doctor->lic_no}}</p>
 </body>
 </html>
 

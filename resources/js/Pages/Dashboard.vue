@@ -194,8 +194,8 @@ const attrs = ref([
                     </div>
               </div>
               <div class="pt-8 px-2" >
-                <div class="w-full grid grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-                   <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 2xl:col-span-2">
+                <div class="w-full grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-4">
+                   <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 xl:col-span-2 2xl:col-span-2">
                         <div class="flex justify-between ">
                             <h3 class="flex items-start justify-center m-2 ml-0 font-medium text-xl/tight text-dark">
                                 <span class="mr-3 text-dark font-bold">Recent Appointments</span>

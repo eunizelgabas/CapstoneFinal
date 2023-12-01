@@ -1,7 +1,7 @@
 <script setup>
 import Sidebar from '@/Layouts/Sidebar.vue'
 import { Head, useForm } from '@inertiajs/vue3';
-import { ref , computed} from 'vue';
+import { ref , computed, onMounted} from 'vue';
 import moment from 'moment';
 
 
@@ -111,6 +111,24 @@ if (props.patient && props.patient.type === 'Student') {
     function formattedDate(date){
         return moment(date).format('MMMM   D, YYYY');
     }
+
+    onMounted(() => {
+    // Set a timeout to hide the success flash message after 3 seconds
+        const successFlashMessage = document.getElementById('flash-success-message');
+            if (successFlashMessage) {
+                setTimeout(() => {
+                successFlashMessage.style.display = 'none';
+                }, 3000);
+        }
+
+        // Set a timeout to hide the error flash message after 3 seconds
+        const errorFlashMessage = document.getElementById('flash-error-message');
+            if (errorFlashMessage) {
+                setTimeout(() => {
+                errorFlashMessage.style.display = 'none';
+            }, 3000);
+        }
+    });
 </script>
 
 
@@ -120,10 +138,12 @@ if (props.patient && props.patient.type === 'Student') {
         <template #header>
             <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
                 {{ $page.props.flash.success }}
+                <div class="progress-bar success"></div>
             </div>
 
             <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
                 {{ $page.props.flash.error }}
+                <div class="progress-bar error"></div>
             </div>
             <div class="flex justify-between">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight"> View History and Physical Examination Form</h2>
@@ -131,7 +151,7 @@ if (props.patient && props.patient.type === 'Student') {
                     <a as="button" :href="'/healthForm/pdf/' + form.id" target="_blank" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     <i class="fa-solid fa-receipt" style="color: #fffff;"></i> Export PDF
                 </a>
-                <a as="button" :href="'/generate-pdf/' + forms.pat_id"  target="_blank" class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <a as="button" :href="'/generate-pdf/' + form.id"  target="_blank" class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     <i class="fa-solid fa-receipt" style="color: #fffff;"></i> Generate Medical Certificate
                 </a>
                 </div>

@@ -174,7 +174,7 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::post('/healthForm',[FormController::class, 'store']);
     Route::get('/healthForm/show/{form}',[FormController::class, 'show']);
     Route::get('/healthForm/pdf/{form}',[FormController::class, 'formPdf']);
-    Route::get('/generate-pdf/{patient}', [FormController::class, 'medCert']);
+    Route::get('/generate-pdf/{form}', [FormController::class, 'medCert']);
     });
 
     //Radiologic
