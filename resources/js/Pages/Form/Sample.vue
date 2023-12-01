@@ -302,25 +302,25 @@ const filteredDoctors = computed(() => {
                                         <label for="vaccine" class="block text-sm font-medium leading-6 text-gray-900">Covid Vaccine/Booster</label>
                                         <div class="mt-2">
                                         <input type="text" v-model="form.vaccine"  name="vaccine" id="vaccine" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                        <div class="text-sm text-red-500 italic" ></div>
+                                        <div class="text-sm text-red-500 italic" v-if="form.errors.vaccine" >{{form.errors.vaccine}}</div>
                                         </div>
                                     </div>
                                     <div class="sm:col-span-1">
                                         <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Date</label>
                                         <div class="mt-2">
                                         <input type="date" v-model="form.date"  name="date" id="date" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                        <div class="text-sm text-red-500 italic" ></div>
+                                        <div class="text-sm text-red-500 italic" v-if="form.errors.date" >{{form.errors.date}}</div>
                                         </div>
                                     </div>
 
-                                    <div class="sm:col-span-1">
+                                    <div class="sm:col-span-1" v-if="isDoctor" >
                                         <label for="doc_id" class="block text-sm font-medium leading-6 text-gray-900">Doctor</label>
                                         <div class="mt-2">
                                         <input type="text" v-model="form.doc_name" disabled name="doc_id" id="doc_id" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         <div class="text-sm text-red-500 italic" ></div>
                                         </div>
                                     </div>
-                                    <div class="sm:col-span-1">
+                                    <div class="sm:col-span-1" v-if="isDoctor" >
                                         <label for="doc_id" class="block text-sm font-medium leading-6 text-gray-900">License No</label>
                                         <div class="mt-2">
                                         <input type="text" v-model="form.lic_no" readonly name="doc_id" id="doc_id" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -347,7 +347,7 @@ const filteredDoctors = computed(() => {
 
                             <!-- Step 2 -->
                             <div class="flex flex-col" v-else-if="steps == 2">
-                                <p class="_sub-title">Medical History Form</p>
+                                <p class="_sub-title ">Medical History Form</p>
                                 <div class="grid grid-cols-4 mt-3">
                                     <!-- First Part (13 rows) -->
 

@@ -35,4 +35,8 @@ class ReportController extends Controller
             'currentMonth' => $currentMonth
         ]);
     }
+
+    public function medreport(){
+        return inertia('Report/MedReport');
+    }
 }

@@ -102,6 +102,8 @@ import moment from 'moment';
     pat_id: props.form.patient.id,
     date: props.form.date,
     hist: props.form.history.hist || '',
+    doc_name:  props.form.doctor.user.firstname,
+    lic_no:props.form.doctor.lic_no
 })
 
 if (props.patient && props.patient.type === 'Student') {
@@ -134,7 +136,7 @@ if (props.patient && props.patient.type === 'Student') {
 
 <template>
     <Sidebar>
-        <Head title="View Sample"/>
+        <Head title="View Form"/>
         <template #header>
             <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
                 {{ $page.props.flash.success }}
@@ -1148,6 +1150,27 @@ if (props.patient && props.patient.type === 'Student') {
         <div class="mt-2">
         <textarea type="text" v-model="forms.remarks" readonly  name="remarks" id="remarks" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
         <div class="text-sm text-red-500 italic" ></div>
+        </div>
+    </div>
+
+
+</div>
+<div class="py-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-1 mx-auto mt-5">
+    <div class="sm:col-span-1">
+        <h1 for="remarks" class="block text-l font-bold leading-6 text-gray-900">Examining Physician</h1>
+        <div class="mt-2">
+            <h3 class="font-bold"><span class="font-medium border-b-2 border-b-black"> {{form.doctor.user.firstname}} {{form.doctor.user.lastname}}</span> MD</h3>
+
+        </div>
+        <div class="mt-2">
+            <h3 class="font-bold">Lic. No.: <span class="font-medium border-b-2 border-b-black">{{form.doctor.lic_no}} </span></h3>
+        </div>
+       <div class="mt-2">
+    <h3 class="font-bold">PTR: <span class="font-medium border-b-2 border-b-black w-100"> &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </h3>
+</div>
+
+        <div class="mt-2">
+            <h3 class="font-bold">S2 No: <span class="font-medium border-b-2 border-b-black"> &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></h3>
         </div>
     </div>
 

@@ -180,8 +180,10 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     //Radiologic
     Route::get('/radiologic/create/{patient}', [RadiologicController::class, 'create']);
     Route::post('/radiologic', [RadiologicController::class, 'store']);
+
     //Reports
     Route::get('/report', [ReportController::class, 'index'])->name('report.chart');
+    Route::get('/medicalreport', [ReportController::class, 'medreport'])->name('medreport.chart');
 });
 
 require __DIR__.'/auth.php';

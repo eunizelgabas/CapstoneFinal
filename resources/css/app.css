@@ -22,6 +22,6 @@
       @apply font-semibold text-gray-900 text-left w-full text-2xl mb-4;
     }
     ._sub-title {
-      @apply text-gray-400 text-sm mb-2;
+      @apply text-gray-900  font-semibold text-sm mb-2;
     }
   }

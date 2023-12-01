@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Date;
 class FormController extends Controller
 {
     public function create(Patient $patient){
-       
+
         $isDoctor = auth()->user()->hasRole('Doctor');
         $selectedDoctor = null;
         $doctor = Doctor::whereHas('user', function ($query) {
@@ -183,7 +183,7 @@ class FormController extends Controller
 }
 
     public function show(Form $form){
-        $form->load(['patient.student', 'doctor', 'history', 'remark', 'medicalhistory', 'physicalexamination', 'radiologic'])->find($form->id);
+        $form->load(['patient.student', 'patient.teacher', 'doctor.user', 'history', 'remark', 'medicalhistory', 'physicalexamination', 'radiologic'])->find($form->id);
 
         return inertia ('Form/Show',
             ['form'=> $form,

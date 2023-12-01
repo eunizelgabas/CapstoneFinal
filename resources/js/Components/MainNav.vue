@@ -170,13 +170,13 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                                 </svg>
-                                <span class="text-base leading-4" v-show="!collapse">Appointment Chart</span>
+                                <span class="text-base leading-4" v-show="!collapse">Appointment Report</span>
                             </Link>
-                            <Link @click.stop="closeDropdown2" v-if="$page.props.auth.permissions.includes('manage-type')" :href="route('type.index')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
+                            <Link @click.stop="closeDropdown2" v-if="$page.props.auth.permissions.includes('manage-type')" :href="route('medreport.chart')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />
                                 </svg>
-                                <span class="text-base leading-4" v-show="!collapse">Medical Chart</span>
+                                <span class="text-base leading-4" v-show="!collapse">Medical Report</span>
                             </Link>
                         </div>
                     </div>
