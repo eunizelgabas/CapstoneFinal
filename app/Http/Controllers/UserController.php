@@ -51,7 +51,7 @@ class UserController extends Controller
             'ext_name' => 'nullable|string',
             'gender' => 'required|string',
             'type' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'contact_no' => 'required',
             'password' => 'required|string',
             'role' => 'required',

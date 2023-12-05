@@ -158,7 +158,7 @@
                 {{ $page.props.flash.error }}
             </div>
                 <Breadcrumb :crumbs="crumbs"  />
-                <button  @click="edit(patient)" class="px-4 py-2 mr-5 border flex gap-2 items-center bg-white hover:bg-blue-300 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
+                <button v-if="$page.props.auth.permissions.includes('edit-patient')"  @click="edit(patient)" class="px-4 py-2 mr-5 border flex gap-2 items-center bg-white hover:bg-blue-300 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
                     <i class="fa-regular fa-pen-to-square"></i>
                     <span class="">Edit Patient</span>
                 </button>
@@ -506,7 +506,7 @@
                                                 </div>
                                             </div>
                                         </div> -->
-                                        <div class="w-full lg:w-full p-3" v-for="rad in radiologic">
+                                        <div class="w-full lg:w-full p-3" v-for="rad in radiologic" :key="rad.id">
                                             <div class="flex flex-col lg:flex-row rounded overflow-hidden h-auto lg:h-32 border shadow shadow-lg">
                                                 <a :href="getPicUrl(rad.radiologic.exam_results)" target="_blank" data-lightbox="radiologic" data-title="Radiologic Image">
                                                     <img v-if="rad.radiologic && rad.radiologic.exam_results && rad.radiologic.exam_results !== ''" :src="getPicUrl(rad.radiologic.exam_results)" alt="Radiologic Image" class="block h-auto w-full lg:w-48 flex-none bg-cover" >

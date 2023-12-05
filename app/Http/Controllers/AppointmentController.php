@@ -9,6 +9,7 @@ use App\Models\Service;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -420,4 +421,14 @@ class AppointmentController extends Controller
         return redirect()->route('appointment.index');
     }
 
+
+    public function calendar(){
+        // $appointments = Appointment::with('patient', 'service', 'doctor.user')->orderBy('date', 'asc')->get();
+        $appointments = Appointment::with('patient', 'doctor.user', 'service')
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+
+        return response()->json($appointments);
+    }
 }

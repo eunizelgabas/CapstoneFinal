@@ -7,6 +7,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\MedCategoryController;
+use App\Http\Controllers\MedCertController;
 use App\Http\Controllers\MedicalHistoryController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\MedTypeController;
@@ -183,7 +184,13 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
 
     //Reports
     Route::get('/report', [ReportController::class, 'index'])->name('report.chart');
-    Route::get('/medicalreport', [ReportController::class, 'medreport'])->name('medreport.chart');
+    Route::get('/calendar', [ReportController::class, 'calendar'])->name('calendar');
+    Route::get('/medchart', [ReportController::class, 'medchart'])->name('medchart');
+
+    Route::get('/medcert', [MedCertController::class, 'generate'])->name('medcert');
+    Route::post('/medcert', [MedCertController::class, 'store'])->name('medcert');
+    Route::get('/medcert/show/{medcert}', [MedCertController::class, 'show']);
+    Route::get('/medcert/pdf/{medcert}', [MedCertController::class, 'pdf']);
 });
 
 require __DIR__.'/auth.php';

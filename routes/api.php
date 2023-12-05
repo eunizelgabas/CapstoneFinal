@@ -29,7 +29,7 @@ Route::get('/doctors/{doctor}/services', [DoctorController::class, 'getServices'
 Route::get('/patients/search', [PatientController::class, 'search']);
 Route::get('/api/patients/{patId}', [PatientController::class, 'getPatientInfo']);
 
-Route::get('/appointment/calendar', [AppointmentController::class, 'calendar']);
+Route::get('/appointments', [AppointmentController::class, 'calendar']);
 
 Route::get('/get-data', [DoctorController::class, 'getDoctorServices']);
 

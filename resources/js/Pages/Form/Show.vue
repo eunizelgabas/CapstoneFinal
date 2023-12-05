@@ -131,6 +131,24 @@ if (props.patient && props.patient.type === 'Student') {
             }, 3000);
         }
     });
+
+     const radiologicData = ref(props.form.radiologic);
+
+        // Method to get the image URL
+        const getPicUrl = (examResults) => `/results/radiologic_results/${examResults}`;
+
+        // On mounted, update the ref if the prop changes
+        onMounted(() => {
+            radiologicData.value = props.form.radiologic;
+        });
+
+
+        function extractFilename(storageLink) {
+      const parts = storageLink.split('/');
+      const filenameWithExtension = parts[parts.length - 1];
+      const filenameParts = filenameWithExtension.split('.');
+      return filenameParts[0]; // Only get the filename without extension
+    }
 </script>
 
 
@@ -218,59 +236,7 @@ if (props.patient && props.patient.type === 'Student') {
                     <div class="text-sm text-red-500 italic"></div>
                 </div>
             </div>
-            <!-- <div class="sm:col-span-1">
-                <label for="age" class="block text-sm font-medium leading-6 text-gray-900">Age</label>
-                <div class="mt-2">
-                <input type="text" :value="forms.age"  readonly name="age" id="age" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                <div class="text-sm text-red-500 italic" ></div>
-                </div>
-            </div>
-            <div class="sm:col-span-1">
-                <label for="sex" class="block text-sm font-medium leading-6 text-gray-900">Sex</label>
-                <div class="mt-2">
-                <input type="text" :value="forms.gender"  readonly  name="sex" id="sex" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                <div class="text-sm text-red-500 italic" ></div>
-                </div>
-            </div> -->
-            <!-- <div class="sm:col-span-1">
-                <label for="address" class="block text-sm font-medium leading-6 text-gray-900">Address</label>
-                <div class="mt-2">
-                <input type="text" :value="forms.address" readonly name="address" id="address" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                <div class="text-sm text-red-500 italic" ></div>
-                </div>
-            </div>
-            <div class="sm:col-span-1">
-                <label for="course" class="block text-sm font-medium leading-6 text-gray-900">Course</label>
-                <div class="mt-2">
-                <input type="text" v-model="forms.course" readonly name="course" id="course" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                <div class="text-sm text-red-500 italic" ></div>
-                </div>
-            </div>
-            <div class="sm:col-span-1">
-                <label for="vaccine" class="block text-sm font-medium leading-6 text-gray-900">Covid Vaccine/Booster</label>
-                <div class="mt-2">
-                <input type="text" v-model="forms.vaccine"  readonly name="vaccine" id="vaccine" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                <div class="text-sm text-red-500 italic" ></div>
-                </div>
-            </div>
-            <div class="sm:col-span-1">
-                <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Date</label>
-                <div class="mt-2">
-                <input type="date" :value="forms.date" readonly  name="date" id="date" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                <div class="text-sm text-red-500 italic" ></div>
-                </div>
-            </div> -->
-            <!-- <div class="sm:col-span-1" >
-                <label for="doctor" class="block text-sm font-medium leading-6 text-gray-900">Doctor</label>
-                <div class="mt-2">
-                <select id="doctor" v-model="form.doc_id" name="doctor"  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                    <option selected disabled >Select doctor</option>
-                    <option v-for="doc in doctor" :key="doc.id" :value="doc.id">{{ doc.user.firstname }} {{ doc.user.lastname }}</option>
-                </select>
-                <div class="text-sm text-red-500 italic" v-if="form.errors.doc_id">{{ form.errors.doc_id }}</div>
-            </div>
 
-          </div> -->
         </div>
     </div>
 </div>
@@ -1143,10 +1109,33 @@ if (props.patient && props.patient.type === 'Student') {
     </div>
 
 </div>
+ <h2 class="text-xl mt-3">D. <span class="underline">Radiologic and Laboratories Examination Results </span> </h2>
+<div class="py-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-1 mx-auto">
+    <div class="sm:col-span-1">
+
+        <!-- <div class="mt-2">
+        <img :src="getPicUrl(props.form.radiologic.exam_results)" readonly  name="exam_results" id="exam_results" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+        <div class="text-sm text-red-500 italic" ></div>
+        </div> -->
+        <div class="mt-2">
+            <!-- If exam_results is null, display the textarea, else display the img -->
+            <template v-if="props.form.radiologic.exam_results === null">
+                <textarea readonly name="exam_results" id="exam_results" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+            </template>
+            <template v-else>
+                <img :src="getPicUrl(props.form.radiologic.exam_results)" name="exam_results" id="exam_results" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            </template>
+            <div class="text-sm text-red-500 italic"></div>
+        </div>
+    </div>
+
+
+
+</div>
  <h2 class="text-xl mt-3">E. <span class="underline">Remarks</span> </h2>
 <div class="py-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-1 mx-auto">
     <div class="sm:col-span-1">
-        <label for="remarks" class="block text-sm font-medium leading-6 text-gray-900">Remark</label>
+        <!-- <label for="remarks" class="block text-sm font-medium leading-6 text-gray-900">Remark</label> -->
         <div class="mt-2">
         <textarea type="text" v-model="forms.remarks" readonly  name="remarks" id="remarks" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
         <div class="text-sm text-red-500 italic" ></div>

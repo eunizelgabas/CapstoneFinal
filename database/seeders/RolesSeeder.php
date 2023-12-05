@@ -35,17 +35,24 @@ class RolesSeeder extends Seeder
         $edit_appointment =  Permission::create(['name' => 'edit-appointment']);
         $show_appointment =  Permission::create(['name' => 'show-appointment']);
         $delete_appointment =  Permission::create(['name' => 'delete-appointment']);
+        $add_patient =  Permission::create(['name' => 'add-patient']);
+        $edit_patient =  Permission::create(['name' => 'edit-patient']);
+        $delete_patient =  Permission::create(['name' => 'delete-patient']);
+        $manage_report =  Permission::create(['name' => 'manage-report']);
+        $manage_medcert =  Permission::create(['name' => 'manage-medcert']);
 
 
         $permission_admin =  [ $manage_medicine, $manage_patient,$manage_service,$manage_doctors,
                                 $manage_appointment, $manage_category, $manage_type, $manage_dispense,
                                 $manage_purchase, $manage_inventory, $add_appointment, $manage_user,
                                 $edit_appointment, $show_appointment, $delete_appointment,
-                                $manage_healthForm ];
+                                $manage_healthForm,
+                                $add_patient,$edit_patient, $delete_patient, $manage_report,$manage_medcert
+                                 ];
 
         $permission_doctor =  [$add_appointment,  $manage_appointment, $manage_patient,$edit_appointment,
                                  $show_appointment, $delete_appointment,
-                                 $manage_healthForm ];
+                                 $manage_healthForm,$manage_medcert ];
 
         $role_admin->syncPermissions($permission_admin);
         $role_doctor->syncPermissions($permission_doctor);

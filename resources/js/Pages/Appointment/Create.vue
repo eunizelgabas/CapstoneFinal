@@ -100,7 +100,7 @@ const filteredDoctors = computed(() => {
     <Head title="Create Appointment"/>
     <div class="bg-image"></div>
 
-    <!-- Overlay with Opacity -->
+
     <div class="overlay"></div>
 
     <div class="flex justify-center">
@@ -114,7 +114,7 @@ const filteredDoctors = computed(() => {
 
         <div class="w-full max-w-lg mx-auto p-8 ">
             <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="text-lg font-medium mb-6 font-bold">Appointment Form</h2>
+                <h2 class="text-lg mb-6 font-bold">Appointment Form</h2>
                 <form @submit.prevent="submit">
                     <div class="col-span-2 sm:col-span-1">
                             <label for="pat_id" class="block text-sm font-medium text-gray-700 mb-2">Student ID/Teacher ID</label>
@@ -140,11 +140,11 @@ const filteredDoctors = computed(() => {
                                 <option selected disabled >Select doctor</option>
                                 <option v-for="doc in filteredDoctors" :key="doc.id" :value="doc.id">{{ doc.user.firstname }} {{ doc.user.lastname }}</option>
                             </select>
-                            <!-- <input type="text" name="cvv" id="cvv" placeholder="000" class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"> -->
+
                         </div>
                         <div class="col-span-2 sm:col-span-1">
                             <label for="card-holder" class="block text-sm font-medium text-gray-700 mb-2">Service</label>
-                            <!-- <input type="text" name="card-holder" id="card-holder" placeholder="Full Name" class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"> -->
+
                             <select id="service" v-model="form.service_id" placeholder=""
                                 class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                                 <option selected disabled >Select services</option>
@@ -173,6 +173,7 @@ const filteredDoctors = computed(() => {
         </div>
 
     </div>
+
     <div class="flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10">
                 <div>
                     <a title="About the System" @click="about()" href="#" class="block w-10 h-10 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12">

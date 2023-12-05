@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\File;
 
 class FormController extends Controller
 {
@@ -110,7 +111,7 @@ class FormController extends Controller
         'rr' => 'string',
         'pr' => 'string',
         'saturation' => 'string',
-        'lmp' => 'date',
+        'lmp' => 'date|nullable',
         'head_neck_scalp' => 'boolean',
         'eyes' => 'boolean',
         'ears' => 'boolean',
@@ -157,7 +158,7 @@ class FormController extends Controller
 
     // Validate and store History
     $historyData = $request->validate([
-        'hist' => 'nullable|string',
+        'hist' => 'string|nullable',
     ]);
     $historyData['form_id'] = $formId;
     $history = History::create($historyData);
@@ -165,7 +166,7 @@ class FormController extends Controller
     //Validate and store Radiologic
     $radiologicData = $request->validate([
         // Add validation rules for other fields
-        'exam_results' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf,doc,docx|max:10240',
+        'exam_results' => 'file|mimes:jpeg,png,jpg,gif,pdf,doc,docx|max:10240|nullable',
     ]);
 
     $fileName = null;
@@ -191,11 +192,19 @@ class FormController extends Controller
         ]);
     }
 
+    public function getImageUrl($imageName) {
+        return public_path("results/$imageName");
+    }
+
     public function formPdf(Form $form){
+
         $form->with(['patient', 'doctor', 'physicalexamination'])->find($form->id);
+        // $imagePath = $this->getImageUrl($form->radiologic->exam_results);
+        $imagePath = public_path('results/radiologic_results/' . $form->radiologic->exam_results);
+        $imageData = base64_encode(file_get_contents($imagePath));
         $medicalhistory = MedicalHistory::all()->find($form->id);
-        $history = History::all()->find($form->id);
-        // $physicalexamination = PhysicalExamination::all()->find($form->id);
+
+        $history = $form->history;
         $physicalexamination = $form->physicalexamination;
         $remark = Remark::all()->find($form->id);
         $age = Carbon::parse($form->patient->dob)->age;
@@ -207,7 +216,10 @@ class FormController extends Controller
             'physicalexamination' => $physicalexamination,
             'remark' => $remark,
             'age' => $age,
-            'history' => $history
+            'history' => $history,
+            // 'imagePath' => $imagePath,
+            // 'imageContent' => $imageContent,
+            'imageData' => $imageData
         ]);
 
         return $pdf->stream();

@@ -532,7 +532,7 @@
 
         </table>
         <h2>B. <u>HISTORY</u></h2>
-        <div class="rectangle"></div>
+        <div class="rectangle">{{$history->hist}}</div>
         <h2>C. <u>PHYSICAL EXAMINATION</u></h2>
         <div>
             <p style="display: inline-block; margin-right: 20px;">Height: <u>{{$physicalexamination->height}}</u> cm</p>
@@ -543,7 +543,8 @@
             <p style="display: inline-block; margin-right: 20px;">PR: <u>{{$physicalexamination->pr}}</u></p>
             <p style="display: inline-block; margin-right: 20px;">RR: <u>{{$physicalexamination->rr}}</u></p>
             <p style="display: inline-block; margin-right: 20px;">02 saturation: <u>{{$physicalexamination->saturation}}</u></p>
-            <p style="display: inline-block; margin-right: 20px;">LMP: <u>{{$physicalexamination->lmp}}</u></p>
+            <p style="display: inline-block; margin-right: 20px;">LMP: <u>{{ \Carbon\Carbon::parse($physicalexamination->lmp)->format('F j, Y') }}
+            </u></p>
         </div>
 
         <table style="padding: 2px; border: 1px solid #333;width:100%; text-center">
@@ -869,7 +870,19 @@
         <br><br>
         <br>
         <h2>D. <u>RADIOLOGIC AND LABORATORIES EXAMINATION RESULTS</u></h2>
-        <div class="rectangle"></div>
+        @if($imageData)
+        <div class="rectangle">
+            <img src="data:image/jpeg;base64,{{ $imageData }}" class="small-image">
+        </div>
+    @else
+        <div class="rectangle">
+            <!-- No image to display when $imagePath is null -->
+        </div>
+    @endif
+
+        {{-- <div class="rectangle">
+            {{$imagePath}}
+        </div> --}}
         <h2>E. <u>REMARKS</u></h2>
         <div>
             <p style="display: inline-block; margin-right: 150px;"> <u>{{$remark->remarks}}</u></p>
@@ -918,10 +931,14 @@
         display: inline-block;
     }
     .rectangle {
-            width: 100%;
-            height: 200px;
-            background-color: #ffffff; /* Set background color */
-            border: 2px solid #000; /* Set border color and thickness */
-        }
+        width: 100%;
+        height: 200px;
+        background-color: #ffffff; /* Set background color */
+        border: 2px solid #000; /* Set border color and thickness */
+    }
+    .small-image {
+        width: 100%;
+        height: 200px;
+    }
 
 </style>

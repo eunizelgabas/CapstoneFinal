@@ -49,11 +49,19 @@ class PatientController extends Controller
             'ext_name' => 'nullable|string',
             'sex' => 'required|string',
             'type' => 'required|string',
-            'email' => 'required|email|',
+            'email' => 'required|email|unique:patients,email',
             'contact_no' => 'required',
             'emergency_contact' => 'required',
             'dob' => 'required|date',
             'address' => 'required',
+
+        ]);
+
+        $request->validate([
+            'student_no' => 'required|unique:students,student_no',
+            'course' => 'required',
+            'teacher_no' => 'required|unique:students,teacher_no',
+            // Add other validation rules as needed
         ]);
 
         $type = $fields['type'];

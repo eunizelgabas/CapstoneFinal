@@ -25,12 +25,18 @@ const props = defineProps({
                             <div class="text-sm text-center mt-5">
                                 <h3 class="font-bold text-slate-700">Mater Dei College Clinic</h3>
                                 <h3 class="font-bold text-slate-700">Cabulijan, Tubigon, Bohol</h3>
-                                <h3 class="font-bold text-slate-700 text-center">Total Appointment Chart for {{ currentMonthName }} {{ currentYear }}</h3>
+                                <h3 class="font-bold text-slate-700 text-center text-lg mt-6">Annual Medical Report Form </h3>
+                                  <h3 class="font-medium text-slate-700">For Period January 1, {{currentYear}}  to December 31, {{currentYear}} </h3>
                             </div>
                         </div>
 
                     </div>
+                    <div>
+                        <h1 class="mb-3 text-lg"> Name of Establishment : <u class="text-lg"> Mater Dei College</u></h1>
+                        <h1 class="mb-3 text-lg">Address: <u class="text-lg">Cabulijan, Tubigon, Bohol</u></h1>
 
+                    </div>
+                </div>
             </div>
         </div>
     </Sidebar>

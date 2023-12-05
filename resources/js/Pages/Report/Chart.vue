@@ -112,7 +112,7 @@ onMounted(() => {
     <Sidebar>
         <div class="w-full px-5 py-4">
             <div class="h-12">
-                <div class=" overflow-hidden shadow-sm sm:rounded-lg">
+                <div class=" overflow-hidden">
 
                     <div class="mb-7">
                         <div class="flex justify-center mb-2">

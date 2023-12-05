@@ -33,6 +33,10 @@ class Patient extends Model
         return $this->type === 'Student'; // For example, assuming you have a 'type' column in your patients table
     }
 
+    public function medcert(){
+        return $this->hasMany(MedCert::class);
+    }
+
 
     protected static function boot()
     {
@@ -48,6 +52,11 @@ class Patient extends Model
                 $patient->teacher->delete();
             }
         });
+    }
+
+    public function getAgeAttribute()
+    {
+        return now()->diffInYears($this->dob);
     }
 
 }

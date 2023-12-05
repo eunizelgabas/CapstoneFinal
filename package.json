@@ -18,6 +18,9 @@
         "vue": "^3.3.8"
     },
     "dependencies": {
+        "@fullcalendar/core": "^6.1.10",
+        "@fullcalendar/daygrid": "^6.1.10",
+        "@fullcalendar/vue3": "^6.1.10",
         "@inertiajs/inertia": "^0.11.1",
         "@inertiajs/inertia-vue3": "^0.6.0",
         "@popperjs/core": "^2.11.8",
@@ -26,7 +29,7 @@
         "date-fns": "^2.30.0",
         "lightbox2": "^2.11.4",
         "moment": "^2.29.4",
-        "qalendar": "^3.5.1",
+        "qalendar": "^3.6.1",
         "v-calendar": "^3.1.2",
         "vue3-apexcharts": "^1.4.4",
         "vuex": "^4.1.0"

@@ -102,103 +102,67 @@ function about() {
   }
 });
 
-// const filteredDoctors = computed(() => {
-//     return props.doctors.filter(doctor => doctor.user.status === 1);
-// });
-
-    // const submit = () =>{
-    //     // console.log(props.appointment);
-    //     form.post('/app')
-    //     form.date ="" ,
-    //    form.time ="" ,
-    //    form.student_id="" ,
-    //    form.firstname="" ,
-    //    form.lastname="",
-    //    form.reason="" ,
-    //    form.doc_id="" ,
-    //    form.service_id=""
-    // }
 
 </script>
 
 <template>
 
-        <Head title="Login" />
+    <Head title="Landing Page" />
 
-    <!-- <div>
-        <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
-            {{ $page.props.flash.error }}
-        </div>
-        <Login/>
-    </div> -->
+    <nav class="relative px-4 py-4 flex justify-between items-center bg-white">
+        <a class="text-3xl font-bold leading-none" href="#">
+            <img src="/images/mdclogo.png" class="h-10" alt="MDC Logo">
+        </a>
 
+        <Link as="button" class=" lg:inline-block py-2 px-6 bg-indigo-500 hover:bg-indigo-600 text-sm text-white font-bold rounded-xl transition duration-200" :href="route('login')">Log in</Link>
+    </nav>
 
-    <div class="bg-image"></div>
+    <div class="min-w-screen min-h-screen bg-indigo-100 p-5 lg:p-10 overflow-hidden relative">
 
-<!-- Overlay with Opacity -->
-<div class="overlay"></div>
+    <div class="flex-1 min-h-full min-w-full rounded-3xl bg-white shadow-xl p-10 lg:p-20 text-gray-800 relative md:flex items-center text-center md:text-left">
+        <div class="w-full md:w-1/2">
 
-<div >
-
-    <section class="flex items-center justify-center h-screen">
-    <div class="relative  items-center  w-full px-5 py-12 mx-auto md:px-12 lg:px-16 max-w-7xl lg:py-24">
-        <div class="flex w-full mx-auto text-left">
-        <div class="relative inline-flex items-center mx-auto align-middle">
-            <div class="text-center">
-            <h1 class="max-w-5xl text-2xl font-bold leading-none tracking-tighter text-neutral-600 md:text-5xl lg:text-6xl lg:max-w-7xl">
-                Mater Dei College <br class="hidden lg:block">
-                Clinic Management System
-            </h1>
-            <!-- <p class="max-w-xl mx-auto mt-8 text-base leading-relaxed text-gray-500">Free and Premium themes, UI Kit's, templates and landing pages built with Tailwind CSS, HTML &amp; Next.js.</p> -->
-            <div class="flex justify-center w-full max-w-2xl gap-2 mx-auto mt-6">
-                <div class="mt-3 rounded-lg sm:mt-0">
-                    <Link :href="route('login')"  as="button" class="px-5 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-blue-600 lg:px-10 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Log in</Link>
-                </div>
-                <div class="mt-3 rounded-lg sm:mt-0 sm:ml-3">
-                    <Link :href="route('appointment.create')"  as="button" class="items-center block px-5 lg:px-10 py-3.5 text-base font-medium text-center text-white transition duration-500 bg-blue-400 ease-in-out transform  rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 hover:bg-blue-500 hover:text-white">Book Appointment</Link>
-                </div>
+            <div class=" text-gray-600 font-light">
+                <h1 class="font-black uppercase text-5xl lg:text-5xl text-gray-500 mb-2">Mater Dei College's</h1>
+                <p class="font-black uppercase text-3xl lg:text-3xl text-indigo-500 mb-2">Clinic Management System</p>
             </div>
+            <div class="mb-20 md:mb-0">
+
+                  <Link :href="route('appointment.create')" as="button"  class="text-lg  outline-none focus:outline-none transform  hover:scale-110 w-50 bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 transition-colors text-white rounded-lg px-3 py-2 font-light"><i class="mdi mdi-arrow-right mr-2"></i>Book Appointment</Link>
             </div>
         </div>
+        <div class="w-full md:w-1/2 text-center">
+         <img src="/images/land.jpg" class="w-full max-w-lg lg:max-w-full mx-auto" alt="">
         </div>
     </div>
-    <div class="flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10">
-                <div>
-                    <a title="About the System" @click="about()" href="#" class="block w-10 h-10 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12">
-                        <img class="object-cover object-center w-10 h-10 rounded-full" src="/images/question.png"/>
-                    </a>
-                    <Modal :show="showAbout" @close="closeModal">
-                        <div class="p-4 sm:p-10 text-center overflow-y-auto flex flex-col items-center">
-                            <button @click="closeModal" class="mt-5 ml-auto p-3 shadow-2xl rounded-xl text-black font-bold hover:text-red-800">X</button>
-                            <div class="px-10 py-10 max-w-md m-auto lg:col-span-2 shadow-xl rounded-xl lg:mt-10 md:shadow-xl md:rounded-xl lg:shadow-none lg:rounded-none lg:w-full lg:mb-10 lg:px-5 lg:pt-5 lg:pb-5 lg:max-w-lg bg-white">
-                                <div class="flex flex-col items-center">
-                                    <img class="h-full" src="/images/mdclogo.png" alt="MDC Logo">
-                                    <h1 class="mt-5 font-bold text-lg lg:mt-7">About The System</h1>
+    <div class="w-64 md:w-96 h-96 md:h-full bg-indigo-200 bg-opacity-30 absolute -top-64 md:-top-96 right-20 md:right-32 rounded-full pointer-events-none -rotate-45 transform"></div>
+    <div class="w-96 h-full bg-gray-200 bg-opacity-20 absolute -bottom-96 right-64 rounded-full pointer-events-none -rotate-45 transform"></div>
+</div>
 
-                                    <h1 class="text-lg text-gray-600 text-justify pt-2">MDC CMS was developed by MDC IT students as their capstone project in 2023. This aims to enhance the efficiency of the MDC clinic by providing a faster and easier workflow.</h1>
-                                </div>
-                            </div>
+ <div class="flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10">
+    <div>
+        <a title="About the System" @click="about()" href="#" class="block w-10 h-10 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12">
+            <img class="object-cover object-center w-10 h-10 rounded-full" src="/images/question.png"/>
+        </a>
+        <Modal :show="showAbout" @close="closeModal">
+            <div class="p-4 sm:p-10 text-center overflow-y-auto flex flex-col items-center">
+                <button @click="closeModal" class="mt-5 ml-auto p-3 shadow-2xl rounded-xl text-black font-bold hover:text-red-800">X</button>
+                <div class="px-10 py-10 max-w-md m-auto lg:col-span-2 shadow-xl rounded-xl lg:mt-10 md:shadow-xl md:rounded-xl lg:shadow-none lg:rounded-none lg:w-full lg:mb-10 lg:px-5 lg:pt-5 lg:pb-5 lg:max-w-lg bg-white">
+                    <div class="flex flex-col items-center">
+                        <img class="h-full" src="/images/mdclogo.png" alt="MDC Logo">
+                        <h1 class="mt-5 font-bold text-lg lg:mt-7">About The System</h1>
 
-                        </div>
-                    </Modal>
+                        <h1 class="text-lg text-gray-600 text-justify pt-2">MDC CMS was developed by MDC IT students as their capstone project in 2023. This aims to enhance the efficiency of the MDC clinic by providing a faster and easier workflow.</h1>
+                    </div>
                 </div>
-            </div>
-</section>
 
+            </div>
+        </Modal>
+    </div>
 </div>
 
 </template>
 
-<!-- <style>
-.bg-dots-darker {
-    background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(0,0,0,0.07)'/%3E%3C/svg%3E");
-}
-@media (prefers-color-scheme: dark) {
-    .dark\:bg-dots-lighter {
-        background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(255,255,255,0.07)'/%3E%3C/svg%3E");
-    }
-}
-</style> -->
 
 <style scoped>
     .bg-image {

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('pr');
             $table->string('rr');
             $table->string('saturation');
-            $table->date('lmp');
+            $table->date('lmp')->nullable();
             $table->boolean('head_neck_scalp')->comment("1-normal, 0-abnormal");
             $table->string('head_neck_scalp_findings')->nullable();
             $table->boolean('eyes')->comment("1-normal, 0-abnormal");
@@ -54,12 +54,12 @@ return new class extends Migration
             $table->string('extremities_findings')->nullable();
             $table->boolean('dental')->comment("1-normal, 0-abnormal");
             $table->string('dental_findings')->nullable();
-            $table->string('right_eye');
-            $table->string('left_eye');
-            $table->string('withg_right_eye');
-            $table->string('withg_left_eye');
-            $table->string('ishihara');
-            $table->string('colour_blind');
+            $table->string('right_eye')->nullable();
+            $table->string('left_eye')->nullable();
+            $table->string('withg_right_eye')->nullable();
+            $table->string('withg_left_eye')->nullable();
+            $table->string('ishihara')->nullable();
+            $table->string('colour_blind')->nullable();
             $table->bigInteger('form_id')->unsigned();
             $table->foreign('form_id')->references('id')->on('forms');
             $table->timestamps();
