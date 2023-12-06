@@ -40,9 +40,9 @@ class ReportController extends Controller
         ]);
     }
 
-    public function medreport(){
+    public function annual(){
         $currentYear = now()->year;
-        return inertia('Report/Calendar', [
+        return inertia('Report/MedReport', [
             'currentYear' => $currentYear
         ]);
     }

@@ -79,32 +79,32 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
                             <span class="ml-2 text-m tracking-wide truncate">Medicine</span>
                         </button>
                         <div v-show="show"  class="flex justify-start ml-3 flex-col w-full md:w-auto items-start pb-1 ">
-                            <Link  @click.stop="closeDropdown"  v-if="$page.props.auth.permissions.includes('manage-category')" :href="route('category.index')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
+                            <Link  v-if="$page.props.auth.permissions.includes('manage-category')" :href="route('category.index')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                                 </svg>
                                 <span class="text-base leading-4" v-show="!collapse">Category</span>
                             </Link>
-                            <Link @click.stop="closeDropdown" v-if="$page.props.auth.permissions.includes('manage-type')" :href="route('type.index')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
+                            <Link v-if="$page.props.auth.permissions.includes('manage-type')" :href="route('type.index')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />
                                 </svg>
                                 <span class="text-base leading-4" v-show="!collapse">Medicine Type</span>
                             </Link>
-                            <Link  @click.stop="closeDropdown"  v-if="$page.props.auth.permissions.includes('manage-medicine')" :href="route('medicine.index')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
+                            <Link  v-if="$page.props.auth.permissions.includes('manage-medicine')" :href="route('medicine.index')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
                                 </svg>
                                 <span class="text-base leading-2" v-show="!collapse">Manage Medicine</span>
                             </Link>
 
-                            <Link  @click.stop="closeDropdown"  v-if="$page.props.auth.permissions.includes('manage-purchase')" :href="route('stock.index')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
+                            <Link  v-if="$page.props.auth.permissions.includes('manage-purchase')" :href="route('stock.index')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" />
                                 </svg>
                                 <span class="text-base leading-4" v-show="!collapse">Purchase</span>
                             </Link>
-                            <Link  @click.stop="closeDropdown"  v-if="$page.props.auth.permissions.includes('manage-dispense')" :href="route('dispense.index')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
+                            <Link  v-if="$page.props.auth.permissions.includes('manage-dispense')" :href="route('dispense.index')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
                                 </svg>
@@ -147,14 +147,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
                     </Link>
                 </li>
                 <li v-if="$page.props.auth.permissions.includes('manage-report')">
-                    <!-- <Link :href="route('report.chart')" class=" relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6"> -->
-                        <!-- <span class="inline-flex justify-center items-center ml-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
-                            </svg>
-
-                        </span>
-                        <span class="ml-2 text-m tracking-wide truncate" v-show="!collapse">Reports</span> -->
+                  
                         <div>
                         <button  @click="isOpen2" class="relative flex flex-row items-center cursor-pointer w-full h-11 focus:outline-none hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6">
                             <span class="inline-flex justify-center items-center ml-4">
@@ -172,18 +165,19 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
                                 </svg>
                                 <span class="text-base leading-4" v-show="!collapse">Appointment Report</span>
                             </Link>
-                            <!-- <Link @click.stop="closeDropdown2" v-if="$page.props.auth.permissions.includes('manage-report')" :href="route('medreport.chart')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />
-                                </svg>
-                                <span class="text-base leading-4" v-show="!collapse">Medical Report</span>
-                            </Link> -->
-                              <Link @click.stop="closeDropdown2" v-if="$page.props.auth.permissions.includes('manage-report')" :href="route('medchart')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
+                           
+                            <Link @click.stop="closeDropdown2" v-if="$page.props.auth.permissions.includes('manage-report')" :href="route('medchart')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />
                                 </svg>
                                 <span class="text-base leading-4" v-show="!collapse">Medical Report Chart</span>
                             </Link>
+                            <!-- <Link @click.stop="closeDropdown2" v-if="$page.props.auth.permissions.includes('manage-report')" :href="route('annual')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />
+                                </svg>
+                                <span class="text-base leading-4" v-show="!collapse">Medical Report</span>
+                            </Link> -->
                         </div>
                     </div>
                     <!-- </Link> -->

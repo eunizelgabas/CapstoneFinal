@@ -93,85 +93,103 @@ const filteredDoctors = computed(() => {
        form.email = ""
     }
 
+      onMounted(() => {
+    // Set a timeout to hide the success flash message after 3 seconds
+        const successFlashMessage = document.getElementById('flash-success-message');
+            if (successFlashMessage) {
+                setTimeout(() => {
+                successFlashMessage.style.display = 'none';
+                }, 3000);
+        }
+
+        // Set a timeout to hide the error flash message after 3 seconds
+        const errorFlashMessage = document.getElementById('flash-error-message');
+            if (errorFlashMessage) {
+                setTimeout(() => {
+                errorFlashMessage.style.display = 'none';
+            }, 3000);
+        }
+    });
+
 
 </script>
 
 <template>
     <Head title="Create Appointment"/>
-    <div class="bg-image"></div>
-
-
-    <div class="overlay"></div>
+    <div class="h-screen flex justify-center items-center bg-cover bg-center" style="background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url('/images/mdcs.jpg')">
 
     <div class="flex justify-center">
         <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
-            {{ $page.props.flash.success }}
-        </div>
-
-        <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
-            {{ $page.props.flash.error }}
-        </div>
-
-        <div class="w-full max-w-lg mx-auto p-8 ">
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="text-lg mb-6 font-bold">Appointment Form</h2>
-                <form @submit.prevent="submit">
-                    <div class="col-span-2 sm:col-span-1">
-                            <label for="pat_id" class="block text-sm font-medium text-gray-700 mb-2">Student ID/Teacher ID</label>
-                            <input type="text"  v-model="form.pat_id"  name="pat_id" id="pat_id"  class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
-                    </div>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="col-span-2 sm:col-span-1 mt-2">
-                            <label for="firstname" class="block text-sm font-medium text-gray-700 mb-2">Firstname</label>
-                            <input type="text" required v-model="form.firstname"  name="firstname" id="firstname"  class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div class="col-span-2 sm:col-span-1 mt-2">
-                            <label for="lastname" class="block text-sm font-medium text-gray-700 mb-2">Lastname</label>
-                            <input type="text" required v-model="form.lastname"  name="lastname" id="lastname" placeholder="" class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div class="col-span-2 sm:col-span-2 mt-2">
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                            <input type="email" required  v-model="form.email"  name="email" id="lastname" placeholder="" class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div class="col-span-2 sm:col-span-1">
-                            <label for="doctor" class="block text-sm font-medium text-gray-700 mb-2">Doctor</label>
-                            <select id="doctor"  v-model="form.doc_id" name="doctor" @change="fetchServicesByDoctorId"
-                                class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
-                                <option selected disabled >Select doctor</option>
-                                <option v-for="doc in filteredDoctors" :key="doc.id" :value="doc.id">{{ doc.user.firstname }} {{ doc.user.lastname }}</option>
-                            </select>
-
-                        </div>
-                        <div class="col-span-2 sm:col-span-1">
-                            <label for="card-holder" class="block text-sm font-medium text-gray-700 mb-2">Service</label>
-
-                            <select id="service" v-model="form.service_id" placeholder=""
-                                class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
-                                <option selected disabled >Select services</option>
-                                <option v-for="service in availableServices" :key="service.id" :value="service.id">{{ service.name }}</option>
-                            </select>
-                        </div>
-                        <div class="col-span-2 sm:col-span-1 mt-2">
-                            <label for="date" class="block text-sm font-medium text-gray-700 mb-2">Date</label>
-                            <input type="date"  v-model="form.date"  name="date" id="date" placeholder="0000 0000 0000 0000" class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div class="col-span-2 sm:col-span-1 mt-2">
-                            <label for="time" class="block text-sm font-medium text-gray-700 mb-2">Time</label>
-                            <input type="time"  v-model="form.time"  name="time" id="time" placeholder="" class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
-                        </div>
-                    </div>
-                    <div class="sm:col-span-1 mt-2">
-                            <label for="reason" class="block text-sm font-medium text-gray-700 mb-2">Reason</label>
-                            <input type="text"  v-model="form.reason"  name="reason" id="reason" placeholder="" class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500">
-                    </div>
-                    <div class="mt-8">
-                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-400 text-white font-medium py-3 rounded-lg focus:outline-none">Book Appointment</button>
-                    </div>
-                </form>
+                {{ $page.props.flash.success }}
+                <div class="progress-bar success"></div>
             </div>
+            <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
+                {{ $page.props.flash.error }}
+                <div class="progress-bar error"></div>
+            </div>
+        <form @submit.prevent="submit" class="form bg-white p-6 my-10 relative">
+                <h3 class="text-2xl text-gray-900 font-semibold">Appointment Form</h3>
+                <p class="text-gray-600"> To facilitate quicker and more convenient appointments for you.</p>
+                <div class="mt-3">
+                    <label for="pat_id" class=" text-sm font-bold text-gray-700 mb-2">Student/Teacher ID</label>
+                    <input type="text" name="" v-model="form.pat_id" id="" placeholder="" class="border p-2  w-full">
+                    <div class="text-sm text-red-500 italic" v-if="form.errors.pat_id">{{ form.errors.pat_id }}</div>
+                </div>
+               <div class="grid grid-cols-2 gap-5 mt-3">
+                    <div>
+                        <label for="firstname" class="text-sm font-bold text-gray-700 mb-2">Firstname</label>
+                        <input type="text" name="firstname" id="firstname" v-model="form.firstname" placeholder="" class="border p-2 w-full mb-2">
+                        <div class="text-sm text-red-500 italic" v-if="form.errors.firstname">{{ form.errors.firstname }}</div>
+                    </div>
+                    
+                    <div>
+                        <label for="pat_id" class="text-sm font-bold text-gray-700 mb-2">Lastname</label>
+                        <input type="tel" name="" id="" placeholder="" v-model="form.lastname" class="border p-2 w-full">
+                         <div class="text-sm text-red-500 italic" v-if="form.errors.lastname">{{ form.errors.lastname }}</div>
+                    </div>
+                </div>
+                 <div class="grid grid-cols-2 gap-5 mt-3">
+                    <div>
+                        <label for="doc_id" class="text-sm font-bold text-gray-700 mb-2">Doctor</label>
+                        <select name="doc_id"  placeholder="" id="doctor"  v-model="form.doc_id"  @change="fetchServicesByDoctorId" class="border p-2 w-full mb-2">
+                            <option selected disabled >Select doctor</option>
+                            <option v-for="doc in filteredDoctors" :key="doc.id" :value="doc.id">{{ doc.user.firstname }} {{ doc.user.lastname }}</option>
+                        </select>
+                         <div class="text-sm text-red-500 italic" v-if="form.errors.doc_id">{{ form.errors.doc_id }}</div>
+                    </div>
+                    
+                    <div>
+                        <label for="doc_id" class="text-sm font-bold text-gray-700 mb-2">Service</label>
+                        <select name="doc_id"  placeholder="" id="doctor" v-model="form.service_id" class="border p-2 w-full mb-2">
+                            <option selected disabled >Select services</option>
+                            <option v-for="service in availableServices" :key="service.id" :value="service.id">{{ service.name }}</option>
+                        </select>
+                         <div class="text-sm text-red-500 italic" v-if="form.errors.service_id">{{ form.errors.service_id }}</div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-5 mt-3">
+                    <div>
+                        <label for="date" class="text-sm font-bold text-gray-700 mb-2">Date</label>
+                        <input type="date" name="date" id="date" v-model="form.date"  placeholder="" class="border p-2 w-full mb-2">
+                         <div class="text-sm text-red-500 italic" v-if="form.errors.date">{{ form.errors.date }}</div>
+                    </div>
+                    
+                    <div>
+                        <label for="time" class="text-sm font-bold text-gray-700 mb-2">Time</label>
+                        <input type="time" name="time" v-model="form.time"  id="time" placeholder="" class="border p-2 w-full">
+                         <div class="text-sm text-red-500 italic" v-if="form.errors.time">{{ form.errors.time }}</div>
+                    </div>
+                </div>
+                <label for="email" class="text-sm font-bold text-gray-700 mb-2">Email</label>
+                <input type="email" name="" id="" placeholder="" v-model="form.email"  class="border p-2 w-full mb-2">
+                 <div class="text-sm text-red-500 italic" v-if="form.errors.email">{{ form.errors.email }}</div>
+                <label for="reason" class="text-sm font-bold text-gray-700 mb-2">Reason</label>
+                <textarea name="reason" id="reason" cols="10" rows="3" v-model="form.reason"  placeholder="" class="border p-2 w-full"></textarea>
+                 <div class="text-sm text-red-500 italic" v-if="form.errors.reason">{{ form.errors.reason }}</div>
+               
+                <button type="submit" class="w-full mt-6 bg-blue-600 hover:bg-blue-500 text-white font-semibold p-3">Submit</button>
 
-        </div>
-
+            </form> 
     </div>
 
     <div class="flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10">
@@ -180,7 +198,7 @@ const filteredDoctors = computed(() => {
                         <img class="object-cover object-center w-10 h-10 rounded-full" src="/images/question.png"/>
                     </a>
                     <Modal :show="showAbout" @close="closeModal">
-                        <div class="p-4 sm:p-10 text-center overflow-y-auto flex flex-col items-center">
+                        <div class=" text-center overflow-y-auto flex flex-col items-center">
                             <button @click="closeModal" class="mt-5 ml-auto p-3 shadow-2xl rounded-xl text-black font-bold hover:text-red-800">X</button>
                             <div class="px-10 py-10 max-w-md m-auto lg:col-span-2 shadow-xl rounded-xl lg:mt-10 md:shadow-xl md:rounded-xl lg:shadow-none lg:rounded-none lg:w-full lg:mb-10 lg:px-5 lg:pt-5 lg:pb-5 lg:max-w-lg bg-white">
                                 <div class="flex flex-col items-center">
@@ -195,12 +213,12 @@ const filteredDoctors = computed(() => {
                     </Modal>
                 </div>
             </div>
-
+    </div>
 </template>
 
 
 <style scoped>
-    .bg-image {
+    /* .bg-image {
       background-image: url('/images/mdcs.jpg');
       background-size: cover;
       background-position: center;
@@ -210,17 +228,59 @@ const filteredDoctors = computed(() => {
       width: 100%;
       height: 100%;
       z-index: -1;
-    }
+    } */
 
-    /* Overlay with Opacity */
-    .overlay {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(203, 199, 199, 0.2); /* Adjust the opacity as needed */
-      z-index: -1;
+   
+     .icon::after{
+  content: '';
+  display: block;
+  position: absolute;
+  border-top: 23px solid transparent;
+  border-bottom: 17px solid transparent;
+  border-left: 12px solid #3182ce;
+  left: 100%;
+  top: 0;
+}
+
+
+#flash-success-message {
+    animation: fadeOut 6s ease-in-out forwards;
+}
+
+.progress-bar {
+    height: 5px;
+    width: 100%;
+    background-color: #4CAF50; /* Green color */
+    animation: progressBar 3s linear;
+}
+#flash-error-message {
+    animation: fadeOut 7s ease-in-out forwards;
+}
+
+.success .progress-bar {
+
+    animation: progressBar 5s linear;
+}
+.error .progress-bar {
+    background-color: #FF5733; /* Red color */
+    animation: progressBar 5s linear;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
     }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes progressBar {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+    }
+}    
 </style>

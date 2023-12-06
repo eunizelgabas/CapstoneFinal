@@ -29,7 +29,7 @@ class DashboardController extends Controller
                     });
             })
             ->orderBy('created_at', 'desc')
-            ->take(5)
+            ->take(4)
             ->get();
 
         // Admin logic

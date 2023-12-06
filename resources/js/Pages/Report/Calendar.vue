@@ -25,7 +25,7 @@ onMounted(async () => {
     // Map the formatted appointments to the Qalendar events structure
     events.value = props.appointments.map(appointment => { // Change props.appointments to appointments
       // Combine date and time into a single property
-      const startDateTime = new Date(`${appointment.date}T${appointment.time}`);
+    //   const startDateTime = new Date(`${appointment.date} ${appointment.time}`);
      let color;
     switch (appointment.status) {
         case 'Pending':
@@ -40,11 +40,19 @@ onMounted(async () => {
         default:
         color = 'gray'; // or any default color for other cases
     }
+    const startDateTime = new Date(`${appointment.date}T${appointment.time}`);
+    const endDateTime = new Date(startDateTime);
+      endDateTime.setMinutes(endDateTime.getMinutes() + 60);
       return {
         title: appointment.service.name,
         with: `${appointment.patient.firstname} ${appointment.patient.lastname} -  Dr. ${appointment.doctor.user.firstname} ${appointment.doctor.user.lastname}`,
-        time: { start: appointment.date, end: appointment.date },
-        color: color,
+    //    time: { start: appointment.date + ' ' + appointment.time, end: appointment.date + ' ' + appointment.time },
+        time: {
+        start: startDateTime.toISOString().slice(0, 16).replace('T', ' '), // Format: 'YYYY-MM-DD hh:mm'
+        end: endDateTime.toISOString().slice(0, 16).replace('T', ' ') // Format: 'YYYY-MM-DD hh:mm'
+        },
+
+      color: color,
         isEditable: false,
         id: appointment.id,
         description: appointment.reason,
@@ -54,6 +62,13 @@ onMounted(async () => {
     console.error('Error fetching appointments:', error);
   }
 });
+const config = {
+  dayBoundaries: {
+    start: 6,
+    end: 3,
+  },
+
+};
 
 
 
@@ -76,7 +91,7 @@ onMounted(async () => {
         <div class="w-full px-4 py-5">
 
             <div class="calendar-container is-light-mode">
-                <Qalendar :events="events"  />
+                <Qalendar :events="events"   />
             </div>
 
         </div>

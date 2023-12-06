@@ -64,7 +64,7 @@
             <!-- Left Side -->
             <div class="w-full md:w-3/12 md:mx-2">
                 <!-- Profile Card -->
-                <div class="bg-white p-3 border-t-4 border-green-400">
+                <div class="bg-white p-3 border-t-4 border-blue-400 shadow-sm">
 
                     <h1 class="text-gray-900 font-bold text-xl leading-8 my-1">{{ doctor.user.firstname }} {{ doctor.user.lastname }}</h1>
 
@@ -86,21 +86,7 @@
 
                             </div>
 
-                    <!-- <ul
-                        class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
-                        <li class="flex items-center justify-center py-3">
-                            <span>Status</span>
-                            <span class="ml-auto"><span
-                                :class="{
-
-                                    'bg-red-600': doctor.user.status == 0,
-                                    'bg-green-600 ': doctor.user.status == 1,
-                                }"
-                                class=" py-1 px-2 rounded text-white text-sm">{{doctor.user.status ? 'Active' : 'Inactive' }}</span></span>
-
-                        </li>
-
-                    </ul> -->
+                 
                     <div class="flex justify-center mt-3 ml-2 mr-4" v-if="doctor.user.status===1">
                         <Link class="border border-red-500 bg-red-500 text-white rounded-md px-3 py-2 m-2 transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline" as="button" method="POST"  :href="'/doctor/deactivate/'+ doctor.id" >Deactivate Doctor</Link>
 
@@ -113,58 +99,49 @@
             </div>
             <!-- Right Side -->
             <div class="w-full md:w-9/12 mx-2 h-64">
-                <!-- Profile tab -->
-                <!-- About Section -->
+             
                 <div class="bg-white   shadow-sm rounded-sm">
-                    <!-- <div class="flex items-center py-3 px-4 space-x-2 font-semibold text-gray-900 leading-8">
-                        <span clas="text-green-500">
-                            <i class="fa-regular fa-user fa-lg"></i>
-                        </span>
-                        <span class="tracking-wide text-xl">Other Details</span>
-                    </div> -->
+                    <div class="flex flex-col">
+                        <div class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-6 md:p-10 rounded-full">
+                            <div class="flex flex-col">
+                                <div class="flex-1">
+                                    <h5 class="text-m font-bold">Gender</h5>
+                                    <p class="mt-1 text-l text-gray-600">{{ doctor.user.gender }}</p>
+                                </div>
+                            <div class="border-b-2 font-bold border-gray-100"></div>
+                        </div>
 
+                        <div class="flex flex-col">
+                            <div class="flex-1">
+                                <h5 class="text-m font-bold">Birthday</h5>
+                                <p class="mt-2 text-lg text-gray-600">{{ formattedDate(doctor.user.dob)}}</p>
+                            </div>
+                        <div class="border-b-2 font-bold border-gray-100"></div>
+                    </div>
 
                     <div class="flex flex-col">
-        <div class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-6 md:p-10 rounded-full">
-            <div class="flex flex-col">
-                <div class="flex-1">
-                    <h5 class="text-m font-bold">Gender</h5>
-                    <p class="mt-1 text-l text-gray-600">{{ doctor.user.gender }}</p>
-                </div>
-                <div class="border-b-2 font-bold border-gray-100"></div>
-            </div>
+                        <div class="flex-1">
+                            <h5 class="text-m font-bold">Contact No</h5>
+                            <p class="mt-2 text-lg text-gray-600">{{ doctor.user.contact_no }}</p>
+                        </div>
+                        <div class="border-b-2 font-bold border-gray-100"></div>
+                    </div>
 
-            <div class="flex flex-col">
-                <div class="flex-1">
-                    <h5 class="text-m font-bold">Birthday</h5>
-                    <p class="mt-2 text-lg text-gray-600">{{ formattedDate(doctor.user.dob)}}</p>
-                </div>
-                <div class="border-b-2 font-bold border-gray-100"></div>
-            </div>
+                    <div class="flex flex-col">
+                        <div class="flex-1">
+                            <h5 class="mb-1 text-m font-bold">Status</h5>
+                            <p class="mt-2 text-sm uppercase px-2 py-1 w-20 text-center rounded-full border font-bold"
+                                :class="{
+                                    'bg-green-200 text-green-600': doctor.user.status == 1,
+                                    'bg-red-200 text-red-600': doctor.user.status == 0,
+                                }">{{doctor.user.status ? 'Active' : 'Inactive' }}
+                            </p>
 
-            <div class="flex flex-col">
-                <div class="flex-1">
-                    <h5 class="text-m font-bold">Contact No</h5>
-                    <p class="mt-2 text-lg text-gray-600">{{ doctor.user.contact_no }}</p>
+                        </div>
+                        <div class="border-b-2 font-bold border-gray-100"></div>
+                    </div>
                 </div>
-                <div class="border-b-2 font-bold border-gray-100"></div>
             </div>
-
-            <div class="flex flex-col">
-                <div class="flex-1">
-                    <h5 class="mb-1 text-m font-bold">Status</h5>
-                    <p class="mt-2 text-sm uppercase px-2 py-1 w-20 text-center rounded-full border font-bold"
-                        :class="{
-                            'bg-green-200 text-green-600': doctor.user.status == 1,
-                            'bg-red-200 text-red-600': doctor.user.status == 0,
-                        }">{{doctor.user.status ? 'Active' : 'Inactive' }}
-                    </p>
-
-                </div>
-                <div class="border-b-2 font-bold border-gray-100"></div>
-            </div>
-        </div>
-</div>
 
 
                 </div>

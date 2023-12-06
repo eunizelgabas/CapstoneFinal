@@ -152,6 +152,8 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::delete('/patient/{patient}', [PatientController::class, 'destroy']);
     Route::get('/patient/show/{patient}', [PatientController::class, 'show']);
     Route::get('/patient/pdf', [PatientController::class, 'patientPdf'])->name('patient.pdf');
+    Route::post('/patient/deactivate/{patient}', [PatientController::class, 'deactivatePatient']);
+    Route::post('/patient/activate/{patient}', [PatientController::class, 'activatePatient']);
     });
 
     //Appointment for Admin/Doctor
@@ -186,6 +188,7 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::get('/report', [ReportController::class, 'index'])->name('report.chart');
     Route::get('/calendar', [ReportController::class, 'calendar'])->name('calendar');
     Route::get('/medchart', [ReportController::class, 'medchart'])->name('medchart');
+    Route::get('/annualreport', [ReportController::class, 'annual'])->name('annual');
 
     Route::get('/medcert', [MedCertController::class, 'generate'])->name('medcert');
     Route::post('/medcert', [MedCertController::class, 'store'])->name('medcert');

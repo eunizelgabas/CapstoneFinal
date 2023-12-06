@@ -32,10 +32,11 @@ const props = defineProps({
 
                     </div>
                     <div>
-                        <h1 class="mb-3 text-lg"> Name of Establishment : <u class="text-lg"> Mater Dei College</u></h1>
-                        <h1 class="mb-3 text-lg">Address: <u class="text-lg">Cabulijan, Tubigon, Bohol</u></h1>
-
+                        <!-- <h1 class="mb-3 text-lg"> Name of Establishment : <u class="text-lg"> Mater Dei College</u></h1>
+                        <h1 class="mb-3 text-lg">Address: <u class="text-lg">Cabulijan, Tubigon, Bohol</u></h1> -->
+                       
                     </div>
+                    
                 </div>
             </div>
         </div>

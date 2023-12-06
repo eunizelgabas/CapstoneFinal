@@ -117,12 +117,7 @@ const submit = () =>{
             <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-100 border-s-4 border-green-500 rounded-md shadow-md">
                 {{ $page.props.flash.success }}
             </div>
-            <!-- <div v-if="$page.props.flash.success" role="alert" id="flash-success-message" class="rounded border-s-4 border-red-500 bg-red-50 p-4">
-
-                <p class="mt-2 text-sm text-red-700">
-                     {{ $page.props.flash.success }}
-                </p>
-            </div> -->
+           
 
             <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
                 {{ $page.props.flash.error }}
@@ -245,4 +240,6 @@ const submit = () =>{
   border-color: green;
   outline: 1px dotted #000
 }
+
+
 </style>

@@ -212,36 +212,6 @@ class PatientController extends Controller
 
 
 
-//     public function search(Request $request)
-// {
-//     try {
-//         $term = $request->query('term');
-
-//         $patients = Patient::where('type', 'Student')
-//             ->orWhere('type', 'Teacher')
-//             ->where(function ($query) use ($term) {
-//                 $query->where('firstname', 'like', '%' . $term . '%')
-//                     ->orWhere('lastname', 'like', '%' . $term . '%')
-//                     ->orWhere(function ($subquery) use ($term) {
-//                         $subquery->where('type', 'Student')
-//                             ->where('student_no', 'like', '%' . $term . '%');
-//                     })
-//                     ->orWhere(function ($subquery) use ($term) {
-//                         $subquery->where('type', 'Teacher')
-//                             ->where('teacher_no', 'like', '%' . $term . '%');
-//                     });
-//             })
-//             ->where('status', 1) // Filter active patients
-//             ->get();
-
-//         // Additional conditions based on relationships (if needed)
-
-//         return response()->json(['patients' => $patients]);
-//     } catch (\Exception $e) {
-//         // Handle the exception and return an error response if needed
-//         return response()->json(['error' => 'An error occurred while searching for patients.'], 500);
-//     }
-// }
 
     public function show(Patient $patient)
     {
@@ -310,6 +280,20 @@ class PatientController extends Controller
             'patient' => $patient
         ]);
         return $pdf->stream();
+    }
+
+    public function deactivatePatient(Patient $patient){
+        // Assuming there is a 'user' relationship in your patient model
+        $patient->update(['status' => 0]);
+
+        return redirect('/patient/show/' . $patient->id)->with('success', 'Patient deactivated successfully');
+    }
+
+
+    public function activatePatient(Patient $patient){
+        $patient->update(['status' => 1]);
+
+        return redirect('/patient/show/' . $patient->id)->with('success','Patient activated successfully');
     }
 }
 

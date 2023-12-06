@@ -108,16 +108,16 @@ function about() {
 <template>
 
     <Head title="Landing Page" />
-
+<!--
     <nav class="relative px-4 py-4 flex justify-between items-center bg-white">
         <a class="text-3xl font-bold leading-none" href="#">
             <img src="/images/mdclogo.png" class="h-10" alt="MDC Logo">
         </a>
 
         <Link as="button" class=" lg:inline-block py-2 px-6 bg-indigo-500 hover:bg-indigo-600 text-sm text-white font-bold rounded-xl transition duration-200" :href="route('login')">Log in</Link>
-    </nav>
+    </nav> -->
 
-    <div class="min-w-screen min-h-screen bg-indigo-100 p-5 lg:p-10 overflow-hidden relative">
+    <!-- <div class="min-w-screen min-h-screen bg-indigo-100 p-5 lg:p-10 overflow-hidden relative">
 
     <div class="flex-1 min-h-full min-w-full rounded-3xl bg-white shadow-xl p-10 lg:p-20 text-gray-800 relative md:flex items-center text-center md:text-left">
         <div class="w-full md:w-1/2">
@@ -140,6 +140,49 @@ function about() {
 </div>
 
  <div class="flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10">
+    <div>
+        <a title="About the System" @click="about()" href="#" class="block w-10 h-10 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12">
+            <img class="object-cover object-center w-10 h-10 rounded-full" src="/images/question.png"/>
+        </a>
+        <Modal :show="showAbout" @close="closeModal">
+            <div class="p-4 sm:p-10 text-center overflow-y-auto flex flex-col items-center">
+                <button @click="closeModal" class="mt-5 ml-auto p-3 shadow-2xl rounded-xl text-black font-bold hover:text-red-800">X</button>
+                <div class="px-10 py-10 max-w-md m-auto lg:col-span-2 shadow-xl rounded-xl lg:mt-10 md:shadow-xl md:rounded-xl lg:shadow-none lg:rounded-none lg:w-full lg:mb-10 lg:px-5 lg:pt-5 lg:pb-5 lg:max-w-lg bg-white">
+                    <div class="flex flex-col items-center">
+                        <img class="h-full" src="/images/mdclogo.png" alt="MDC Logo">
+                        <h1 class="mt-5 font-bold text-lg lg:mt-7">About The System</h1>
+
+                        <h1 class="text-lg text-gray-600 text-justify pt-2">MDC CMS was developed by MDC IT students as their capstone project in 2023. This aims to enhance the efficiency of the MDC clinic by providing a faster and easier workflow.</h1>
+                    </div>
+                </div>
+
+            </div>
+        </Modal>
+    </div>
+</div> -->
+   <!-- component -->
+<div>
+  <div class="h-screen flex justify-center items-center bg-cover bg-center" style="background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url('/images/mdcs.jpg')">
+    <div class="absolute top-0 left-0 mt-5 ml-5">
+        <img src="/imnages/mdclogo.png" class="w-28" alt="">
+
+    </div>
+    <Link :href="route('login')" class="absolute bg-indigo-600 hover:bg-indigo-700 text-white p-3 top-0 right-0 mt-3 mr-5">Log in</Link>
+    <div class="space-y-5">
+     <p class="text-white font-bold text-4xl md:text-3xl lg:text-4xl xl:text-6xl 2xl:text-6xl flex flex-col items-center">
+    <span class="text-center">Mater Dei College's <br /></span>
+    <span class="text-center">Clinic Management System</span>
+</p>
+
+
+      <div class="flex flex-row items-center justify-center">
+        <!-- <input type="text" placeholder="Email address" class="p-4 focus:outline-none focus:ring-1 focus:ring-blue-300 w-3/4" /> -->
+        <Link :href="route('appointment.create')" as="button" class="p-4 text-l font-semibold bg-indigo-600 hover:bg-indigo-700 text-white">Book Appointment ></Link>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10">
     <div>
         <a title="About the System" @click="about()" href="#" class="block w-10 h-10 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12">
             <img class="object-cover object-center w-10 h-10 rounded-full" src="/images/question.png"/>
