@@ -72,7 +72,7 @@
                     <div class="flex mt-2 font-bold">Services
                     </div>
                     <div class="py-4">
-                                <div class=" inline-block mr-2" v-for="service in doctor.services" >
+                                <div class=" inline-block mr-2" v-for="service in doctor.services" :key="service.id" >
                                     <div class="flex  pr-2 h-full items-center">
                                         <svg class="text-blue-500 w-6 h-6 mr-1"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z"/>
@@ -86,7 +86,7 @@
 
                             </div>
 
-                 
+
                     <div class="flex justify-center mt-3 ml-2 mr-4" v-if="doctor.user.status===1">
                         <Link class="border border-red-500 bg-red-500 text-white rounded-md px-3 py-2 m-2 transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline" as="button" method="POST"  :href="'/doctor/deactivate/'+ doctor.id" >Deactivate Doctor</Link>
 
@@ -99,7 +99,7 @@
             </div>
             <!-- Right Side -->
             <div class="w-full md:w-9/12 mx-2 h-64">
-             
+
                 <div class="bg-white   shadow-sm rounded-sm">
                     <div class="flex flex-col">
                         <div class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-6 md:p-10 rounded-full">

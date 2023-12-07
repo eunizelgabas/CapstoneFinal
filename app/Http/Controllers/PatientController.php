@@ -15,19 +15,41 @@ use Illuminate\Support\Facades\Request as HttpRequest;
 class PatientController extends Controller
 {
     public function index(){
-        $patient = Patient::with('student', 'teacher')->when(HttpRequest::input('search'), function ($query, $search) {
-            $query->where('firstname', 'like', '%' . $search . '%')
-                ->orWhere('lastname', 'like', '%' . $search . '%')
-                ->orWhereHas('student', function ($studentQuery) use ($search) {
-                    $studentQuery->where('student_no', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('teacher', function ($teacherQuery) use ($search) {
-                    $teacherQuery->where('teacher_no', 'like', '%' . $search . '%');
-                });
-        })
-        ->orderBy('created_at','desc')
-        ->paginate(8)
-        ->withQueryString();
+
+        $user = auth()->user();
+
+        if ($user->hasRole('Admin')) {
+            $patient = Patient::with('student', 'teacher')->when(HttpRequest::input('search'), function ($query, $search) {
+                $query->where('firstname', 'like', '%' . $search . '%')
+                    ->orWhere('lastname', 'like', '%' . $search . '%')
+                    ->orWhereHas('student', function ($studentQuery) use ($search) {
+                        $studentQuery->where('student_no', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('teacher', function ($teacherQuery) use ($search) {
+                        $teacherQuery->where('teacher_no', 'like', '%' . $search . '%');
+                    });
+            })
+            ->where('status', 1)
+            ->orderBy('created_at','desc')
+            ->paginate(8)
+            ->withQueryString();
+        }elseif ($user->hasRole('Doctor')) {
+            $patient = Patient::with('student', 'teacher')->when(HttpRequest::input('search'), function ($query, $search) {
+                $query->where('firstname', 'like', '%' . $search . '%')
+                    ->orWhere('lastname', 'like', '%' . $search . '%')
+                    ->orWhereHas('student', function ($studentQuery) use ($search) {
+                        $studentQuery->where('student_no', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('teacher', function ($teacherQuery) use ($search) {
+                        $teacherQuery->where('teacher_no', 'like', '%' . $search . '%');
+                    });
+            })
+            ->where('status', 1)
+            ->orderBy('created_at','desc')
+            ->paginate(8)
+            ->withQueryString();
+        }
+
         $activePatientsCount = Patient::where('status', 1)->count();
         return inertia('Patient/Index', [
             'patient' => $patient,
@@ -57,38 +79,33 @@ class PatientController extends Controller
 
         ]);
 
-        $request->validate([
-            'student_no' => 'required|unique:students,student_no',
-            'course' => 'required',
-            'teacher_no' => 'required|unique:students,teacher_no',
-            // Add other validation rules as needed
-        ]);
-
         $type = $fields['type'];
         $patient = Patient::create($fields);
 
         if ($type === 'Student') {
-            // Handle the "student" type here.
-            $student_no = $request->input('student_no');
-            $course = $request->input('course');
+          $stud =   $request->validate([
+                'student_no' => 'required|unique:students,student_no',
+                'course' => 'required',
+                // Add other validation rules for Student
+            ]);
 
-            // Create a new student associated with the user
+            // Create a new student associated with the patient
             $student = new Student([
-                'student_no' => $student_no,
-                'course'    =>$course
-
+                'student_no' => $stud['student_no'],
+                'course' => $stud['course'],
             ]);
 
             // Save the student first to get an ID.
             $patient->student()->save($student);
-        }elseif($type === 'Teacher') {
-            // Handle the "teacher" type here.
-            $teacher_no = $request->input('teacher_no');
+        } elseif ($type === 'Teacher') {
+           $teach = $request->validate([
+                'teacher_no' => 'required|unique:teachers,teacher_no',
+                // Add other validation rules for Teacher
+            ]);
 
-            // Create a new teacher associated with the user
+            // Create a new teacher associated with the patient
             $teacher = new Teacher([
-                'teacher_no' => $teacher_no,
-
+                'teacher_no' => $teach['teacher_no'],
             ]);
 
             // Save the teacher first to get an ID.
@@ -294,6 +311,29 @@ class PatientController extends Controller
         $patient->update(['status' => 1]);
 
         return redirect('/patient/show/' . $patient->id)->with('success','Patient activated successfully');
+    }
+
+    public function inactive(){
+        $patient = Patient::with('student', 'teacher')->when(HttpRequest::input('search'), function ($query, $search) {
+            $query->where('firstname', 'like', '%' . $search . '%')
+                ->orWhere('lastname', 'like', '%' . $search . '%')
+                ->orWhereHas('student', function ($studentQuery) use ($search) {
+                    $studentQuery->where('student_no', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('teacher', function ($teacherQuery) use ($search) {
+                    $teacherQuery->where('teacher_no', 'like', '%' . $search . '%');
+                });
+        })
+        ->where('status', 0)
+        ->orderBy('created_at','desc')
+        ->paginate(8)
+        ->withQueryString();
+        $inactivePatientsCount = Patient::where('status', 0)->count();
+        return inertia('Patient/Inactive', [
+            'patient' => $patient,
+            'inactivePatientsCount' => $inactivePatientsCount,
+            'filters' => HttpRequest::only(['search']),
+        ]);
     }
 }
 

@@ -1,8 +1,10 @@
 <script setup>
     import Sidebar from '@/Layouts/Sidebar.vue';
+    import Breadcrumb from '@/Components/Breadcrumbs.vue'
     import { onMounted, ref } from 'vue';
     import { Link, Head } from '@inertiajs/vue3';
     import { useForm } from '@inertiajs/vue3';
+
 
     let props = defineProps({
         doctor: Object, // Doctor and User details
@@ -40,6 +42,31 @@
 
     }
 
+
+   const crumbs = [
+        {
+            name: 'Dashboard',
+            url: '/dashboard',
+            active: false,
+        },
+        {
+            name: 'List of Doctors',
+            url: '/doctor',
+            active: false,
+        },
+        {
+            name: 'Edit Doctor',
+            url: null,
+            active: true,
+        },
+        {
+            name:  props.doctor.user.firstname + ' '+ props.doctor.user.lastname  ,
+            url: null,
+            active: true,
+        },
+    ]
+
+
 </script>
 
 <template>
@@ -51,8 +78,11 @@
         <div class="container px-4 py-6 mx-auto">
             <div class="sm:flex sm:items-center sm:justify-between">
                 <div>
-                    <div class="flex items-center gap-x-3">
+                    <!-- <div class="flex items-center gap-x-3">
                         <h2 class="text-3xl font-bold text-black">Edit Doctor: {{ doctor.user.firstname }} {{ doctor.user.lastname }}</h2>
+                    </div> -->
+                     <div class="mt-5">
+                        <Breadcrumb :crumbs="crumbs"  />
                     </div>
                 </div>
             </div>
@@ -78,17 +108,18 @@
                           </div>
 
                           <div class="sm:col-span-1">
-                            <label for="lastname" class="block text-sm font-medium leading-6 text-gray-900">Last name</label>
-                            <div class="mt-2">
-                              <input type="text" v-model="form.lastname" name="lastname" id="lastname" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                              <div class="text-sm text-red-500 italic" v-if="form.errors.lastname">{{ form.errors.lastname }}</div>
-                            </div>
-                          </div>
-                          <div class="sm:col-span-1">
                             <label for="middlename" class="block text-sm font-medium leading-6 text-gray-900">Middle name</label>
                             <div class="mt-2">
                               <input type="text" v-model="form.middlename" name="middlename" id="middlename" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                               <div class="text-sm text-red-500 italic" v-if="form.errors.middlename">{{ form.errors.middlename }}</div>
+                            </div>
+                          </div>
+
+                          <div class="sm:col-span-1">
+                            <label for="lastname" class="block text-sm font-medium leading-6 text-gray-900">Last name</label>
+                            <div class="mt-2">
+                              <input type="text" v-model="form.lastname" name="lastname" id="lastname" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                              <div class="text-sm text-red-500 italic" v-if="form.errors.lastname">{{ form.errors.lastname }}</div>
                             </div>
                           </div>
 

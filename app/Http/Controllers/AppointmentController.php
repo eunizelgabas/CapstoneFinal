@@ -260,6 +260,13 @@ class AppointmentController extends Controller
         $selectedDoctor = null;
         $availableServices = [];
 
+        if ($patient->status === 0) {
+            // throw new \Exception('Cannot create a health form for a patient with status 0.');
+            // Alternatively, you can redirect the user to a specific page
+            // return redirect()->route('some.route')->with('error', 'Cannot create a health form for a patient with status 0.');
+            return redirect('/patient/show/'. $patient->id)->with('error', 'Cannot create a appointment for a patient with inactive status.');
+        }
+
         $doctors = Doctor::whereHas('user', function ($query) {
             $query->where('status', 1);
         })->with(['services', 'user'])->get();

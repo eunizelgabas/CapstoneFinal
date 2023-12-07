@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('hist')->nullable();
             $table->bigInteger('form_id')->unsigned();
-            $table->foreign('form_id')->references('id')->on('forms');
+            $table->foreign('form_id')->references('id')->on('forms')->onDelete('cascade');
             $table->timestamps();
         });
     }

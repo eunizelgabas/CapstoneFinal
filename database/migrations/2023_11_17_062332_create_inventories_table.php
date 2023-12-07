@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('stock_in')->nullable();
             $table->integer('stock_out')->nullable();
             $table->timestamps();
-            $table->foreign('med_id')->references('id')->on('medicines');
+            $table->foreign('med_id')->references('id')->on('medicines')->onDelete('cascade');
         });
     }
 

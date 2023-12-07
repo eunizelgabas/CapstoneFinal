@@ -21,6 +21,14 @@ class FormController extends Controller
 {
     public function create(Patient $patient){
 
+
+        if ($patient->status === 0) {
+            // throw new \Exception('Cannot create a health form for a patient with status 0.');
+            // Alternatively, you can redirect the user to a specific page
+            // return redirect()->route('some.route')->with('error', 'Cannot create a health form for a patient with status 0.');
+            return redirect('/patient/show/'. $patient->id)->with('error', 'Cannot create a medical record for a patient with inactive status.');
+        }
+
         $isDoctor = auth()->user()->hasRole('Doctor');
         $selectedDoctor = null;
         $doctor = Doctor::whereHas('user', function ($query) {

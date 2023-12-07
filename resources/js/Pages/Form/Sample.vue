@@ -132,6 +132,7 @@ let props = defineProps({
     const isDentalReadonly = computed(() => form.dental === '1' || form.dental=== '');
 
     const image = ref(null);
+    const fileError = ref(null);
 
     const handleFileChange = (event) => {
       const file = event.target.files[0];
@@ -139,6 +140,32 @@ let props = defineProps({
       const reader = new FileReader();
       reader.onload = (e) => (image.value = e.target.result);
       reader.readAsDataURL(file);
+    };
+
+    const fileHandler = (event) => {
+      const file = event.target.files[0];
+      image.value = URL.createObjectURL(file);
+
+      // Perform your custom validation here
+      const allowedExtensions = ["png", "jpg", "jpeg", "pdf"];
+      const maxFileSize = 10 * 1024 * 1024; // 10MB
+
+      if (!allowedExtensions.includes(file.name.split('.').pop().toLowerCase())) {
+        fileError.value = "Invalid file format. Please choose a PNG, JPG, or PDF file.";
+      } else if (file.size > maxFileSize) {
+        fileError.value = "File size exceeds the maximum limit of 10MB.";
+      } else {
+        fileError.value = null;
+      }
+    };
+
+    const validateAndProceed = () => {
+      if (!fileError.value) {
+        // Proceed to the next step
+        // Assuming you have access to `steps` in your setup function
+        // You can replace it with the appropriate logic to navigate to the next step
+        steps.value = 6;
+      }
     };
 
 
@@ -714,7 +741,7 @@ const filteredDoctors = computed(() => {
                                 <div class="mt-2 flex items-center">
                                 <input type="text"  v-model="form.height" name="height" id="height" class="block w-[500px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <span class="text-gray-900 ml-1">cm</span>
-                                <div class="text-sm text-red-500 italic" ></div>
+                                <div class="text-sm text-red-500 italic" v-if="form.errors.height" >{{form.errors.height}}</div>
                             </div>
                             </div>
                             <div class="sm:col-span-1">
@@ -722,7 +749,7 @@ const filteredDoctors = computed(() => {
                                 <div class="mt-2 flex items-center">
                                 <input type="text" v-model="form.weight"  name="weight" id="weight"  class="block w-[500px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <span class="text-gray-900 ml-1">kg</span>
-                                <div class="text-sm text-red-500 italic" ></div>
+                                <div class="text-sm text-red-500 italic" v-if="form.errors.weight">{{form.errors.weight}}</div>
                             </div>
                         </div>
 
@@ -732,33 +759,37 @@ const filteredDoctors = computed(() => {
                                 <label for="bp" class="block text-sm font-medium leading-6 text-gray-900">BP:</label>
                                 <div class="mt-2">
                                 <input type="text" v-model="form.bp" name="bp" id="bp"  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <div class="text-sm text-red-500 italic" ></div>
+                                <div class="text-sm text-red-500 italic" v-if="form.errors.bp" >{{form.errors.bp}}</div>
                                 </div>
                             </div>
                             <div class="sm:col-span-1">
                                 <label for="pr" class="block text-sm font-medium leading-6 text-gray-900">PR:</label>
                                 <div class="mt-2">
                                 <input type="text" v-model="form.pr" name="pr" id="pr" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <div class="text-sm text-red-500 italic" ></div>
+                                <div class="text-sm text-red-500 italic" v-if="form.errors.pr" >{{form.errors.pr}}</div>
                                 </div>
                             </div>
                             <div class="sm:col-span-1">
                                 <label for="rr" class="block text-sm font-medium leading-6 text-gray-900">RR:</label>
                                 <div class="mt-2">
                                 <input type="text" v-model="form.rr"  name="rr" id="rr" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <div class="text-sm text-red-500 italic" ></div>
+                                <div class="text-sm text-red-500 italic"  v-if="form.errors.rr">{{form.errors.rr}}</div>
                                 </div>
                             </div>
                             <div class="sm:col-span-1">
                                 <label for="saturation" class="block text-sm font-medium leading-6 text-gray-900">02 Saturation:</label>
                                 <div class="mt-2">
                                 <input type="text" v-model="form.saturation" name="saturation" id="saturation" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <div class="text-sm text-red-500 italic" ></div>
+                                <div class="text-sm text-red-500 italic" v-if="form.errors.saturation" >{{form.errors.saturation}}</div>
                                 </div>
                             </div>
                             <div class="sm:col-span-1">
                                 <label for="lmp" class="block text-sm font-medium leading-6 text-gray-900">LMP:</label>
-                                <div class="mt-2">
+                                <div class="mt-2" v-if="patient.sex === 'Male'">
+                                <input type="date" v-model="form.lmp"  name="lmp" readonly id="lmp" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <div class="text-sm text-red-500 italic" ></div>
+                                </div>
+                                <div class="mt-2" v-if="patient.sex === 'Female'">
                                 <input type="date" v-model="form.lmp"  name="lmp" id="lmp" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <div class="text-sm text-red-500 italic" ></div>
                                 </div>
@@ -1169,42 +1200,42 @@ const filteredDoctors = computed(() => {
                                 <label for="right_eye" class="block text-sm font-medium leading-6 text-gray-900">Visual Acuity: Right Eye:</label>
                                 <div class="mt-2">
                                 <input type="text" v-model="form.right_eye" name="right_eye" id="right_eye" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <div class="text-sm text-red-500 italic" ></div>
+                                <div class="text-sm text-red-500 italic" v-if="form.errors.right_eye" >{{form.errors.right_eye}}</div>
                                 </div>
                             </div>
                             <div class="sm:col-span-1">
                                 <label for="left_eye" class="block text-sm font-medium leading-6 text-gray-900">Left Eye:</label>
                                 <div class="mt-2">
                                 <input type="text" v-model="form.left_eye"  name="left_eye" id="left_eye"  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <div class="text-sm text-red-500 italic" ></div>
+                                <div class="text-sm text-red-500 italic" v-if="form.errors.left_eye" >{{form.errors.left_eye}}</div>
                                 </div>
                             </div>
                             <div class="sm:col-span-1">
                                 <label for="withg_right_eye" class="block text-sm font-medium leading-6 text-gray-900">With Glasses: Right Eye</label>
                                 <div class="mt-2">
                                 <input type="text" v-model="form.withg_right_eye"  name="withg_right_eye" id="withg_right_eye" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <div class="text-sm text-red-500 italic" ></div>
+                                <div class="text-sm text-red-500 italic" v-if="form.errors.withg_right_eye" >{{form.errors.withg_right_eye}}</div>
                                 </div>
                             </div>
                             <div class="sm:col-span-1">
                                 <label for="withg_left_eye" class="block text-sm font-medium leading-6 text-gray-900">Left Eye:</label>
                                 <div class="mt-2">
                                 <input type="text" v-model="form.withg_left_eye"  name="withg_left_eye" id="withg_left_eye"  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <div class="text-sm text-red-500 italic" ></div>
+                                <div class="text-sm text-red-500 italic" v-if="form.errors.withg_left_eye" >{{form.errors.withg_left_eye}}</div>
                                 </div>
                             </div>
                             <div class="sm:col-span-1">
                                 <label for="ishihara" class="block text-sm font-medium leading-6 text-gray-900">Ishihara Test Result:</label>
                                 <div class="mt-2">
                                 <input type="text" v-model="form.ishihara"   name="ishihara" id="ishihara" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <div class="text-sm text-red-500 italic" ></div>
+                                <div class="text-sm text-red-500 italic" v-if="form.errors.ishihara" >{{form.errors.ishihara}}</div>
                                 </div>
                             </div>
                             <div class="sm:col-span-1">
                                 <label for="colour_blind" class="block text-sm font-medium leading-6 text-gray-900">Colour Blind:</label>
                                 <div class="mt-2">
                                 <input type="text" v-model="form.colour_blind"  name="colour_blind" id="colour_blind"  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <div class="text-sm text-red-500 italic" ></div>
+                                <div class="text-sm text-red-500 italic" v-if="form.errors.colour_blind" >{{form.errors.colour_blind}}</div>
                                 </div>
                             </div>
 
@@ -1217,7 +1248,7 @@ const filteredDoctors = computed(() => {
                             <div class="w-full relative border-2 mt-5 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
                                 <input type="file" @change="handleFileChange" class="absolute inset-0 w-full h-full opacity-0 z-50" />
                                 <div class="text-center">
-                                    <!-- <img class="mx-auto h-12 w-12" src="https://www.svgrepo.com/show/357902/image-upload.svg" alt=""> -->
+
                                     <img v-if="image" id="image" class=" mx-auto w-[100px] h-[100px] " :src="image" />
 
                                     <img v-else class="mx-auto h-12 w-12" src="https://www.svgrepo.com/show/357902/image-upload.svg" alt="">
@@ -1233,16 +1264,17 @@ const filteredDoctors = computed(() => {
                                         PNG, JPG, PDF up to 10MB
                                     </p>
                                 </div>
+                                 <p v-if="form.errors.exam_results" class="text-red-500 mt-2">{{ form.errors.exam_results }}</p>
 
 
                             </div>
-                        <p @click="steps = 6" class="_btn-bordered mt-5 ">Next -></p>
+                        <p  @click="validateAndProceed" class="_btn-bordered mt-5 ">Next -></p>
                     </div>
 
                     <div class="flex flex-col" v-else-if="steps == 6">
                         <p class="_sub-title">Remarks</p>
                         <textarea name="remarks" v-model="form.remarks" class="_input" type="text" placeholder=""></textarea>
-
+                         <p v-if="form.errors.remarks" class="text-red-500 mt-2">{{ form.errors.remarks }}</p>
                         <div class="flex items-center justify-between">
                             <button type="submit" :class="{ 'bg-gray-400 pointer-events-none': isLoading }" class="_btn-white">
                                 <div v-show="isLoading"

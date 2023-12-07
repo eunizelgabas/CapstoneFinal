@@ -16,17 +16,22 @@ class DoctorController extends Controller
 {
     public function index(){
         $doctors = Doctor::with(['user', 'services'])
+        ->whereHas('user', function ($userQuery) {
+            $userQuery->where('status', 1);
+        })
         ->when(HttpRequest::input('search'), function ($query, $search) {
             $query->where('specialization', 'like', '%' . $search . '%')
                 ->orWhere('lic_no', 'like', '%' . $search . '%')
                 ->orWhereHas('user', function ($userQuery) use ($search) {
                     $userQuery->where('firstname', 'like', '%' . $search . '%')
                     ->orWhere('lastname', 'like', '%' . $search . '%');
+
                 })
                 ->orWhereHas('services', function ($serviceQuery) use ($search) {
                     $serviceQuery->where('name', 'like', '%' . $search . '%');
                 });
         })
+
         ->orderBy('created_at','desc')
         ->paginate(8)
         ->withQueryString();
@@ -223,5 +228,35 @@ public function getDoctorServices()
         $doctor->user->update(['status' => 1]);
 
         return redirect('/doctor/show/' . $doctor->id)->with('success','Doctor activated successfully');
+    }
+    public function inactive(){
+        $doctors = Doctor::with(['user', 'services'])
+        ->whereHas('user', function ($userQuery) {
+            $userQuery->where('status', 0);
+        })
+        ->when(HttpRequest::input('search'), function ($query, $search) {
+            $query->where('specialization', 'like', '%' . $search . '%')
+                ->orWhere('lic_no', 'like', '%' . $search . '%')
+                ->orWhereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('firstname', 'like', '%' . $search . '%')
+                    ->orWhere('lastname', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('services', function ($serviceQuery) use ($search) {
+                    $serviceQuery->where('name', 'like', '%' . $search . '%');
+                });
+        })
+
+        ->orderBy('created_at','desc')
+        ->paginate(8)
+        ->withQueryString();
+        $activeDoctorsCount = User::whereHas('doctor', function ($query) {
+            $query->where('status', 0);
+        })->count();
+
+        return inertia('Doctor/Inactive',[
+            'doctors' =>$doctors,
+            'activeDoctorsCount' => $activeDoctorsCount,
+            'filters' => HttpRequest::only(['search']),
+        ]);
     }
 }

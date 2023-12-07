@@ -1,5 +1,6 @@
 <script setup>
 import Sidebar from '@/Layouts/Sidebar.vue';
+import Breadcrumb from '@/Components/Breadcrumbs.vue'
 import {  Head} from '@inertiajs/vue3';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
@@ -64,14 +65,47 @@ import { onMounted } from 'vue';
         form.put('/patient/ '+props.patient.id)
     }
 
+
+   const crumbs = [
+        {
+            name: 'Dashboard',
+            url: '/dashboard',
+            active: false,
+        },
+        {
+            name: 'List of Patients',
+            url: '/patient',
+            active: false,
+        },
+        {
+            name: 'Edit Patient',
+            url: null,
+            active: true,
+        },
+        {
+            name:  props.patient.firstname + ' '+ props.patient.lastname  ,
+            url: null,
+            active: true,
+        },
+    ]
+
 </script>
 
 <template>
     <Head title="Create Patient"/>
     <Sidebar>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Patient</h2>
-        </template>
+        <div class="container px-4 py-6 mx-auto">
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <!-- <div class="flex items-center gap-x-3">
+                        <h2 class="text-3xl font-bold text-black">Edit Doctor: {{ doctor.user.firstname }} {{ doctor.user.lastname }}</h2>
+                    </div> -->
+                     <div class="mt-5">
+                        <Breadcrumb :crumbs="crumbs"  />
+                    </div>
+                </div>
+            </div>
+        </div>
         <div>
             <div class="w-full mt-10 mx-auto px-4 ">
                 <form @submit.prevent="submit">

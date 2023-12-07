@@ -22,6 +22,7 @@ class UserController extends Controller
             ->orWhere('lastname', 'like', '%' . $search . '%')
             ->orWhere('email', 'like', '%' . $search . '%');
         })
+        ->where('status',1)
         ->with('roles')
         ->withCount('doctor')
         ->paginate(8)
@@ -199,4 +200,6 @@ class UserController extends Controller
             return back()->with('error', 'Sorry, this user cannot be deleted because it contains existing info in the system.');
         }
     }
+
+
 }

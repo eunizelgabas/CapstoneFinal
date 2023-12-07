@@ -1,5 +1,6 @@
 <script setup>
     import Sidebar from '@/Layouts/Sidebar.vue';
+    import Breadcrumb from '@/Components/Breadcrumbs.vue'
     import { onMounted, ref, watch } from 'vue';
     import { Link , Head, usePage} from '@inertiajs/vue3';
     import { useForm } from '@inertiajs/vue3';
@@ -67,15 +68,48 @@ if (props.user.type === 'Doctor' && props.user.doctor) {
     }
 
 
+   const crumbs = [
+        {
+            name: 'Dashboard',
+            url: '/dashboard',
+            active: false,
+        },
+        {
+            name: 'List of Users',
+            url: '/users',
+            active: false,
+        },
+        {
+            name: 'Edit User',
+            url: null,
+            active: true,
+        },
+        {
+            name:  props.user.firstname + ' '+ props.user.lastname  ,
+            url: null,
+            active: true,
+        },
+    ]
+
+
 </script>
 
 
 <template>
-    <Head title="Create User"/>
+    <Head title="Edit User"/>
     <Sidebar>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit User</h2>
-        </template>
+      <div class="container px-4 py-6 mx-auto">
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <!-- <div class="flex items-center gap-x-3">
+                        <h2 class="text-3xl font-bold text-black">Edit Doctor: {{ doctor.user.firstname }} {{ doctor.user.lastname }}</h2>
+                    </div> -->
+                     <div class="mt-5">
+                        <Breadcrumb :crumbs="crumbs"  />
+                    </div>
+                </div>
+            </div>
+        </div>
         <div>
             <div class="w-full mt-10 mx-auto px-4 ">
                 <form @submit.prevent="submit">

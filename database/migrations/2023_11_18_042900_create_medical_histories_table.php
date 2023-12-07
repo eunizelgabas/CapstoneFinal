@@ -40,7 +40,7 @@ return new class extends Migration
             $table->boolean('surgical_operation')->comment("1-yes, 0-no");
             $table->bigInteger('form_id')->unsigned();
             $table->timestamps();
-            $table->foreign('form_id')->references('id')->on('forms');
+            $table->foreign('form_id')->references('id')->on('forms')->onDelete('cascade');
         });
     }
 

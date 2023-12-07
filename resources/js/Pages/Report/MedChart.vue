@@ -7,6 +7,7 @@ import moment from 'moment';
 
 const props = defineProps({
     yearlyReport: Object,
+    yearlyReport2: Object,
     currentYear: Number,
     currentMonth: String,
     totalPatient: Number
@@ -29,28 +30,45 @@ onMounted(() => {
     if (chartRef.value) {
         const ctx = chartRef.value.getContext('2d');
 
-        if (!props.yearlyReport || !Array.isArray(props.yearlyReport)) {
+        if (!props.yearlyReport && !props.yearlyReport2 || !Array.isArray(props.yearlyReport) && !Array.isArray(props.yearlyReport2)) {
             return;
         }
 
+        // const chartData = props.yearlyReport;
         const chartData = props.yearlyReport;
-
+        const chartData2 = props.yearlyReport2;
 
         new Chart(ctx, {
             type: 'bar',
             data: {
                labels: props.yearlyReport.map(({ month, year }) => `${monthNames[month - 1]}-${year}`),
 
-                datasets: [
-                    {
-                        label: 'Highblood',
-                        data: props.yearlyReport.map(({ total_highblood }) => total_highblood),
-                        backgroundColor: 'rgba(39,150,248,0.68)', // Blue for 'Pending'
-                        borderColor: 'rgba(23, 68, 88, 1)',
-                        borderWidth: 1,
-                    },
+                // datasets: [
+                //     {
+                //         label: 'Highblood',
+                //         data: props.yearlyReport.map(({ total_highblood }) => total_highblood),
+                //         backgroundColor: 'rgba(39,150,248,0.68)', // Blue for 'Pending'
+                //         borderColor: 'rgba(23, 68, 88, 1)',
+                //         borderWidth: 1,
+                //     },
 
-                ],
+                // ],
+                 datasets: [
+              {
+                label: 'Highblood',
+                data: chartData.map(({ total_highblood }) => total_highblood),
+                backgroundColor: 'rgba(39,150,248,0.68)', // Blue for 'Highblood'
+                borderColor: 'rgba(23, 68, 88, 1)',
+                borderWidth: 1,
+              },
+              {
+                label: 'Diabetes', // Label for the second dataset
+                data: chartData2.map(({ total_diabetes }) => total_diabetes), // Replace with the actual property name in your structure
+                backgroundColor: 'rgba(255, 99, 132, 0.7)', // Red for the second dataset
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+              },
+            ],
             },
             options: {
                 scales: {
@@ -61,7 +79,7 @@ onMounted(() => {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Total Highblood', // Your desired label for the y-axis
+                            text: 'Total Number', // Your desired label for the y-axis
                         },
                     },
                 },

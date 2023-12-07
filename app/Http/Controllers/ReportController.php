@@ -56,16 +56,28 @@ class ReportController extends Controller
             DB::raw('YEAR(created_at) as year'),
             DB::raw('COUNT(*) as total_highblood'),
             'highblood_pressure'
+
         )
         ->whereIn('highblood_pressure', ['1'])
-        ->groupBy('year', 'month', 'highblood_pressure')
+        ->groupBy('year', 'month', 'highblood_pressure', 'diabetes')
+        ->get();
+        $yearlyReport2 = MedicalHistory::select(
+
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('YEAR(created_at) as year'),
+            DB::raw('COUNT(*) as total_diabetes'),
+            'diabetes'
+        )
+        ->whereIn('diabetes', ['1'])
+        ->groupBy('year', 'month', 'highblood_pressure', 'diabetes')
         ->get();
 
         return inertia('Report/MedChart', [
             'currentYear' => $currentYear,
             'currentMonth' => $currentMonth,
             'yearlyReport' => $yearlyReport,
-            'totalPatient' => $totalPatient
+            'totalPatient' => $totalPatient,
+            'yearlyReport2' => $yearlyReport2
         ]);
     }
 

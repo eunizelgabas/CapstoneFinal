@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained('patients');
+            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
             $table->string('course');
             $table->integer('student_no')->unique(); // Add unique constraint if needed
             $table->timestamps();

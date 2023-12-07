@@ -114,6 +114,7 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::get('/users/edit/{user}', [UserController::class, 'edit']);
     Route::put('/users/{user}',[UserController::class, 'update']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
+
     });
 
     //Doctor
@@ -125,11 +126,13 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::put('/doctor/{doctor}',[DoctorController::class, 'update']);
     Route::delete('/doctor/{doctor}', [DoctorController::class, 'destroy']);
     Route::get('/doctor/show/{doctor}', [DoctorController::class, 'show']);
-    Route::post('/doctor/{doctor}/activate', [DoctorController::class, 'activate'])->name('doctor.activate');
-    Route::post('/doctor/{doctor}/deactivate', [DoctorController::class, 'deactivate'])->name('doctor.deactivate');
+    // Route::post('/doctor/{doctor}/activate', [DoctorController::class, 'activate'])->name('doctor.activate');
+    // Route::post('/doctor/{doctor}/deactivate', [DoctorController::class, 'deactivate'])->name('doctor.deactivate');
     Route::get('/doctor/pdf', [DoctorController::class, 'doctorPdf'])->name('doctor.pdf');
     Route::post('/doctor/deactivate/{doctor}', [DoctorController::class, 'deactivateDoctor']);
     Route::post('/doctor/activate/{doctor}', [DoctorController::class, 'activateDoctor']);
+    Route::get('/doctor/inactive', [DoctorController::class, 'inactive']);
+
     });
 
     //Services for Doctor
@@ -151,6 +154,7 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::put('/patient/{patient}',[PatientController::class, 'update']);
     Route::delete('/patient/{patient}', [PatientController::class, 'destroy']);
     Route::get('/patient/show/{patient}', [PatientController::class, 'show']);
+    Route::get('/patient/inactive', [PatientController::class, 'inactive']);
     Route::get('/patient/pdf', [PatientController::class, 'patientPdf'])->name('patient.pdf');
     Route::post('/patient/deactivate/{patient}', [PatientController::class, 'deactivatePatient']);
     Route::post('/patient/activate/{patient}', [PatientController::class, 'activatePatient']);
