@@ -20,6 +20,15 @@ class ReportController extends Controller
         // $monthlyAppointment = Appointment::whereYear('created_at', now()->year)
         // ->whereMonth('created_at', now()->month)
         // ->get();
+    //     $yearlyAppointment = DB::table('appointments')
+    //     ->select(DB::raw('YEAR(created_at) as year'), DB::raw('COUNT(*) as total_appointments'),
+    //     'status'
+    // )
+    // ->whereIn('status', ['Pending', 'Cancelled', 'Accepted'])
+    // ->whereYear('date', now()->year)
+    // ->groupBy('year', 'status')
+    // ->get();
+
         $monthlyAppointment = Appointment::select(
             DB::raw('MONTH(date) as month'),
             DB::raw('YEAR(date) as year'),
@@ -36,7 +45,8 @@ class ReportController extends Controller
         return inertia('Report/Chart', [
             'monthlyAppointment' => $monthlyAppointment,
             'currentYear' => $currentYear,
-            'currentMonth' => $currentMonth
+            'currentMonth' => $currentMonth,
+
         ]);
     }
 

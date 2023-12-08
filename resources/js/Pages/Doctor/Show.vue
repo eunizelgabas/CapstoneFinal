@@ -203,10 +203,10 @@
                                             <p class="font-medium">
 
                                                 <p class="text-xs uppercase px-2 py-1 rounded-full border font-bold" :class="{
-                                            'bg-blue-200 text-blue-600': app.status == 'Pending',
-                                            'bg-red-200 text-red-600':app.status == 'Cancelled',
-                                            'bg-green-200 text-green-600': app.status =='Accepted',
-                                        }">{{ app.status }}</p>
+                                                    'bg-blue-200 text-blue-600': app.status == 'Pending',
+                                                    'bg-red-200 text-red-600':app.status == 'Cancelled',
+                                                    'bg-green-200 text-green-600': app.status =='Accepted',
+                                                }">{{ app.status }}</p>
                                             </p>
                                         </div>
                                     </td>
@@ -230,6 +230,12 @@
                             </tbody>
                         </table>
                     </div>
+                     <div v-show="recentAppointments.length < 1" class="flex flex-col w-full mt-9">
+                        <h1 class="text-center text-xl text-gray-400 mb-6">No recent appointment found</h1>
+                        <!-- <img src="../../Components/images/no-result.png" alt="no result" class="w-[250px] opacity-25 mx-auto"> -->
+                    </div>
+
+
                         </div>
 
                     </div>

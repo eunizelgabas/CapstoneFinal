@@ -23,9 +23,6 @@ class FormController extends Controller
 
 
         if ($patient->status === 0) {
-            // throw new \Exception('Cannot create a health form for a patient with status 0.');
-            // Alternatively, you can redirect the user to a specific page
-            // return redirect()->route('some.route')->with('error', 'Cannot create a health form for a patient with status 0.');
             return redirect('/patient/show/'. $patient->id)->with('error', 'Cannot create a medical record for a patient with inactive status.');
         }
 
@@ -34,12 +31,17 @@ class FormController extends Controller
         $doctor = Doctor::whereHas('user', function ($query) {
             $query->where('status', 1);
         })->with(['user'])->get();
-        $patient->load('student', 'teacher');
 
-        if ($isDoctor) {
-            // If the user is a doctor, get their information
-            $selectedDoctor = Doctor::where('user_id', auth()->user()->id)->first();
+
+        if($isDoctor){
+            $doctor = Doctor::with('user') ->where('user_id', auth()->user()->id)
+                    ->whereHas('user', function ($query) {
+                        $query->where('status', 1);
+                    })->get();
         }
+
+
+        $patient->load('student', 'teacher');
 
         return inertia('Form/Sample', [
             'patient' => $patient,

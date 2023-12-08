@@ -164,7 +164,7 @@ setTimeout(() => {
 
 <template>
     <Sidebar>
-        <Head title="Patients"/>
+        <Head title="Show Patient"/>
 
         <div class="mt-5">
             <div class="flex justify-between">
@@ -635,5 +635,5 @@ setTimeout(() => {
     100% {
         width: 0;
     }
-}     
+}
 </style>

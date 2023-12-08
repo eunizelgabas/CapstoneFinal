@@ -109,7 +109,7 @@ setTimeout(() => {
         <Head title="Medicine Category"/>
 
         <section class="container px-4 py-6 mx-auto">
-            <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
+           <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
                 {{ $page.props.flash.success }}
                 <div class="progress-bar success"></div>
             </div>

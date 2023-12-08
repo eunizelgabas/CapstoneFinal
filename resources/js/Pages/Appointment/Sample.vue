@@ -5,7 +5,7 @@ import { Link, router, useForm, Head } from '@inertiajs/vue3';
 import { computed } from '@vue/reactivity';
 import moment from 'moment';
 import { watch } from 'vue';
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const openTab = ref(1);
 const sort = ref('latest');
@@ -64,7 +64,23 @@ let search = ref(props.filters.search);
             }
         );
     });
+    onMounted(() => {
+// Set a timeout to hide the success flash message after 3 seconds
+const successFlashMessage = document.getElementById('flash-success-message');
+if (successFlashMessage) {
+setTimeout(() => {
+    successFlashMessage.style.display = 'none';
+}, 3000);
+}
 
+// Set a timeout to hide the error flash message after 3 seconds
+const errorFlashMessage = document.getElementById('flash-error-message');
+if (errorFlashMessage) {
+setTimeout(() => {
+    errorFlashMessage.style.display = 'none';
+}, 3000);
+}
+});
 </script>
 
 <template>
@@ -95,6 +111,14 @@ let search = ref(props.filters.search);
                     </div>
                 </div>
 
+            </div>
+             <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
+                {{ $page.props.flash.success }}
+                <div class="progress-bar success"></div>
+            </div>
+            <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
+                {{ $page.props.flash.error }}
+                <div class="progress-bar error"></div>
             </div>
         </div>
             <div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
@@ -407,4 +431,46 @@ let search = ref(props.filters.search);
 .checkbox:checked + .check-icon {
     display: flex;
   }
-  </style>
+
+
+#flash-success-message {
+    animation: fadeOut 6s ease-in-out forwards;
+}
+
+.progress-bar {
+    height: 5px;
+    width: 100%;
+    background-color: #4CAF50; /* Green color */
+    animation: progressBar 3s linear;
+}
+#flash-error-message {
+    animation: fadeOut 7s ease-in-out forwards;
+}
+
+.success .progress-bar {
+
+    animation: progressBar 5s linear;
+}
+.error .progress-bar {
+    background-color: #FF5733; /* Red color */
+    animation: progressBar 5s linear;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes progressBar {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+    }
+}
+</style>

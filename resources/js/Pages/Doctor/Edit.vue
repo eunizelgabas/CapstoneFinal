@@ -20,6 +20,7 @@
         contact_no: props.doctor.user.contact_no || '',
         gender: props.doctor.user.gender || '',
         specialization: props.doctor.specialization || '',
+        lic_no : props.doctor.lic_no,
         selectedServiceIds: props.doctor.services.map((service) => service.id)
 
 
@@ -172,6 +173,13 @@
                             <div class="mt-2">
                               <input id="contact_no" v-model="form.contact_no" name="contact_no" type="number" autocomplete="contact_no" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                               <div class="text-sm text-red-500 italic" v-if="form.errors.contact_no">{{ form.errors.contact_no }}</div>
+                            </div>
+                          </div>
+                            <div class="sm:col-span-1">
+                            <label for="lic_no" class="block text-sm font-medium leading-6 text-gray-900">License No</label>
+                            <div class="mt-2">
+                              <input id="lic_no" v-model="form.lic_no" name="lic_no" type="text" autocomplete="email" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                              <div class="text-sm text-red-500 italic" v-if="form.errors.lic_no">{{ form.errors.lic_no }}</div>
                             </div>
                           </div>
 

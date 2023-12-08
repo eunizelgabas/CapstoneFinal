@@ -220,14 +220,14 @@ public function getDoctorServices()
         // Assuming there is a 'user' relationship in your Doctor model
         $doctor->user->update(['status' => 0]);
 
-        return redirect('/doctor/show/' . $doctor->id)->with('success', 'Doctor deactivated successfully');
+        return redirect('/doctor')->with('success', 'Doctor deactivated successfully');
     }
 
 
     public function activateDoctor(Doctor $doctor){
         $doctor->user->update(['status' => 1]);
 
-        return redirect('/doctor/show/' . $doctor->id)->with('success','Doctor activated successfully');
+        return redirect('/doctor')->with('success','Doctor activated successfully');
     }
     public function inactive(){
         $doctors = Doctor::with(['user', 'services'])

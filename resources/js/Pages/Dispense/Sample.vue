@@ -86,7 +86,7 @@ setTimeout(() => {
 
 <template>
     <Sidebar>
-        <Head title="Medicine Category"/>
+        <Head title="Medicine Dispense"/>
 
         <section class="container px-4 py-6 mx-auto">
             <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
@@ -182,7 +182,7 @@ setTimeout(() => {
                                     <th class="py-3 px-6 text-center">Name</th>
                                     <th class="py-3 px-6 text-center">Medicine</th>
                                     <th class="py-3 px-6 text-center">Qty</th>
-                                    <th class="py-3 px-6 text-center">Quantity</th>
+                                    <th class="py-3 px-6 text-center">Date</th>
 
                                 </tr>
                             </thead>

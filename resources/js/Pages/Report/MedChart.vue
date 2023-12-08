@@ -38,6 +38,12 @@ onMounted(() => {
         const chartData = props.yearlyReport;
         const chartData2 = props.yearlyReport2;
 
+
+        // chartData.forEach(entry => {
+        //     totalPending.push(entry.status === 'Pending' ? entry.total_appointments : 0);
+        //     totalCancelled.push(entry.status === 'Cancelled' ? entry.total_appointments : 0);
+        //     totalAccepted.push(entry.status === 'Accepted' ? entry.total_appointments : 0);
+        // });
         new Chart(ctx, {
             type: 'bar',
             data: {
@@ -91,6 +97,7 @@ onMounted(() => {
 
 <template>
     <Sidebar>
+        <Head title="Medical Chart"/>
         <div class="w-full px-5 py-4">
             <div class="h-12">
                 <div class=" overflow-hidden ">

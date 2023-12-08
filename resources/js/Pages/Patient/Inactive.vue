@@ -202,7 +202,7 @@ setTimeout(() => {
                         </table>
                     </div>
                     <div v-show="patient.data.length < 1" class="flex flex-col w-full mt-9">
-                        <h1 class="text-center text-xl text-gray-400 mb-6">No patient found</h1>
+                        <h1 class="text-center text-xl text-gray-400 mb-6">No inactive patient found</h1>
                         <!-- <img src="../../Components/images/no-result.png" alt="no result" class="w-[250px] opacity-25 mx-auto"> -->
                     </div>
 

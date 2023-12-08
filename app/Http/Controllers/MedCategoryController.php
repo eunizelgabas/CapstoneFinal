@@ -16,6 +16,7 @@ class MedCategoryController extends Controller
                     $query->where('name', 'like', '%' . $search . '%');
                 })
                 ->withCount('medicine')
+                ->orderBy('created_at','desc')
                 ->paginate(8)
                 ->withQueryString(),
                 'filters' => HttpRequest::only(['search']),

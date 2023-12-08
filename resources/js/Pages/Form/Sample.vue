@@ -2,7 +2,7 @@
 import Sidebar from '@/Layouts/Sidebar.vue'
 import { ref,  computed , watch, onMounted} from 'vue';
 import {  useForm, Head } from '@inertiajs/vue3';
-import { Transition } from 'vue';
+import { Transition, toRefs  } from 'vue';
 
 let props = defineProps({
         medicalhistory: Array,
@@ -192,7 +192,11 @@ let props = defineProps({
     form.doc_id = doctor.id;
     form.doc_name = `${doctor.user.firstname} ${doctor.user.lastname}`;
     form.lic_no = doctor.lic_no;
+
   }
+
+
+
 });
 
 const filteredDoctors = computed(() => {

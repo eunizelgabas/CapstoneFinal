@@ -303,14 +303,14 @@ class PatientController extends Controller
         // Assuming there is a 'user' relationship in your patient model
         $patient->update(['status' => 0]);
 
-        return redirect('/patient/show/' . $patient->id)->with('success', 'Patient deactivated successfully');
+        return redirect('/patient')->with('success', 'Patient deactivated successfully');
     }
 
 
     public function activatePatient(Patient $patient){
         $patient->update(['status' => 1]);
 
-        return redirect('/patient/show/' . $patient->id)->with('success','Patient activated successfully');
+        return redirect('/patient')->with('success','Patient activated successfully');
     }
 
     public function inactive(){

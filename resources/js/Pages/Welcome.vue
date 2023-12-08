@@ -164,7 +164,7 @@ function about() {
 <div>
   <div class="h-screen flex justify-center items-center bg-cover bg-center" style="background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url('/images/mdcs.jpg')">
     <div class="absolute top-0 left-0 mt-5 ml-5">
-        <img src="/imnages/mdclogo.png" class="w-28" alt="">
+        <img src="/images/mdclogo.png" class="w-12" alt="">
 
     </div>
     <Link :href="route('login')" class="absolute bg-indigo-600 hover:bg-indigo-700 text-white p-3 top-0 right-0 mt-3 mr-5">Log in</Link>
