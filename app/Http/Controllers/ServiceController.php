@@ -37,7 +37,7 @@ class ServiceController extends Controller
         ]);
 
       $service =   Service::create($fields);
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a medical service - " . $service->name;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " created a medical service - " . $service->name;
         event(new UserLog($log_entry));
         return redirect('/service')->with('success', 'Medicine Service successfully created');
     }
@@ -50,14 +50,14 @@ class ServiceController extends Controller
         ]);
 
         $service->update($fields);
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " updated a medical service - " . $service->name;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " updated a medical service - " . $service->name;
         event(new UserLog($log_entry));
         return redirect('/service')->with('success', "Medical Service successfully updated");
     }
 
     public function destroy(Service $service) {
         $service->delete();
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " deleted a medical service - " . $service->name;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " deleted a medical service - " . $service->name;
         event(new UserLog($log_entry));
         return back()->with('success', "Medical Service successfully deleted");
     }

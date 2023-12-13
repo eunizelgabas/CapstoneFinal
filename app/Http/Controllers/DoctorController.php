@@ -101,7 +101,7 @@ class DoctorController extends Controller
             $doctorRole = Role::where('name', 'doctor')->first();
             $user->assignRole($doctorRole);
 
-            $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. " with the id# ". $appointment->id;
+            $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " created a Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. " with the id# ". $appointment->id;
             event(new UserLog($log_entry));
             return redirect('/doctor')->with('success', 'Doctor successfully created');
     }
@@ -143,7 +143,7 @@ class DoctorController extends Controller
         // Sync the associated services
         $doctor->services()->sync($request->input('selectedServiceIds'));
 
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " updated  Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. "'s details with doctor's id# ". $doctor->id;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " updated  Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. "'s details with doctor's id# ". $doctor->id;
         event(new UserLog($log_entry));
         return redirect()->route('doctor.index');
     }
@@ -225,7 +225,7 @@ public function getDoctorServices()
     public function deactivateDoctor(Doctor $doctor){
         // Assuming there is a 'user' relationship in your Doctor model
         $doctor->user->update(['status' => 0]);
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " deactivated  Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. "'s account";
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " deactivated  Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. "'s account";
         event(new UserLog($log_entry));
         return redirect('/doctor')->with('success', 'Doctor deactivated successfully');
     }
@@ -233,7 +233,7 @@ public function getDoctorServices()
 
     public function activateDoctor(Doctor $doctor){
         $doctor->user->update(['status' => 1]);
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " activated  Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. "'s account";
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " activated  Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. "'s account";
         event(new UserLog($log_entry));
         return redirect('/doctor')->with('success','Doctor activated successfully');
     }

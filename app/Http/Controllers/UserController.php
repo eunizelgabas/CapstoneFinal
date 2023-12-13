@@ -89,7 +89,7 @@ class UserController extends Controller
             $doctor->services()->attach($selectedServiceIds);
         }
 
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a user account of  " . $user->firstname . " " . $user->lastname;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " created a user account of  " . $user->firstname . " " . $user->lastname;
         event(new UserLog($log_entry));
 
         return redirect()->route('user.index')->with('success', 'User created successfully.');
@@ -188,7 +188,7 @@ class UserController extends Controller
             // If the user's type is not 'doctor,' you can delete the doctor record
             $user->doctor()->delete();
         }
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " updated the account of  " . $user->firstname . " " . $user->lastname;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " updated the account of  " . $user->firstname . " " . $user->lastname;
         event(new UserLog($log_entry));
 
         return redirect()->route('user.index')->with('success', 'User updated successfully.');
@@ -200,7 +200,7 @@ class UserController extends Controller
         // return back();
         if(!$user->doctor()->exists()) {
             $user->delete();
-            $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " deleted the account of  " . $user->firstname . " " . $user->lastname;
+            $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " deleted the account of  " . $user->firstname . " " . $user->lastname;
             event(new UserLog($log_entry));
             return back()->with('success', 'User deleted successfully.');
         } else {

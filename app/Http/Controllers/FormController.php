@@ -192,7 +192,7 @@ class FormController extends Controller
 
     // Redirect to a success page or return a response
 
-    $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a medical record of ". $form->patient->firstname. " " . $form->patient->lastname;
+    $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " created a medical record of ". $form->patient->firstname. " " . $form->patient->lastname;
     event(new UserLog($log_entry));
     return redirect('/healthForm/show/' . $form->id)->with('success', 'Physical Examination record and Medical History saved successfully');
 }
@@ -236,7 +236,7 @@ class FormController extends Controller
             'imageData' => $imageData
         ]);
 
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " exported a pdf file of" . $form->patient->firstname. " ". $form->patient->lastname. "'s medical record ";
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " exported a pdf file of" . $form->patient->firstname. " ". $form->patient->lastname. "'s medical record ";
         event(new UserLog($log_entry));
         return $pdf->stream();
 
@@ -260,7 +260,7 @@ class FormController extends Controller
 
         ];
         $date = Date::now();
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " generated a medical certifcate to" . $form->patient->firstname. " ". $form->patient->lastname;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " generated a medical certifcate to" . $form->patient->firstname. " ". $form->patient->lastname;
         event(new UserLog($log_entry));
 
         $pdf = PDF::loadView('pdf.medCert',[

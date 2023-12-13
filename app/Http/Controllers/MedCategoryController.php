@@ -34,7 +34,7 @@ class MedCategoryController extends Controller
         ]);
 
       $cat =  MedCategory::create($fields);
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a medicine category - " . $cat->name;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " created a medicine category - " . $cat->name;
         event(new UserLog($log_entry));
         return redirect('/category')->with('success', 'Medicine Category successfully created');
     }
@@ -46,7 +46,7 @@ class MedCategoryController extends Controller
 
 
         $medcategory->update($fields);
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " updated medicine category - " . $medcategory->name;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " updated medicine category - " . $medcategory->name;
         event(new UserLog($log_entry));
         return redirect('/category')->with('success', "Medicine Category updated successfully");
     }

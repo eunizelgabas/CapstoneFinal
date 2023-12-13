@@ -88,7 +88,7 @@ class MedicineController extends Controller
             ]);
             $inventory->save();
         }
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a  medicine - " . $med->name;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " created a  medicine - " . $med->name;
         event(new UserLog($log_entry));
         return redirect('/medicine')->with('success', 'Medicine successfully created');
     }
@@ -105,7 +105,7 @@ class MedicineController extends Controller
 
         $medicine->update($fields);
 
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " updated a  medicine - " . $medicine->name;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " updated a  medicine - " . $medicine->name;
         event(new UserLog($log_entry));
         return redirect('/medicine')->with('success', "Medicine successfully updated");
     }
@@ -118,7 +118,7 @@ class MedicineController extends Controller
             $medicine->delete();
 
             return back()->with('success', 'Medicine deleted successfully.');
-            $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " deleted a  medicine - " . $medicine->name;
+            $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " deleted a  medicine - " . $medicine->name;
             event(new UserLog($log_entry));
         } else {
             return back()->with('error', 'Sorry, this medicine  cannot be deleted because it contains existing medicine inventory in the system.');

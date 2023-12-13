@@ -70,7 +70,7 @@ class StockController extends Controller
             ]);
             $inventory->save();
         }
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a medicine stock - " . $stock->name;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " created a medicine stock - " . $stock->name;
         event(new UserLog($log_entry));
 
 
@@ -126,7 +126,7 @@ class StockController extends Controller
             ]);
             $inventory->save();
         }
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " updated a medicine stock - " . $stock->name;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " updated a medicine stock - " . $stock->name;
         event(new UserLog($log_entry));
 
         return redirect()->route('stock.index')->with('success', 'Stock successfully updated');

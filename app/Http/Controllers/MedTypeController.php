@@ -32,7 +32,7 @@ class MedTypeController extends Controller
         ]);
 
       $type =  MedType::create($fields);
-        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a medicine type  - " . $type->name;
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " created a medicine type  - " . $type->name;
         event(new UserLog($log_entry));
         return redirect('/type')->with('success', 'Medicine type successfully created');
     }
@@ -51,7 +51,7 @@ class MedTypeController extends Controller
     public function destroy(MedType $medtype) {
         if(!$medtype->medicine()->exists()) {
             $medtype->delete();
-            $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " deleted a medicine type  - " . $medtype->name;
+            $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " deleted a medicine type  - " . $medtype->name;
             event(new UserLog($log_entry));
             return back()->with('success', 'Medicine Type deleted successfully.');
         } else {
