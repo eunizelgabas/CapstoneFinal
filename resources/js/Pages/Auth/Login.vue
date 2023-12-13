@@ -59,8 +59,14 @@ const submit = () => {
 
 
         <template #log>
+            <div v-if="$page.props.flash.success" id="flash-success-message" class="absolute top-20 right-1 p-4 bg-green-300 border border-gray-300 rounded-md shadow-md">
+                {{ $page.props.flash.success }}
+                <div class="progress-bar success"></div>
+            </div>
             <div v-if="$page.props.flash.error" id="flash-error-message" class=" absolute top-20 right-1 p-4 bg-red-300 border border-gray-300 rounded-md shadow-md">
-            {{ $page.props.flash.error }}
+                {{ $page.props.flash.error }}
+                <div class="progress-bar error"></div>
+
         </div>
             <div class="min-w-screen min-h-screen  flex items-center justify-center px-5 py-5">
                 <div class="bg-white text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden" style="max-width:1000px">
@@ -151,3 +157,60 @@ const submit = () => {
 
     </GuestLayout>
 </template>
+<style scoped>
+    /* .bg-image {
+      background-image: url('/images/mdcs.jpg');
+      background-size: cover;
+      background-position: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    } */
+
+
+
+
+#flash-success-message {
+    animation: fadeOut 6s ease-in-out forwards;
+}
+
+.progress-bar {
+    height: 5px;
+    width: 100%;
+    background-color: #4CAF50; /* Green color */
+    animation: progressBar 3s linear;
+}
+#flash-error-message {
+    animation: fadeOut 7s ease-in-out forwards;
+}
+
+.success .progress-bar {
+
+    animation: progressBar 5s linear;
+}
+.error .progress-bar {
+    background-color: #FF5733; /* Red color */
+    animation: progressBar 5s linear;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes progressBar {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+    }
+}
+</style>

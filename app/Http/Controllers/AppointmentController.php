@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLog;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Patient;
@@ -207,7 +208,7 @@ class AppointmentController extends Controller
         ]);
 
         // dd($appointment);
-        return redirect()->route('appointment.create')->with(['success' => 'Appointment submitted successfully']);
+        return redirect()->route('login')->with(['success' => 'Appointment submitted successfully']);
     }
 
     public function createForPatient(Request $request)
@@ -315,7 +316,9 @@ class AppointmentController extends Controller
             $fields['doc_id'] = $request->input('doc_id');
         }
 
-        Appointment::create($fields);
+       $appointment =  Appointment::create($fields);
+       $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " created an appointment with ". $appointment->patient->firstname. " " . $appointment->patient->lastname. " with the id# ". $appointment->id;
+       event(new UserLog($log_entry));
         return redirect()->route('appointment.index')->with('success', 'Appointment created successfully.');
     }
 
@@ -382,6 +385,8 @@ class AppointmentController extends Controller
 
         $appointment->update($fields);
 
+
+
         return redirect()->route('appointment.index')->with('success', 'Appointment updated successfully.');
     }
 
@@ -406,6 +411,9 @@ class AppointmentController extends Controller
             $message->subject('Appointment Confirmation');
         });
 
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " accepted an appointment with ". $appointment->patient->firstname. " " . $appointment->patient->lastname. " with the id# ". $appointment->id;
+        event(new UserLog($log_entry));
+
         return redirect()->route('appointment.index')->with('success', 'Appointment approved successfully.');
     }
 
@@ -420,6 +428,10 @@ class AppointmentController extends Controller
             $message->to($appointment->email);
             $message->subject('Appointment Cancelation');
         });
+
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " cancelled an appointment with ". $appointment->patient->firstname. " " . $appointment->patient->lastname. " with the id# ". $appointment->id;
+        event(new UserLog($log_entry));
+
         return redirect()->route('appointment.index')->with('success', 'Appointment canceled successfully.');
     }
     public function destroy(Appointment $appointment)

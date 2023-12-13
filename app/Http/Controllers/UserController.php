@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLog;
 use App\Models\Doctor;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Request as HttpRequest;
@@ -86,6 +88,9 @@ class UserController extends Controller
             // Attach selected services to the doctor
             $doctor->services()->attach($selectedServiceIds);
         }
+
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a user account of  " . $user->firstname . " " . $user->lastname;
+        event(new UserLog($log_entry));
 
         return redirect()->route('user.index')->with('success', 'User created successfully.');
     }
@@ -183,7 +188,8 @@ class UserController extends Controller
             // If the user's type is not 'doctor,' you can delete the doctor record
             $user->doctor()->delete();
         }
-
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " updated the account of  " . $user->firstname . " " . $user->lastname;
+        event(new UserLog($log_entry));
 
         return redirect()->route('user.index')->with('success', 'User updated successfully.');
     }
@@ -194,7 +200,8 @@ class UserController extends Controller
         // return back();
         if(!$user->doctor()->exists()) {
             $user->delete();
-
+            $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " deleted the account of  " . $user->firstname . " " . $user->lastname;
+            event(new UserLog($log_entry));
             return back()->with('success', 'User deleted successfully.');
         } else {
             return back()->with('error', 'Sorry, this user cannot be deleted because it contains existing info in the system.');

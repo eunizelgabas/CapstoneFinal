@@ -147,7 +147,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
                     </Link>
                 </li>
                 <li v-if="$page.props.auth.permissions.includes('manage-report')">
-                  
+
                         <div>
                         <button  @click="isOpen2" class="relative flex flex-row items-center cursor-pointer w-full h-11 focus:outline-none hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6">
                             <span class="inline-flex justify-center items-center ml-4">
@@ -165,7 +165,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
                                 </svg>
                                 <span class="text-base leading-4" v-show="!collapse">Appointment Report</span>
                             </Link>
-                           
+
                             <Link @click.stop="closeDropdown2" v-if="$page.props.auth.permissions.includes('manage-report')" :href="route('medchart')" class="flex justify-start items-center space-x-6 hover:bg-blue-100 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6 rounded px-3 py-2 w-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />
@@ -214,6 +214,18 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 
                         </span>
                         <span class="ml-2 text-m tracking-wide truncate" v-show="!collapse">Calendar</span>
+                    </Link>
+                </li>
+                 <li :class="{'bg-blue-100 text-gray-800 font-bold border-transparent border-indigo-900 ': route().current('logs') } " >
+                    <Link :href="route('logs')" class=" relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-100  hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-900 pr-6">
+                        <span class="inline-flex justify-center items-center ml-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                            </svg>
+
+
+                        </span>
+                        <span class="ml-2 text-m tracking-wide truncate" v-show="!collapse">Logs</span>
                     </Link>
                 </li>
             </ul>

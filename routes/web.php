@@ -6,6 +6,7 @@ use App\Http\Controllers\DispensingController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\MedCategoryController;
 use App\Http\Controllers\MedCertController;
 use App\Http\Controllers\MedicalHistoryController;
@@ -198,6 +199,8 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::post('/medcert', [MedCertController::class, 'store'])->name('medcert');
     Route::get('/medcert/show/{medcert}', [MedCertController::class, 'show']);
     Route::get('/medcert/pdf/{medcert}', [MedCertController::class, 'pdf']);
+
+    Route::get('/log', [LogController::class, 'index'])->name('logs');
 });
 
 require __DIR__.'/auth.php';

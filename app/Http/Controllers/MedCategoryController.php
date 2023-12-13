@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLog;
 use App\Models\MedCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as HttpRequest;
 
 class MedCategoryController extends Controller
@@ -31,8 +33,9 @@ class MedCategoryController extends Controller
             'name'=>'required',
         ]);
 
-        MedCategory::create($fields);
-
+      $cat =  MedCategory::create($fields);
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a medicine category - " . $cat->name;
+        event(new UserLog($log_entry));
         return redirect('/category')->with('success', 'Medicine Category successfully created');
     }
 
@@ -41,7 +44,10 @@ class MedCategoryController extends Controller
             'name'=>'required|string',
         ]);
 
+
         $medcategory->update($fields);
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " updated medicine category - " . $medcategory->name;
+        event(new UserLog($log_entry));
         return redirect('/category')->with('success', "Medicine Category updated successfully");
     }
 
@@ -50,7 +56,8 @@ class MedCategoryController extends Controller
 
         if(!$medcategory->medicine()->exists()) {
             $medcategory->delete();
-
+            $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " deleted medicine category - " . $medcategory->name;
+        event(new UserLog($log_entry));
             return back()->with('success', 'Medicine Category deleted successfully.');
         } else {
             return back()->with('error', 'Sorry, this medicine category cannot be deleted because it contains existing medicines in the system.');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLog;
 use App\Models\Doctor;
 use App\Models\MedCert;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -52,6 +53,8 @@ class MedCertController extends Controller
         }
 
         $medcert = MedCert::create($fields);
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " generate a medical certificate to - " . $medcert->patient->firstname . " " . $medcert->patient->lastname;
+        event(new UserLog($log_entry));
 
         return redirect('/medcert/show/' . $medcert->id)->with('success', 'Medicine Category successfully created');
     }

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLog;
 use App\Models\Inventory;
 use App\Models\MedCategory;
 use App\Models\Medicine;
 use App\Models\MedType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MedicineController extends Controller
 {
@@ -86,7 +88,8 @@ class MedicineController extends Controller
             ]);
             $inventory->save();
         }
-
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a  medicine - " . $med->name;
+        event(new UserLog($log_entry));
         return redirect('/medicine')->with('success', 'Medicine successfully created');
     }
 
@@ -101,6 +104,9 @@ class MedicineController extends Controller
         ]);
 
         $medicine->update($fields);
+
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " updated a  medicine - " . $medicine->name;
+        event(new UserLog($log_entry));
         return redirect('/medicine')->with('success', "Medicine successfully updated");
     }
 
@@ -112,6 +118,8 @@ class MedicineController extends Controller
             $medicine->delete();
 
             return back()->with('success', 'Medicine deleted successfully.');
+            $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " deleted a  medicine - " . $medicine->name;
+            event(new UserLog($log_entry));
         } else {
             return back()->with('error', 'Sorry, this medicine  cannot be deleted because it contains existing medicine inventory in the system.');
         }

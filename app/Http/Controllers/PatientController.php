@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLog;
 use App\Models\Appointment;
 use App\Models\Form;
 use App\Models\Patient;
@@ -10,6 +11,7 @@ use App\Models\Student;
 use App\Models\Teacher;
 use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as HttpRequest;
 
 class PatientController extends Controller
@@ -111,6 +113,9 @@ class PatientController extends Controller
             // Save the teacher first to get an ID.
             $patient->teacher()->save($teacher);
         }
+
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " created the account of " . $patient->firstname . " ". $patient->lastname;
+        event(new UserLog($log_entry));
         // $patient->update(['type' => $type]);
         return redirect()->route('patient.index')->with('success', 'Patient successfully created');
     }
@@ -175,30 +180,11 @@ class PatientController extends Controller
     }
     // Update the patient details
     $patient->update($fields);
-
+    $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " updated the details of " . $patient->firstname . " ". $patient->lastname;
+        event(new UserLog($log_entry));
     return redirect('/patient/show/' . $patient->id)->with('success', 'Patient successfully updated');
     }
-    // public function search(Request $request)
-    // {
-    //     try {
-    //         $term = $request->query('term');
 
-    //         $patients = Patient::where('type', 'Student')
-    //         ->orWhere('type', 'Teacher')
-    //         ->where(function ($query) use ($term) {
-    //             $query->where('firstname', 'like', '%' . $term . '%')
-    //                 ->orWhere('lastname', 'like', '%' . $term . '%')
-    //                 ->orWhere('lastname', 'like', '%' . $term . '%');
-    //         })
-    //         ->where('status', 1) // Filter active patients
-    //         ->get();
-
-    //         return response()->json(['patients' => $patients]);
-    //     } catch (\Exception $e) {
-    //         // Handle the exception and return an error response if needed
-    //         return response()->json(['error' => 'An error occurred while searching for patients.'], 500);
-    //     }
-    // }
 
      public function search(Request $request)
     {
@@ -271,7 +257,8 @@ class PatientController extends Controller
 
     public function destroy(Patient $patient) {
         $patient->delete();
-
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " deleted the account of " . $patient->firstname . " ". $patient->lastname;
+        event(new UserLog($log_entry));
         return back();
     }
 
@@ -296,20 +283,24 @@ class PatientController extends Controller
         $pdf = PDF::loadView('pdf.patientPdf', [
             'patient' => $patient
         ]);
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " exported a pdf file of all patient  ";
+        event(new UserLog($log_entry));
         return $pdf->stream();
     }
 
     public function deactivatePatient(Patient $patient){
         // Assuming there is a 'user' relationship in your patient model
         $patient->update(['status' => 0]);
-
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " deactivated the account of " . $patient->firstname . " ". $patient->lastname;
+        event(new UserLog($log_entry));
         return redirect('/patient')->with('success', 'Patient deactivated successfully');
     }
 
 
     public function activatePatient(Patient $patient){
         $patient->update(['status' => 1]);
-
+        $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " activated the account of " . $patient->firstname . " ". $patient->lastname;
+        event(new UserLog($log_entry));
         return redirect('/patient')->with('success','Patient activated successfully');
     }
 

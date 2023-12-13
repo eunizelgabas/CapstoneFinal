@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLog;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Service;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as HttpRequest;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
@@ -99,6 +101,8 @@ class DoctorController extends Controller
             $doctorRole = Role::where('name', 'doctor')->first();
             $user->assignRole($doctorRole);
 
+            $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. " with the id# ". $appointment->id;
+            event(new UserLog($log_entry));
             return redirect('/doctor')->with('success', 'Doctor successfully created');
     }
 
@@ -139,6 +143,8 @@ class DoctorController extends Controller
         // Sync the associated services
         $doctor->services()->sync($request->input('selectedServiceIds'));
 
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " updated  Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. "'s details with doctor's id# ". $doctor->id;
+        event(new UserLog($log_entry));
         return redirect()->route('doctor.index');
     }
 
@@ -219,14 +225,16 @@ public function getDoctorServices()
     public function deactivateDoctor(Doctor $doctor){
         // Assuming there is a 'user' relationship in your Doctor model
         $doctor->user->update(['status' => 0]);
-
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " deactivated  Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. "'s account";
+        event(new UserLog($log_entry));
         return redirect('/doctor')->with('success', 'Doctor deactivated successfully');
     }
 
 
     public function activateDoctor(Doctor $doctor){
         $doctor->user->update(['status' => 1]);
-
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " activated  Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. "'s account";
+        event(new UserLog($log_entry));
         return redirect('/doctor')->with('success','Doctor activated successfully');
     }
     public function inactive(){

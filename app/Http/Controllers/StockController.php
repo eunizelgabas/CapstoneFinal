@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLog;
 use App\Models\Inventory;
 use App\Models\Medicine;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StockController extends Controller
 {
@@ -68,6 +70,8 @@ class StockController extends Controller
             ]);
             $inventory->save();
         }
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a medicine stock - " . $stock->name;
+        event(new UserLog($log_entry));
 
 
         return redirect()->route('stock.index')->with('success', 'Stock successfully added');
@@ -122,6 +126,8 @@ class StockController extends Controller
             ]);
             $inventory->save();
         }
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " updated a medicine stock - " . $stock->name;
+        event(new UserLog($log_entry));
 
         return redirect()->route('stock.index')->with('success', 'Stock successfully updated');
     }

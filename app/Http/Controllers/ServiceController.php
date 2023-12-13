@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLog;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as HttpRequest;
 
 class ServiceController extends Controller
@@ -34,8 +36,9 @@ class ServiceController extends Controller
             'description'=>'required',
         ]);
 
-        Service::create($fields);
-
+      $service =   Service::create($fields);
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " created a medical service - " . $service->name;
+        event(new UserLog($log_entry));
         return redirect('/service')->with('success', 'Medicine Service successfully created');
     }
 
@@ -47,12 +50,15 @@ class ServiceController extends Controller
         ]);
 
         $service->update($fields);
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " updated a medical service - " . $service->name;
+        event(new UserLog($log_entry));
         return redirect('/service')->with('success', "Medical Service successfully updated");
     }
 
     public function destroy(Service $service) {
         $service->delete();
-
+        $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " deleted a medical service - " . $service->name;
+        event(new UserLog($log_entry));
         return back()->with('success', "Medical Service successfully deleted");
     }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLog;
 use App\Models\Dispensing;
 use App\Models\Inventory;
 use App\Models\Medicine;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DispensingController extends Controller
 {
@@ -66,6 +68,9 @@ class DispensingController extends Controller
         $inventory->stock_out += $des->qty;
         $inventory->save();
     }
+
+    $log_entry = Auth::user()->firstname . "". Auth::user()->lastname . " dispense a ". $des->medicine->name. " with the id# ". $des->id;
+    event(new UserLog($log_entry));
 
     return redirect('/dispense')->with('success', 'Medicine type successfully created');
 }
