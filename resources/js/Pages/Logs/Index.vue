@@ -63,22 +63,6 @@ function formattedDate(date){
             </div>
 
 
-            <div class="mt-6 md:flex md:items-center md:justify-between md:w-full">
-                <div class="inline-flex overflow-hidden">
-                    <div class="py-3 px-4">
-                        <div class="relative max-w-xs">
-                            <label for="hs-table-search" class="sr-only">Search</label>
-                            <input type="search" v-model="search"  name="hs-table-search" id="hs-table-search" class="py-2 px-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none " placeholder="Search logs">
-                            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3">
-                                <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
             <div class="w-full px-2 mt-3">
                 <div class="h-12">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -90,12 +74,8 @@ function formattedDate(date){
                                 </tr>
                             </thead>
                             <tbody class="text-gray-600 text-sm font-light" >
-                                <!-- <tr v-if="patient.data.length === 0">
-                                    <td colspan="6" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center">
-                                        No patient found.
-                                    </td>
-                                </tr> -->
-                                <tr  class="border-b border-gray-200 hover:bg-gray-100" v-for="logs in logEntries" :key="logs.id">
+
+                                <tr  class="border-b border-gray-200 hover:bg-gray-100" v-for="logs in logEntries.data" :key="logs.id">
                                     <td class="py-3 px-6 text-center">
                                         <div class="flex items-center justify-center">
                                             <p class="font-medium">{{  formattedDate(logs.created_at) }}</p>
@@ -111,16 +91,16 @@ function formattedDate(date){
                             </tbody>
                         </table>
                     </div>
-                    <!-- <div v-show="medcategories.data.length < 1" class="flex flex-col w-full mt-9">
-                        <h1 class="text-center text-xl text-gray-400 mb-6">No medicine category found</h1>
+                    <div v-show="logEntries.data.length < 1" class="flex flex-col w-full mt-9">
+                        <h1 class="text-center text-xl text-gray-400 mb-6">No logs found</h1>
 
-                    </div> -->
+                    </div>
 
                     <!-- Paginator -->
-                    <!-- <div class="flex justify-between">
-                        <div class="mt-2" v-if="medcategories.data.length > 0">Showing page {{ medcategories.current_page }} of {{ medcategories.last_page }}</div>
-                        <Pagination v-if="medcategories.data.length > 0" :links="medcategories.links" class="mt-6"/>
-                    </div> -->
+                    <div class="flex justify-between">
+                        <div class="mt-2" v-if="logEntries.data.length > 0">Showing page {{ logEntries.current_page }} of {{ logEntries.last_page }}</div>
+                        <Pagination v-if="logEntries.data.length > 0" :links="logEntries.links" class="mt-6"/>
+                    </div>
                 </div>
             </div>
         </section>

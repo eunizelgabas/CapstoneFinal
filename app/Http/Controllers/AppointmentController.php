@@ -157,7 +157,7 @@ class AppointmentController extends Controller
         $doctors = Doctor::whereHas('user', function ($query) {
             $query->where('status', 1);
         })->with(['services', 'user'])->get();
-        $patient = Patient::with('student', 'teacher')->get();
+        $patient = Patient::with(['student', 'teacher'])->where('status', 1)->get();
         $services = Service::all();
 
         $selectedDoctor = null;
@@ -181,11 +181,22 @@ class AppointmentController extends Controller
         $lastname = $request->input('lastname');
 
         // Check if the patient with the given student_no or teacher_no exists
-        $patient = Patient::whereHas('student', function ($query) use ($pat_id) {
-            $query->where('student_no', $pat_id);
-        })->orWhereHas('teacher', function ($query) use ($pat_id) {
-            $query->where('teacher_no', $pat_id);
-        })->first();
+        // $patient = Patient::where('status' ,1)->whereHas('student', function ($query) use ($pat_id) {
+        //     $query->where('student_no', $pat_id);
+        // })->orWhereHas('teacher', function ($query) use ($pat_id) {
+        //     $query->where('teacher_no', $pat_id);
+        // })->first();
+        $patient = Patient::where('status', 1)
+    ->where(function ($query) use ($pat_id) {
+        $query->whereHas('student', function ($q) use ($pat_id) {
+            $q->where('student_no', $pat_id);
+        })
+        ->orWhereHas('teacher', function ($q) use ($pat_id) {
+            $q->where('teacher_no', $pat_id);
+        });
+    })
+    ->first();
+
 
         if (!$patient) {
             return redirect()->back()->with('error', 'Student/Teacher not found');
