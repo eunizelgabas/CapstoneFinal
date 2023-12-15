@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Dispensing;
 use App\Models\Form;
 use App\Models\MedicalHistory;
 use App\Models\Patient;
 use App\Models\PhysicalExamination;
+use App\Models\Stock;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -52,8 +54,52 @@ class ReportController extends Controller
 
     public function annual(){
         $currentYear = now()->year;
+        // $yearlyReport = Stock::select(
+        //     DB::raw('YEAR(created_at) as year'),
+        //     DB::raw('MONTH(created_at) as month'),
+        //     'med_id',
+        //     DB::raw('COUNT(*) as total_purchase')
+        // )
+        // ->with('medicine:id,name')
+        // ->groupBy('year', 'month', 'med_id')
+        // ->orderByDesc('total_purchase')
+        // ->get();
+        $yearlyReport = Stock::select(
+            DB::raw('YEAR(created_at) as year'),
+            DB::raw('MONTH(created_at) as month'),
+            'med_id',
+            DB::raw('COUNT(*) as total_purchase'),
+            DB::raw('COUNT(DISTINCT med_id) as medicine_count'),
+            DB::raw('SUM(qty) as total_qty') // Add this line
+        )
+        ->with(['medicine:id,name']) // Assuming you have a 'medicine' relationship in your Stock model
+        ->groupBy('year', 'month', 'med_id')
+        ->orderByDesc('total_purchase')
+        ->get();
+
         return inertia('Report/MedReport', [
-            'currentYear' => $currentYear
+            'currentYear' => $currentYear,
+            'yearlyReport' => $yearlyReport
+        ]);
+    }
+
+    public function dispense(){
+        $currentYear = now()->year;
+        $yearlyReport = Dispensing::select(
+            DB::raw('YEAR(created_at) as year'),
+            DB::raw('MONTH(created_at) as month'),
+            'med_id',
+            DB::raw('COUNT(*) as total_dispense'),
+            DB::raw('COUNT(DISTINCT med_id) as medicine_count'),
+            DB::raw('SUM(qty) as total_qty')
+        )
+        ->with('medicine:id,name')
+        ->groupBy('year', 'month', 'med_id')
+        ->orderByDesc('total_dispense')
+        ->get();
+        return inertia('Report/MedicineReport', [
+            'currentYear' => $currentYear,
+            'yearlyReport' => $yearlyReport
         ]);
     }
 
@@ -135,4 +181,6 @@ class ReportController extends Controller
             'currentMonthAppointments' => $currentMonthAppointments
         ]);
     }
+
+
 }

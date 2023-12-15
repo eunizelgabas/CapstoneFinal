@@ -194,6 +194,7 @@ Route::middleware(['checkUserStatus', 'auth'])->group(function () {
     Route::get('/calendar', [ReportController::class, 'calendar'])->name('calendar');
     Route::get('/medchart', [ReportController::class, 'medchart'])->name('medchart');
     Route::get('/annualreport', [ReportController::class, 'annual'])->name('annual');
+    Route::get('/medicinedispense', [ReportController::class, 'dispense'])->name('dispense');
 
     Route::get('/medcert', [MedCertController::class, 'generate'])->name('medcert');
     Route::post('/medcert', [MedCertController::class, 'store'])->name('medcert');

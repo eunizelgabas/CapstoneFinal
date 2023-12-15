@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('lastname');
             $table->string('middlename')->nullable();
             $table->string('ext_name')->nullable();
-            $table->string('email')->unique();
-            $table->string('contact_no');
-            $table->string('emergency_contact');
+            $table->string('email')->unique()->nullable();
+            $table->string('contact_no')->nullable();
+            $table->string('emergency_contact')->nullable();
             $table->string('sex');
             $table->string('address');
             $table->date('dob');
