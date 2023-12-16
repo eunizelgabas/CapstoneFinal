@@ -73,9 +73,9 @@ class PatientController extends Controller
             'ext_name' => 'nullable|string',
             'sex' => 'required|string',
             'type' => 'required|string',
-            'email' => 'required|email|unique:patients,email',
+            // 'email' => 'required|email|unique:patients,email',
             'contact_no' => 'required',
-            'emergency_contact' => 'required',
+            // 'emergency_contact' => 'required',
             'dob' => 'required|date',
             'address' => 'required',
 
@@ -87,14 +87,12 @@ class PatientController extends Controller
         if ($type === 'Student') {
           $stud =   $request->validate([
                 'student_no' => 'required|unique:students,student_no',
-                'course' => 'required',
                 // Add other validation rules for Student
             ]);
 
             // Create a new student associated with the patient
             $student = new Student([
                 'student_no' => $stud['student_no'],
-                'course' => $stud['course'],
             ]);
 
             // Save the student first to get an ID.
@@ -136,9 +134,9 @@ class PatientController extends Controller
             'ext_name' => 'nullable|string',
             'sex' => 'required|string',
             'type' => 'required|string',
-            'email' => 'required|email|unique:patients,email,' . $patient->id,
+            // 'email' => 'required|email|unique:patients,email,' . $patient->id,
             'contact_no' => 'required',
-            'emergency_contact' => 'required',
+            // 'emergency_contact' => 'required',
             'dob' => 'required|date',
             'address' => 'required',
         ]);
@@ -149,14 +147,13 @@ class PatientController extends Controller
 
     if ($type === 'Student') {
         $student_no = $request->input('student_no');
-        $course = $request->input('course');
 
         // Update the student type here.
         $patient->student()->updateOrCreate(
             [],
             [
                 'student_no' => $student_no,
-                'course' => $course,
+
             ]
         );
 

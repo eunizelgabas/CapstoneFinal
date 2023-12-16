@@ -24,11 +24,8 @@
                     <span style="font-size: 18px;">Address: </span><u>{{$form->patient->address}}</u>
                 </td>
                 <td style="text-align: right;">
-                    <span style="font-size: 18px;">Course: </span> @if ($form->patient->isStudent())
-                    <u>{{$form->patient->student->course}}</u>
-                  @else
-                  ____________
-                  @endif
+                    <span style="font-size: 18px;">Course: <u>{{$form->course}}
+                    </span>
                 </td>
 
             </tr>

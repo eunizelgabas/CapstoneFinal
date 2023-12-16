@@ -12,6 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
+    <Head title="Dispense Report"/>
     <Sidebar>
         <div class="w-full px-5 py-4">
             <div class="h-12">

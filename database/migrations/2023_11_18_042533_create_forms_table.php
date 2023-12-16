@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('doc_id')->unsigned();
             $table->bigInteger('pat_id')->unsigned();
+            $table->string('course');
             $table->string('vaccine');
             $table->date('date');
             $table->timestamps();

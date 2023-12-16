@@ -69,7 +69,7 @@ class DispensingController extends Controller
         $inventory->save();
     }
 
-    $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " dispense a ". $des->medicine->name. " with the id# ". $des->id;
+    $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " dispense " . $des->qty ." pc/s of ". $des->medicine->name;
     event(new UserLog($log_entry));
 
     return redirect('/dispense')->with('success', 'Medicine type successfully created');

@@ -22,7 +22,7 @@
     <p>This is to certify that I have personally examined <u>{{$form->patient->firstname}} {{$form->patient->lastname}}</u> &nbsp; Age/Sex <u>{{$age}} &nbsp; {{$form->patient->sex}}</u> </p>
     <p>From <u>{{$form->patient->address}}</u>&nbsp; Course
         @if ($form->patient->isStudent())
-          <u>{{$form->patient->student->course}}</u>
+          <u>{{$form->course}}</u>
         @else
         ____________
         @endif

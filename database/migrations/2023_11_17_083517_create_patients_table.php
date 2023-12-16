@@ -17,11 +17,9 @@ return new class extends Migration
             $table->string('lastname');
             $table->string('middlename')->nullable();
             $table->string('ext_name')->nullable();
-            $table->string('email')->unique()->nullable();
             $table->string('contact_no')->nullable();
-            $table->string('emergency_contact')->nullable();
             $table->string('sex');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->date('dob');
             $table->enum('type', ['Student', 'Teacher']);
             $table->boolean('status')->default(1)->comment("1-active, 0-inactive");

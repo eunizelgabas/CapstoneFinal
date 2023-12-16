@@ -96,7 +96,7 @@ import moment from 'moment';
     age: props.form.patient.age,
     gender: props.form.patient.sex,
     address: props.form.patient.address,
-    course: null,
+    course: props.form.course,
     vaccine: props.form.vaccine,
     doc_id: '',
     pat_id: props.form.patient.id,
@@ -106,9 +106,9 @@ import moment from 'moment';
     lic_no:props.form.doctor.lic_no
 })
 
-if (props.patient && props.patient.type === 'Student') {
-      forms.course = props.patient.student.course;
-    }
+// if (props.patient && props.patient.type === 'Student') {
+//       forms.course = props.patient.student.course;
+//     }
 
     function formattedDate(date){
         return moment(date).format('MMMM   D, YYYY');
@@ -216,7 +216,7 @@ if (props.patient && props.patient.type === 'Student') {
             <div class="sm:col-span-1 flex items-center">
                 <label for="firstname" class="block text-xl font-medium leading-6 text-gray-900">Course:</label>
                 <div class="ml-2">
-                        <p class="text-xl text-black">   <u>{{ isStudent ? (form.patient.student ? form.patient.student.course : "") : "" }}</u>
+                        <p class="text-xl text-black"><u>{{form.course}}</u>
                         </p>
 
                     <div class="text-sm text-red-500 italic"></div>

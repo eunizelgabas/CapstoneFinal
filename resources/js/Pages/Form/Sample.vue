@@ -97,7 +97,7 @@ let props = defineProps({
         pat_id: props.patient.id,
         date: '',
         vaccine: '',
-        course: null,
+        course: "",
         test:calculateAge(props.patient.dob),
         doc_name:"",
         lic_no:""
@@ -204,7 +204,7 @@ const filteredDoctors = computed(() => {
 });
 
     const submit = () =>{
-        isLoading.value = true;
+        // isLoading.value = true;
         form.post('/healthForm')
 
 
@@ -325,7 +325,7 @@ const filteredDoctors = computed(() => {
                                     <div class="sm:col-span-1">
                                         <label for="course" class="block text-sm font-medium leading-6 text-gray-900">Course</label>
                                         <div class="mt-2">
-                                        <input type="text" :value="form.course"   readonly name="course" id="course" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <input type="text" v-model="form.course"   name="course" id="course" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         <div class="text-sm text-red-500 italic" ></div>
                                         </div>
                                     </div>

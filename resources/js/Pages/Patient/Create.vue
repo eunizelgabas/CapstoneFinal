@@ -111,7 +111,7 @@
                                 <div class="text-sm text-red-500 italic" v-if="form.errors.dob">{{ form.errors.dob }}</div>
                                 </div>
                             </div>
-                            <div class="sm:col-span-1">
+                            <div class="sm:col-span-2">
                                 <label for="contact_no" class="block text-sm font-medium leading-6 text-gray-900">Contact No</label>
                                 <div class="mt-2">
                                 <input id="contact_no" v-model="form.contact_no" name="contact_no" type="number" autocomplete="contact_no" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -119,13 +119,13 @@
                                 </div>
                             </div>
 
-                            <div class="sm:col-span-1">
+                            <!-- <div class="sm:col-span-1">
                                 <label for="emergency_contact" class="block text-sm font-medium leading-6 text-gray-900">Emergency Contact No</label>
                                 <div class="mt-2">
                                 <input id="emergency_contact" v-model="form.emergency_contact" name="emergency_contact" type="number" autocomplete="emergency_contact" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <div class="text-sm text-red-500 italic" v-if="form.errors.emergency_contact">{{ form.errors.emergency_contact }}</div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="m:col-span-1">
                                 <label for="type" class="block text-sm font-medium leading-6 text-gray-900">Type</label>
@@ -140,21 +140,15 @@
                             </div>
 
 
-                            <div class="sm:col-span-2" v-if="form.type === 'Student'">
+                            <div class="sm:col-span-1" v-if="form.type === 'Student'">
                                 <label for="student_no" class="block text-sm font-medium leading-6 text-gray-900">Student ID</label>
                                 <div class="mt-2">
                                 <input id="student_no" v-model="form.student_no" name="student_no" type="text" autocomplete="student_no" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <div class="text-sm text-red-500 italic" v-if="form.errors.student_no">{{ form.errors.student_no }}</div>
                                 </div>
                             </div>
-                            <div class="sm:col-span-1" v-if="form.type === 'Student'">
-                                <label for="course" class="block text-sm font-medium leading-6 text-gray-900">Course</label>
-                                <div class="mt-2">
-                                <input id="course" v-model="form.course" name="course" type="text" autocomplete="course" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <div class="text-sm text-red-500 italic" v-if="form.errors.course">{{ form.errors.course }}</div>
-                                </div>
-                            </div>
-                            <div class="sm:col-span-2" v-if="form.type === 'Teacher'">
+
+                            <div class="sm:col-span-1" v-if="form.type === 'Teacher'">
                                 <label for="teacher_no" class="block text-sm font-medium leading-6 text-gray-900">Teacher ID</label>
                                 <div class="mt-2">
                                 <input id="teacher_no" v-model="form.teacher_no" name="teacher_no" type="text" autocomplete="teacher_no" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -162,13 +156,13 @@
                                 </div>
                             </div>
 
-                            <div class="sm:col-span-1">
+                            <!-- <div class="sm:col-span-1">
                                 <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
                                 <div class="mt-2">
                                 <input id="email" v-model="form.email" name="email" type="email" autocomplete="email" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <div class="text-sm text-red-500 italic" v-if="form.errors.email">{{ form.errors.email }}</div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="sm:col-span-2">
                                 <label for="address" class="block text-sm font-medium leading-6 text-gray-900">Address</label>
                                 <div class="mt-2">
