@@ -44,11 +44,13 @@ class FormController extends Controller
 
         $patient->load('student', 'teacher');
 
+
         return inertia('Form/Sample', [
             'patient' => $patient,
             'doctor' => $doctor,
             'isDoctor' => $isDoctor,
-            'selectedDoctor' => $selectedDoctor
+            'selectedDoctor' => $selectedDoctor,
+
         ]);
     }
 
@@ -63,6 +65,7 @@ class FormController extends Controller
         'vaccine' => 'required|string',
         'course' => 'required',
         'date' => 'date|after_or_equal:today',
+        'age' => 'required|integer'
     ]);
 
     if ($user->hasRole('Doctor')) {
@@ -249,7 +252,7 @@ class FormController extends Controller
         // $patient = Patient::with('student', 'teacher')->findOrFail($form->id);
         // $doctor = Doctor::with(['user'])->get()->findOrFail($form->id);
 
-        $age = Carbon::parse($form->patient->dob)->age;
+        // $age = Carbon::parse($form->patient->dob)->age;
         $data = [
             'title' => 'MATER DEI COLLEGE',
             'header' => 'Medical Certificate',
@@ -266,7 +269,7 @@ class FormController extends Controller
 
         $pdf = PDF::loadView('pdf.medCert',[
             $data,
-            'age'=> $age,
+            // 'age'=> $age,
             'form' => $form,
             'date'=> $date,
             // 'doctor'=> $doctor

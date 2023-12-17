@@ -28,7 +28,7 @@ class PatientController extends Controller
                         $studentQuery->where('student_no', 'like', '%' . $search . '%');
                     })
                     ->orWhereHas('teacher', function ($teacherQuery) use ($search) {
-                        $teacherQuery->where('teacher_no', 'like', '%' . $search . '%');
+                        $teacherQuery->where('id', 'like', '%' . $search . '%');
                     });
             })
             ->where('status', 1)

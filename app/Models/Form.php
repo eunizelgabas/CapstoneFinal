@@ -9,7 +9,7 @@ class Form extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['doc_id', 'pat_id', 'date', 'vaccine', 'course'];
+    protected $fillable = ['doc_id', 'pat_id', 'date', 'vaccine', 'course', 'age'];
 
     public function patient(){
         return $this->belongsTo(Patient::class, 'pat_id');

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('contact_no')->nullable();
             $table->string('sex');
             $table->string('address')->nullable();
-            $table->date('dob');
+            $table->date('dob')->nullable();
             $table->enum('type', ['Student', 'Teacher']);
             $table->boolean('status')->default(1)->comment("1-active, 0-inactive");
             $table->timestamps();

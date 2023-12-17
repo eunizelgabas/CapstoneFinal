@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
-            $table->integer('teacher_no')->unique(); // Add unique constraint if needed
+            // $table->integer('teacher_no')->unique(); // Add unique constraint if needed
             $table->timestamps();
         });
     }

@@ -272,13 +272,13 @@ setTimeout(() => {
                                                         class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
                                                 </div>
                                             </div> -->
-                                            <div class="w-full px-3 " v-if="form.type === 'Teacher'">
+                                            <!-- <div class="w-full px-3 " v-if="form.type === 'Teacher'">
                                                 <div class="mb-5">
                                                     <label for="teacher_no" class="text-left">Teacher ID</label>
                                                     <input type="text" v-model="form.teacher_no" name="teacher_no" id="teacher_no" placeholder=""
                                                         class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <div class="w-full px-3 ">
                                                 <div class="mb-5">
@@ -313,7 +313,7 @@ setTimeout(() => {
                     </div>
                     <div class="">
                         <p class="text-xl font-medium text-gray-700">{{ patient.firstname }} {{ patient.lastname }}</p>
-                        <p class="mb-4 text-sm font-bold text-gray-500">{{ patient.type }} - ID No: {{ isStudent ? (patient.student ? patient.student.student_no : patient.teacher.teacher_no) : (patient.teacher ? patient.teacher.teacher_no : patient.student.student_no) }}</p>
+                        <p class="mb-4 text-sm font-bold text-gray-500">{{ patient.type }} - ID No: {{ isStudent ? (patient.student ? patient.student.student_no : patient.teacher.id) : (patient.teacher ? patient.teacher.id : patient.student.student_no) }}</p>
                         <div class="flex space-x-2">
                         <div class="flex flex-col items-center rounded-xl bg-gray-100 px-4 py-2">
                             <p class="text-sm font-medium text-gray-500">Medical</p>
@@ -357,7 +357,7 @@ setTimeout(() => {
                             </div>
 
 
-                            <div class="p-4">
+                            <div class="p-4" v-if="patient.type === 'Student'">
                                 <h5 class="mb-1 text-m font-bold text-gray-700">Birthday</h5>
                                 <p class="mt-1 mb-1 text-l text-gray-500">{{ formattedDate(patient.dob)}}</p>
                                 <div class="border-b-2 mt-1 border-gray-100"></div>
@@ -377,7 +377,7 @@ setTimeout(() => {
 
                             </div> -->
 
-                            <div class="p-4">
+                            <div class="p-4" v-if="patient.type === 'Student'">
                                 <h5 class="mb-1 text-m font-bold text-gray-700">Address</h5>
                                 <p class="mt-1 mb-1 text-l text-gray-500">{{patient.address}}</p>
                                 <div class="border-b-2 mt-1 border-gray-100"></div>

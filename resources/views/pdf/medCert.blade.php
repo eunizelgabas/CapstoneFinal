@@ -19,13 +19,9 @@
     <br>
     <br>
 
-    <p>This is to certify that I have personally examined <u>{{$form->patient->firstname}} {{$form->patient->lastname}}</u> &nbsp; Age/Sex <u>{{$age}} &nbsp; {{$form->patient->sex}}</u> </p>
+    <p>This is to certify that I have personally examined <u>{{$form->patient->firstname}} {{$form->patient->lastname}}</u> &nbsp; Age/Sex <u>{{$form->age}} / &nbsp; {{$form->patient->sex}}</u> </p>
     <p>From <u>{{$form->patient->address}}</u>&nbsp; Course
-        @if ($form->patient->isStudent())
-          <u>{{$form->course}}</u>
-        @else
-        ____________
-        @endif
+        <u>{{$form->course}}</u>
         Have found that he/she is physically and mentally fit during the time of the examination.</p>
 
 

@@ -93,7 +93,7 @@ import moment from 'moment';
     remarks: props.form.remark.remarks,
 
     fullname: `${props.form.patient.firstname} ${props.form.patient.lastname}`,
-    age: props.form.patient.age,
+    // age: props.form.patient.age,
     gender: props.form.patient.sex,
     address: props.form.patient.address,
     course: props.form.course,
@@ -103,7 +103,8 @@ import moment from 'moment';
     date: props.form.date,
     hist: props.form.history.hist || '',
     doc_name:  props.form.doctor.user.firstname,
-    lic_no:props.form.doctor.lic_no
+    lic_no:props.form.doctor.lic_no,
+    age: props.form.age
 })
 
 // if (props.patient && props.patient.type === 'Student') {
@@ -202,7 +203,7 @@ import moment from 'moment';
             <div class="sm:col-span-1 flex items-center">
                 <label for="firstname" class="block text-xl font-medium leading-6 text-gray-900">Age/Sex:</label>
                 <div class="ml-2">
-                    <p class="text-xl text-black"><u>{{form.patient.age}} {{ form.patient.sex }}</u></p>
+                    <p class="text-xl text-black"><u>{{form.age}} / {{ form.patient.sex }}</u></p>
                     <div class="text-sm text-red-500 italic"></div>
                 </div>
             </div>

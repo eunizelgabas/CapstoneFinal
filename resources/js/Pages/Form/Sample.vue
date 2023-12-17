@@ -9,6 +9,7 @@ let props = defineProps({
         patient: Object,
         doctor: Object,
         isDoctor: Boolean,
+        isTeacher:Boolean
 })
   const steps = ref(1);
   const isLoading = ref(false);
@@ -98,18 +99,19 @@ let props = defineProps({
         date: '',
         vaccine: '',
         course: "",
-        test:calculateAge(props.patient.dob),
+        // test:calculateAge(props.patient.dob),
         doc_name:"",
-        lic_no:""
+        lic_no:"",
+        age: ""
 
 
 
     })
 
     // const isStudent = props.patient.type === 'Student';
-    if (props.patient && props.patient.type === 'Student') {
-        form.course = props.patient.student.course;
-        }
+    // if (props.patient && props.patient.type === 'Student') {
+    //     form.course = props.patient.student.course;
+    //     }
 
 
 
@@ -140,8 +142,7 @@ let props = defineProps({
       const reader = new FileReader();
       reader.onload = (e) => (image.value = e.target.result);
       reader.readAsDataURL(file);
-    };
-
+    }
     const fileHandler = (event) => {
       const file = event.target.files[0];
       image.value = URL.createObjectURL(file);
@@ -169,19 +170,20 @@ let props = defineProps({
     };
 
 
-    function calculateAge(dateOfBirth) {
-        const today = new Date();
-        const birthDate = new Date(dateOfBirth);
+    // function calculateAge(dateOfBirth) {
+    //     //  if (!isTeacher.value && props.patient.dob) {
+    //           const today = new Date();
+    //     const birthDate = new Date(dateOfBirth);
 
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
+    //     let age = today.getFullYear() - birthDate.getFullYear();
+    //     const monthDiff = today.getMonth() - birthDate.getMonth();
 
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
+    //     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    //         age--;
+    //     }
 
-        return age;
-    }
+    //     return age;
+    //      }
 
 
     onMounted(() => {
@@ -301,13 +303,14 @@ const filteredDoctors = computed(() => {
                                         <div class="text-sm text-red-500 italic" ></div>
                                         </div>
                                     </div>
-                                    <div class="sm:col-span-1">
+                                    <!-- <div class="sm:col-span-1"  >
                                         <label for="age" class="block text-sm font-medium leading-6 text-gray-900">Age</label>
                                         <div class="mt-2">
                                         <input type="text" :value="calculateAge(form.dob)" readonly name="age" id="age" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         <div class="text-sm text-red-500 italic" ></div>
                                         </div>
-                                    </div>
+                                    </div> -->
+
                                     <div class="sm:col-span-1">
                                         <label for="gender" class="block text-sm font-medium leading-6 text-gray-900">Sex</label>
                                         <div class="mt-2">
@@ -319,6 +322,13 @@ const filteredDoctors = computed(() => {
                                         <label for="address" class="block text-sm font-medium leading-6 text-gray-900">Address</label>
                                         <div class="mt-2">
                                         <input type="text" :value="form.address" readonly name="address" id="address" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <div class="text-sm text-red-500 italic" ></div>
+                                        </div>
+                                    </div>
+                                      <div class="sm:col-span-1">
+                                        <label for="age" class="block text-sm font-medium leading-6 text-gray-900">Age</label>
+                                        <div class="mt-2">
+                                        <input type="text" v-model="form.age"  name="age" id="age" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         <div class="text-sm text-red-500 italic" ></div>
                                         </div>
                                     </div>
