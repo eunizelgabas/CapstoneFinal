@@ -181,18 +181,14 @@ class AppointmentController extends Controller
         $lastname = $request->input('lastname');
 
         // Check if the patient with the given student_no or teacher_no exists
-        // $patient = Patient::where('status' ,1)->whereHas('student', function ($query) use ($pat_id) {
-        //     $query->where('student_no', $pat_id);
-        // })->orWhereHas('teacher', function ($query) use ($pat_id) {
-        //     $query->where('teacher_no', $pat_id);
-        // })->first();
+
         $patient = Patient::where('status', 1)
     ->where(function ($query) use ($pat_id) {
         $query->whereHas('student', function ($q) use ($pat_id) {
             $q->where('student_no', $pat_id);
         })
         ->orWhereHas('teacher', function ($q) use ($pat_id) {
-            $q->where('teacher_no', $pat_id);
+            $q->where('id', $pat_id);
         });
     })
     ->first();
