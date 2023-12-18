@@ -101,7 +101,7 @@ class DoctorController extends Controller
             $doctorRole = Role::where('name', 'doctor')->first();
             $user->assignRole($doctorRole);
 
-            $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " created a Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. " with the id# ". $appointment->id;
+            $log_entry = Auth::user()->firstname . " ". Auth::user()->lastname . " created a Dr. ". $doctor->user->firstname. " " . $doctor->user->lastname. " with the id# ". $doctor->id;
             event(new UserLog($log_entry));
             return redirect('/doctor')->with('success', 'Doctor successfully created');
     }
