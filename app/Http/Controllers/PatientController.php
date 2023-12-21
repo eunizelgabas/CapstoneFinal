@@ -13,6 +13,7 @@ use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as HttpRequest;
+use Illuminate\Support\Str;
 
 class PatientController extends Controller
 {
@@ -136,7 +137,6 @@ class PatientController extends Controller
             'type' => 'required|string',
             // 'email' => 'required|email|unique:patients,email,' . $patient->id,
             'contact_no' => 'required',
-            // 'emergency_contact' => 'required',
             'dob' => 'required|date',
             'address' => 'required',
         ]);
@@ -162,12 +162,13 @@ class PatientController extends Controller
             $patient->teacher->delete();
         }
     } elseif ($type === 'Teacher') {
-        $teacher_no = $request->input('teacher_no');
+        // Generate a UUID for the teacher's ID
+        $id = Str::uuid();
 
         // Update the teacher type here.
         $patient->teacher()->updateOrCreate(
             [],
-            ['teacher_no' => $teacher_no]
+            ['id' => $id]
         );
 
         // Remove the student record if it exists
@@ -196,7 +197,7 @@ class PatientController extends Controller
                             $studentQuery->where('student_no', 'like', '%' . $term . '%');
                         })
                         ->orWhereHas('teacher', function ($teacherQuery) use ($term) {
-                            $teacherQuery->where('teacher_no', 'like', '%' . $term . '%');
+                            $teacherQuery->where('id', 'like', '%' . $term . '%');
                         });
                 })
                 ->where('status', 1) // Filter active patients

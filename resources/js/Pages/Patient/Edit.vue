@@ -3,12 +3,12 @@ import Sidebar from '@/Layouts/Sidebar.vue';
 import Breadcrumb from '@/Components/Breadcrumbs.vue'
 import {  Head} from '@inertiajs/vue3';
 import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { onMounted } from 'vue';
 
     let props = defineProps({
-       patient:Object
-
+       patient:Object,
+        teacher:Object
     })
     let form = useForm({
         lastname: props.patient.lastname,
@@ -23,10 +23,7 @@ import { onMounted } from 'vue';
         dob: props.patient.dob,
         address: props.patient.address,
         student_no:  '',
-        teacher_no: '',
-        course: '',
-
-
+        id: ''
     })
 
 
@@ -37,7 +34,7 @@ import { onMounted } from 'vue';
             form.course = '';
 
         } else if (form.type === 'Teacher') {
-            form.teacher_no = '';
+            form.id = '';
 
         }
     }
@@ -57,7 +54,7 @@ import { onMounted } from 'vue';
         form.course = props.patient.student.course;
     } else if (props.patient.type === 'Teacher' && props.patient.teacher) {
         console.log('Patient Data:', props.patient.teacher);
-        form.teacher_no = props.patient.teacher.teacher_no;
+        form.id = props.patient.teacher.id;
     }
 
 
@@ -213,7 +210,7 @@ import { onMounted } from 'vue';
                             <div class="sm:col-span-2" v-if="form.type === 'Teacher'">
                                 <label for="teacher_no" class="block text-sm font-medium leading-6 text-gray-900">Teacher ID</label>
                                 <div class="mt-2">
-                                <input id="teacher_no" v-model="form.teacher_no" name="teacher_no" type="text" autocomplete="teacher_no" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <input id="teacher_no" v-model="form.id" name="teacher_no" type="text" readonly autocomplete="teacher_no" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <div class="text-sm text-red-500 italic" v-if="form.errors.teacher_no">{{ form.errors.teacher_no }}</div>
                                 </div>
                             </div>
