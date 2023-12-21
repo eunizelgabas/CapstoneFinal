@@ -215,6 +215,10 @@ class AppointmentController extends Controller
         ]);
 
         // dd($appointment);
+        Mail::send('email.book-email', ['patient' => $patient, 'appointment'=>$appointment], function ($message) use ($patient, $appointment) {
+            $message->to($appointment->email);
+            $message->subject('Appointment Request');
+        });
         return redirect()->route('login')->with(['success' => 'Appointment submitted successfully']);
     }
 
