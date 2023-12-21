@@ -8,7 +8,7 @@
 <p>
     Dear  {{$patient->firstname}}!
 </p>
-<p>We are pleased to inform you that your appointment at [Clinic Name] has been successfully booked.</p>
+<p>We are pleased to inform you that your appointment at Mater Dei College Clinic has been successfully booked.</p>
 
 <p><strong>Appointment Details:</strong></p>
 <ul>
@@ -20,7 +20,8 @@
 <p>If you have any questions or need to make changes to your appointment, please contact us at mdcclinic@gmail.com</p>
 
     <p>Your health and well-being are important to us, and we are committed to delivering the highest level of care.</p>
-
+    <p>Best regards,<br>
+       MDC Clinic</p>
 <div class="footer">
     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
       <tr>

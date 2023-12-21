@@ -183,15 +183,15 @@ class AppointmentController extends Controller
         // Check if the patient with the given student_no or teacher_no exists
 
         $patient = Patient::where('status', 1)
-    ->where(function ($query) use ($pat_id) {
-        $query->whereHas('student', function ($q) use ($pat_id) {
-            $q->where('student_no', $pat_id);
-        })
-        ->orWhereHas('teacher', function ($q) use ($pat_id) {
-            $q->where('id', $pat_id);
-        });
-    })
-    ->first();
+            ->where(function ($query) use ($pat_id) {
+                $query->whereHas('student', function ($q) use ($pat_id) {
+                    $q->where('student_no', $pat_id);
+                })
+                ->orWhereHas('teacher', function ($q) use ($pat_id) {
+                    $q->where('id', $pat_id);
+                });
+            })
+            ->first();
 
 
         if (!$patient) {
@@ -214,10 +214,12 @@ class AppointmentController extends Controller
 
         ]);
 
-        // dd($appointment);
-        Mail::send('email.book-email', ['patient' => $patient, 'appointment'=>$appointment], function ($message) use ($patient, $appointment) {
+
+        $doctor = $appointment->doctor;
+        // Send an email notification to the patient
+        Mail::send('email.book-email', ['patient' => $patient, 'appointment'=>$appointment, 'doctor'=> $doctor ], function ($message) use ($patient, $appointment) {
             $message->to($appointment->email);
-            $message->subject('Appointment Request');
+            $message->subject('Appointment Request Successful');
         });
         return redirect()->route('login')->with(['success' => 'Appointment submitted successfully']);
     }
